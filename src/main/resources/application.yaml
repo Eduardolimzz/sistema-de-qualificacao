@@ -1,16 +1,20 @@
 spring:
-    datasource:
-      username: ${DB_USERNAME}
-      password: ${DB_PASSWORD}
-      url: ${DB_URL}
-    jpa:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
       hibernate:
-        ddl-auto: update
-      show-sql: true
-      properties:
-        hibernate:
-          format_sql: true
-    servlet:
-      multipart:
-        max-file-size: 10MB
-        max-request-size: 10MB
+        format_sql: true
+        hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
