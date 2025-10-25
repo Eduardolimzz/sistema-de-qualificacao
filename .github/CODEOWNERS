@@ -1,0 +1,12 @@
+* @Eduardolimzz
+
+*.java @Eduardolimzz
+*.xml @Eduardolimzz
+*.properties @Eduardolimzz
+*.yml @Eduardolimzz
+
+pom.xml @Eduardolimzz
+application.properties @Eduardolimzz
+application.yml @Eduardolimzz
+
+*.md @Eduardolimzz

@@ -1,6 +1,6 @@
 package com.sistema_de_qualificacao.sistema_de_qualificacao.service;
 
-import com.sistema_de_qualificacao.sistema_de_qualificacao.Dto.CreateAlunoDto;
+import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.CreateAlunoDto;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.entity.Aluno;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.repository.AlunoRepository;
 import org.springframework.stereotype.Service;
@@ -18,12 +18,11 @@ public class AlunoService {
 
     public UUID createAluno(CreateAlunoDto createAlunoDto){
         var entity = new Aluno();
-        entity.setNomeAluno(createAlunoDto.getNomeAluno());
-        entity.setEmailAluno(createAlunoDto.getEmailAluno());
-        entity.setSenhaAluno(createAlunoDto.getSenhaAluno());
+        entity.setNomealuno(createAlunoDto.getNomealuno());
+        entity.setEmailaluno(createAlunoDto.getEmailaluno());
+        entity.setSenhaaluno(createAlunoDto.getSenhaaluno());
 
-        var userSaved = alunoRepository.save(entity);
-
-        return userSaved.getAlunoId();
+        var alunoSaved = alunoRepository.save(entity);
+        return alunoSaved.getAlunoId();
     }
 }
