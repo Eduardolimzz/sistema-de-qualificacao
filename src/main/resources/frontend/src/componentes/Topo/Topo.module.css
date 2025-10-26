@@ -1,0 +1,12 @@
+.topo_container {
+  background-color: #0D1723;
+  display: flex;
+  justify-content: space-around;
+  height: 100px;
+  Padding-top: 16px;
+  Padding-bottom: 16px;
+  Padding-left: 8px;
+  Padding-right: 8px;
+
+}
+

@@ -1,0 +1,16 @@
+
+
+.navcontainer {
+ padding: 1rem;
+ background: #e9e9e9;
+ textAlign: center;
+ marginTop: 1x;
+ width: 100%;
+ boxSizing: border-box;
+ position: fixed;
+}
+
+.main {
+padding: 2rem;
+minHeight: 21vh;
+}
