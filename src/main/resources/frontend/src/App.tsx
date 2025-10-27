@@ -1,21 +1,17 @@
 import { Routes, Route } from 'react-router-dom';
-import Layout from './Layout';
+import Layout from './componentes/Layout/';
+import AlunosPage from "./Pages/AlunosPage/AlunosPage";
 
-import PaginaHome from './Pages/PaginaHome.jsx';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-
-
-        <Route index element={<PaginaHome />} />
-
-
-
-      </Route>
-    </Routes>
-  );
-}
+  <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<AlunosPage />} />
+            <Route path="*" element={<h2>Página não encontrada dentro do Layout</h2>} />
+          </Route>
+        </Routes>
+    );
+  }
 
 export default App;
