@@ -19,6 +19,7 @@ public class Aluno {
 
     @Id //identificar que o atributo da classe vai ser um ID no banco de dados
     @GeneratedValue(strategy = GenerationType.UUID)  //vai ser gerado de forma automática
+    @Column(name = "alunoId")
     private UUID alunoId;
 
     //aqui é criado cada atributo do nosso UML

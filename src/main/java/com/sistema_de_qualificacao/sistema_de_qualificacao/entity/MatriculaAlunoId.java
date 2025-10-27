@@ -1,6 +1,6 @@
 package com.sistema_de_qualificacao.sistema_de_qualificacao.entity;
 
-import lombok.AllArgsConstructor;
+import  lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -24,6 +24,6 @@ public class MatriculaAlunoId implements Serializable {
     //esse identificador tem o objetivo de Serializar um objeto
 
 
-    private UUID idAluno;
-    private UUID idCurso;
+    private UUID alunoId;
+    private UUID cursoId;
 }
