@@ -1,12 +1,108 @@
 .topo_container {
   background-color: #0D1723;
   display: flex;
-  justify-content: space-around;
-  height: 100px;
-  Padding-top: 16px;
-  Padding-bottom: 16px;
-  Padding-left: 8px;
-  Padding-right: 8px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  height: 80px;
+  min-height: 80px;
+  position: relative;
+  z-index: 20;
+}
 
+.left_section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  height: 120px;
+  width: auto;
+  max-height: 120px;
+  object-fit: contain;
+  display: block;
+}
+
+.catalog_icon {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+
+.catalog_text {
+  color: white;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.catalog_text:hover {
+  color: #93c5fd;
+}
+
+.right_section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user_info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+}
+
+.user_icon {
+  font-size: 20px;
+}
+
+.user_name {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.logout {
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.logout:hover {
+  color: #93c5fd;
+}
+
+.login_button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.login_button:hover {
+  color: #93c5fd;
+}
+
+.register_button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.register_button:hover {
+  color: #93c5fd;
 }
 
