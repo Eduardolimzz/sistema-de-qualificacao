@@ -1,9 +1,9 @@
-import { Routes, Route, Navigate, Outlet } from 'react-router-dom';
-import Layout from './componentes/Layout/';
+import { Routes, Route, Outlet } from 'react-router-dom';
+import Layout from './componentes/Layout';
 import PrivateRoute from './components/PrivateRoute';
 import Login from './Pages/Login/Login';
-import AlunosPage from './Pages/AlunosPage/AlunosPage';
-import PaginaHome from './Pages/PaginaHome';
+import AlunosPage from './Pages/AlunosPage/AlunosPage.jsx';
+import PaginaHome from './Pages/PaginaHome.jsx';
 import AdminDashboard from './Pages/Admin/Dashboard';
 import ProfessorDashboard from './Pages/Professor/Dashboard';
 import AlunoDashboard from './Pages/Aluno/Dashboard';
