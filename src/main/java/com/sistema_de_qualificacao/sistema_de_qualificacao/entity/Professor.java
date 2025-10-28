@@ -19,6 +19,7 @@ public class Professor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "professorId")
     private UUID professorId;
 
     @Column(name = "nomeprofessor")
