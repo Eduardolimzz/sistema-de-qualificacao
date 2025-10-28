@@ -3,6 +3,7 @@ import AlunoService from "../../services/alunoService"; // Importa a camada de s
 
 export default function AlunosPage() {
   const [alunos, setAlunos] = useState([]);
+  const [busca, setBusca] = useState("");
   const [novoAluno, setNovoAluno] = useState({
     nomealuno: "",
     emailaluno: "",
@@ -48,11 +49,28 @@ export default function AlunosPage() {
     }
   };
 
+  // Filtrar alunos baseado na busca
+  const alunosFiltrados = alunos.filter(aluno =>
+    aluno.nomealuno.toLowerCase().includes(busca.toLowerCase()) ||
+    aluno.emailaluno.toLowerCase().includes(busca.toLowerCase())
+  );
+
   // --- JSX (Interface) ---
   return (
     <div style={{ padding: "20px" }}>
       <h1>📚 Lista de Alunos</h1>
 
+      {/* Campo de busca */}
+      <div style={{ marginBottom: "20px" }}>
+        <input 
+          placeholder="🔍 Pesquisar por nome ou email..." 
+          value={busca} 
+          onChange={(e) => setBusca(e.target.value)}
+          style={{ width: "300px", padding: "8px", fontSize: "16px" }}
+        />
+      </div>
+
+      {/* Formulário de criação */}
       <div style={{ marginBottom: "20px" }}>
         <input placeholder="Nome" value={novoAluno.nomealuno} onChange={(e) => setNovoAluno({ ...novoAluno, nomealuno: e.target.value })}/>
 
@@ -64,10 +82,10 @@ export default function AlunosPage() {
       </div>
 
       <ul>
-        {alunos.length === 0 ? (
+        {alunosFiltrados.length === 0 ? (
             <li>Nenhum aluno encontrado.</li>
         ) : (
-            alunos.map((a) => (
+            alunosFiltrados.map((a) => (
               <li key={a.alunoId}>
                 {a.nomealuno} — {a.emailaluno}
                 <button

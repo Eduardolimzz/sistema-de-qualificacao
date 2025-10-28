@@ -18,6 +18,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<PaginaHome />} />
         <Route path="cursos" element={<AlunosPage />} />
+        <Route path="alunos" element={<AlunosPage />} />
         
         {/* Rotas privadas - Admin */}
         <Route
