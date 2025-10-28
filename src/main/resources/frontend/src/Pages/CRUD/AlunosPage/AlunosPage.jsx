@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AlunoService from "../../services/alunoService"; // Importa a camada de serviço
+import AlunoService from "../../../services/alunoService"; // Importa a camada de serviço
 
 export default function AlunosPage() {
   const [alunos, setAlunos] = useState([]);
