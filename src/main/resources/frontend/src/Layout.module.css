@@ -1,16 +1,19 @@
+/* src/componentes/Layout/Layout.module.css */
 
-
-.navcontainer {
- padding: 1rem;
- background: #e9e9e9;
- textAlign: center;
- marginTop: 1x;
- width: 100%;
- boxSizing: border-box;
- position: fixed;
+.layoutContainer {
+  display: flex;
+  flex-direction: column; /* Faz com que o topo fique em cima e o resto abaixo */
+  min-height: 100vh; /* Garante que o layout ocupe toda a altura da viewport */
 }
 
-.main {
-padding: 2rem;
-minHeight: 21vh;
+.contentWrapper {
+  display: flex; /* Faz com que MenuLateralAluno e mainContent fiquem lado a lado */
+  flex: 1; /* Permite que o wrapper ocupe o espaço restante */
+}
+
+.mainContent {
+  flex: 1; /* Garante que o conteúdo principal ocupe o espaço restante */
+  padding: 1.5rem; /* Ajuste o padding conforme desejar */
+  background-color: #263445; /* Cor de fundo da área de conteúdo */
+  /* Outros estilos como overflow-y: auto; se o conteúdo for rolável */
 }

@@ -1,0 +1,48 @@
+/* src/componentes/MenuLateralAluno/MenuLateralAluno.module.css */
+
+.menuLateralContainer {
+  width: 250px; /* Largura fixa do menu lateral */
+  background-color: #0D1723; /* Cor de fundo escura, um pouco mais clara que o topo */
+  padding: 1rem 0;     /* Espaçamento interno vertical */
+  color: #a0aec0;      /* Cor do texto para os itens inativos */
+  height: calc(100vh - 55px); /* Ajusta a altura para preencher o espaço restante após o TopoAluno */
+  /* height: 100vh; */ /* Use 100vh se o topo não estiver fixo ou for parte do layout flex */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sombra sutil à direita */
+}
+
+.navMenu ul {
+  list-style: none; /* Remove marcadores de lista */
+  padding: 0;
+  margin: 0;
+}
+
+.menuItem {
+  display: flex;         /* Alinha ícone e texto */
+  align-items: center;   /* Centraliza verticalmente */
+  padding: 0.8rem 1.5rem; /* Espaçamento interno de cada item */
+  color: #a0aec0;        /* Cor padrão do texto */
+  text-decoration: none; /* Remove sublinhado */
+  transition: background-color 0.2s ease, color 0.2s ease; /* Transição suave */
+  border-left: 3px solid transparent; /* Borda para o estado ativo */
+}
+
+.menuItem:hover {
+  background-color: #4a5568; /* Cor de fundo ao passar o mouse */
+  color: #e2e8f0;            /* Cor do texto mais clara ao passar o mouse */
+}
+
+.menuItem.active {
+  background-color: #4a5568; /* Cor de fundo para o item ativo */
+  color: #e2e8f0;            /* Cor do texto para o item ativo */
+  border-left: 3px solid #63b3ed; /* Borda azul para indicar item ativo */
+  font-weight: bold;         /* Texto em negrito para item ativo */
+}
+
+.icon {
+  margin-right: 0.8rem; /* Espaço entre o ícone e o texto */
+}
+
+/* Estilo para o span que contém o texto */
+.menuItem span {
+  flex-grow: 1; /* Permite que o texto ocupe o espaço restante */
+}
