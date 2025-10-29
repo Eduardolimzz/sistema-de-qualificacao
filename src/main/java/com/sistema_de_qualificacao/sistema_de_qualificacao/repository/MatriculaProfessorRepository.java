@@ -31,7 +31,7 @@ public interface MatriculaProfessorRepository extends JpaRepository<MatriculaPro
     Optional<MatriculaProfessor> findProfessorByIdAndCursoById(@Param("professorId") UUID professorId, @Param("cursoId") UUID cursoId);
 
     //Busca por status das matrículas
-    @Query("SELECT m FROM MatriculaProfessor m WHERE m.status = :status")
-    List<MatriculaProfessor> findByStatus(@Param("status_professor") String status);
+    @Query("SELECT m FROM MatriculaProfessor m WHERE m.status_professor = :ststatus_professoratus")
+    List<MatriculaProfessor> findByStatus(@Param("status_professor") String status_professor);
 
 }
