@@ -18,8 +18,10 @@ const AlunoLayout = () => {
 
         {/* 2b. Conteúdo Principal */}
         <main className={estilos.mainContent}>
-          <div className={estilos.pageContent}>
-            <Outlet />
+          <div style={{ width: '100%' }}>
+            <div style={{ maxWidth: 1200, margin: '0 auto' }} className={estilos.pageContent}>
+              <Outlet />
+            </div>
           </div>
         </main>
 

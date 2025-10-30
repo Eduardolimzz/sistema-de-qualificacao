@@ -17,8 +17,11 @@ export default function ProfessorLayout() {
       <div style={{ display: 'flex', flexGrow: 1 }}>
         <MenuLateralProfessor />
         <main style={{ flexGrow: 1 }}>
-          <div style={{ padding: 110, paddingLeft: 230 }}>
-            <Outlet />
+          {/* Área de conteúdo ocupa a largura da janela desconsiderando a sidebar (200px + borda + espaçamentos ~ 230px) */}
+          <div style={{ paddingTop: 110, paddingBottom: 32, paddingRight: 24, width: 'calc(100% - 230px)', marginLeft: 230 }}>
+            <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+              <Outlet />
+            </div>
           </div>
         </main>
       </div>
