@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 type AlunoResumo = {
   id: string;
@@ -63,8 +63,16 @@ const alunosMock: AlunoResumo[] = [
   })()
 ];
 
+const STORAGE_KEY = 'prof_alunos_v1';
+
 export default function Alunos() {
-  const [alunos, setAlunos] = useState<AlunoResumo[]>(alunosMock);
+  const [alunos, setAlunos] = useState<AlunoResumo[]>(() => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch {}
+    return alunosMock;
+  });
   const [modalAberto, setModalAberto] = useState(false);
   const [alunoSelecionado, setAlunoSelecionado] = useState<AlunoResumo | null>(null);
   const [notasEditadas, setNotasEditadas] = useState<number[]>([]);
@@ -139,16 +147,16 @@ export default function Alunos() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', gap: 12, marginTop: 12 }}>
+            <div style={{ display: 'flex', gap: 8, marginTop: 10, justifyContent: 'flex-start' }}>
               <button
                 onClick={() => { setAlunoSelecionado(aluno); setNotasEditadas(aluno.cursos.map(c => c.nota)); setModalAberto(true); }}
-                style={{ flex: 1, padding: '8px 10px', borderRadius: 8, background: '#111827', color: '#e5e7eb', border: '1px solid #1f2937', cursor: 'pointer' }}
+                style={{ padding: '6px 10px', borderRadius: 6, background: '#111827', color: '#e5e7eb', border: '1px solid #1f2937', cursor: 'pointer' }}
               >
                 Notas
               </button>
               <button
                 onClick={() => { setAlunoSelecionado(aluno); setTextoMensagem(''); setMensagemAberta(true); }}
-                style={{ flex: 1, padding: '8px 10px', borderRadius: 8, background: '#111827', color: '#e5e7eb', border: '1px solid #1f2937', cursor: 'pointer' }}
+                style={{ padding: '6px 10px', borderRadius: 6, background: '#111827', color: '#e5e7eb', border: '1px solid #1f2937', cursor: 'pointer' }}
               >
                 Mensagem
               </button>
@@ -251,8 +259,19 @@ export default function Alunos() {
           </div>
         </div>
       )}
+      {/* Persistência */}
+      <PersistOnChange value={alunos} storageKey={STORAGE_KEY} />
     </div>
   );
+}
+
+function PersistOnChange({ value, storageKey }: { value: unknown; storageKey: string }) {
+  useEffect(() => {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(value));
+    } catch {}
+  }, [value, storageKey]);
+  return null;
 }
 
 
