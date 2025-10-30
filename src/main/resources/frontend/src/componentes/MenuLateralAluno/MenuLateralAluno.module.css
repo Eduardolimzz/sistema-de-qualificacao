@@ -1,0 +1,49 @@
+
+.menuLateralContainer {
+  width: 250px;
+  background-color: #0D1723;
+  padding: 1rem 0;
+  color: #a0aec0;
+  height: calc(100vh - 55px);
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.6);
+  z-index: 10;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.navMenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: 0.8rem 1.5rem;
+  color: #a0aec0;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border-left: 3px solid transparent; /* Borda para o estado ativo */
+}
+
+.menuItem:hover {
+  background-color: #4a5568; /* Cor de fundo ao passar o mouse */
+  color: #e2e8f0;            /* Cor do texto mais clara ao passar o mouse */
+}
+
+.menuItem.active {
+  background-color: #4a5568; /* Cor de fundo para o item ativo */
+  color: #e2e8f0;            /* Cor do texto para o item ativo */
+  border-left: 3px solid #63b3ed; /* Borda azul para indicar item ativo */
+  font-weight: bold;         /* Texto em negrito para item ativo */
+}
+
+.icon {
+  margin-right: 0.8rem; /* Espaço entre o ícone e o texto */
+}
+
+/* Estilo para o span que contém o texto */
+.menuItem span {
+  flex-grow: 1; /* Permite que o texto ocupe o espaço restante */
+}
