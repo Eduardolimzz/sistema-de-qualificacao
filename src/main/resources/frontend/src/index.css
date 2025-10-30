@@ -37,6 +37,14 @@ body {
   background-color: #263445;
 }
 
+/* Remover qualquer realce/outline nos cards de KPI usados em Relatórios */
+.kpiCard:focus,
+.kpiCard:focus-visible,
+.kpiCard:active {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
