@@ -1,0 +1,185 @@
+/* Cores baseadas no seu design */
+:root {
+  --card-background: #2d3748;
+  --text-primary: #e2e8f0;
+  --text-secondary: #a0aec0;
+  --button-background: #4a5568; /* Botão cinza escuro */
+}
+
+/* ... seu CSS existente ... */
+
+/* Estilos para os Botões de "Tabs" (Todos / Meus Eventos) */
+.viewToggle {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.toggleButton {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--card-background);
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.activeToggle {
+  /* Estilo do botão ativo */
+  background-color: var(--accent-blue, #3182ce); /* Usa a variável --accent-blue se existir */
+  color: white;
+  border: 1px solid var(--accent-blue, #3182ce);
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.toggleButton:hover {
+  background-color: var(--card-background);
+  color: var(--text-primary);
+}
+
+/* Estilo para o botão "Inscrito" */
+.registerButton.inscrito {
+  background-color: var(--accent-green, #38a169); /* Verde */
+  color: white;
+  cursor: default; /* Remove o cursor de "clicável" */
+}
+
+/* Estilo para quando a lista de eventos estiver vazia */
+.emptyMessage {
+  /* Faz a mensagem ocupar as 2 colunas do grid */
+  grid-column: 1 / -1;
+
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 40px;
+  background-color: var(--card-background);
+  border-radius: 8px;
+  font-size: 1.1rem;
+}
+
+.pageContainer {
+  color: var(--text-primary);
+}
+
+.pageTitle {
+  font-size: 2.25rem; /* 36px */
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-align: center; /* Título centralizado */
+}
+
+.pageSubtitle {
+  font-size: 1.125rem; /* 18px */
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  text-align: center; /* Subtítulo centralizado */
+}
+
+/* O Grid de 2 Colunas */
+.eventosGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 colunas de tamanho igual */
+  gap: 24px;
+}
+
+/* Card de Evento Individual */
+.eventoCard {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex; /* Para usar flexbox para layout interno */
+  flex-direction: column; /* Organiza os itens verticalmente */
+  height: 100%; /* Garante que os cards na mesma linha tenham a mesma altura */
+}
+
+.cardTitle {
+  font-size: 1.25rem; /* 20px */
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.metaDataGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 0.875rem; /* 14px */
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.metaItem {
+  display: flex;
+  align-items: flex-start; /* Alinha com o topo se o texto quebrar */
+  gap: 8px;
+}
+
+.metaItem svg {
+  flex-shrink: 0; /* Impede o ícone de encolher */
+  margin-top: 3px; /* Alinha o ícone visualmente com o texto */
+}
+
+.cardDescription {
+  font-size: 0.9rem; /* 14.4px */
+  line-height: 1.6;
+  margin-bottom: 24px;
+  color: var(--text-secondary); /* Descrição com cor mais suave */
+}
+
+.cardInfo {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.cardInfo p {
+  margin: 0;
+  padding: 0;
+}
+.cardInfo p:first-of-type {
+  margin-bottom: 4px;
+}
+
+.registerButton {
+  background-color: var(--button-background);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: fit-content;
+  align-self: center; /* Centraliza o botão */
+  margin-top: auto; /* <-- MÁGICA: Empurra o botão para o fundo do card */
+}
+
+.registerButton:hover {
+  background-color: #5a6578;
+}
+
+/* Mensagens de Loading e Erro (reutilizadas) */
+.loadingMessage,
+.errorMessage {
+  padding: 40px;
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.errorMessage {
+  color: #e53e3e;
+}
+
+
+@media (max-width: 768px) {
+  .eventosGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,238 @@
+/* Cores baseadas no seu design */
+:root {
+  --background-dark: #1a202c; /* Fundo principal (do layout) */
+  --card-background: #2d3748;  /* Fundo dos cards */
+  --text-primary: #e2e8f0;    /* Texto principal (claro) */
+  --text-secondary: #a0aec0;   /* Texto secundário (cinza) */
+  --border-color: #4a5568;    /* Bordas */
+  --accent-blue: #3182ce;
+  --accent-green: #38a169;
+}
+
+.pageContainer {
+  color: var(--text-primary);
+}
+
+.pageTitle {
+  font-size: 2.25rem; /* 36px */
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.pageSubtitle {
+  font-size: 1.125rem; /* 18px */
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+/* Layout de Duas Colunas */
+.mainLayout {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+}
+
+/* Coluna da Esquerda (Lista) */
+.certificateList {
+  flex: 2; /* Ocupa 2/3 do espaço */
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Coluna da Direita (Detalhes) */
+.detailsSidebar {
+  flex: 1; /* Ocupa 1/3 do espaço */
+  background-color: var(--card-background);
+  border-radius: 8px;
+  padding: 24px;
+  /* 'sticky' faz ele "grudar" no topo ao rolar a página */
+  position: sticky;
+  top: 24px; /* Distância do topo */
+  height: fit-content; /* Altura se ajusta ao conteúdo */
+}
+
+
+/* Card de Certificado Individual (Esquerda) */
+.certificateCard {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cardTitle {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.metaData {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.875rem; /* 14px */
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.metaData span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cardDescription {
+  font-size: 1rem; /* 16px */
+  color: var(--text-primary);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.skillsSection h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-secondary);
+}
+
+.skillsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.skillTag {
+  background-color: #4a5568; /* Fundo cinza escuro para tag */
+  color: var(--text-primary);
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.75rem; /* 12px */
+}
+
+.cardButtons {
+  display: flex;
+  gap: 16px;
+}
+
+/* Estilos dos Botões */
+.visualizarButton,
+.baixarButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.visualizarButton {
+  background-color: var(--accent-blue);
+  color: white;
+}
+.visualizarButton:hover {
+  background-color: #2b6cb0;
+}
+
+.baixarButton {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
+}
+.baixarButton:hover {
+  background-color: var(--card-background);
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+
+/* Conteúdo da Sidebar de Detalhes (Direita) */
+.detailsTitle {
+  font-size: 1.25rem; /* 20px */
+  font-weight: 600;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 16px;
+}
+
+.detailsStatsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.statCard {
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.statCard p {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  opacity: 0.8;
+}
+
+.statCard span {
+  font-size: 2.25rem; /* 36px */
+  font-weight: 700;
+  color: white;
+}
+
+/* Cores dos cards de stats */
+.notaCard {
+  background-color: #2b6cb0; /* Azul escuro */
+}
+.duracaoCard {
+  background-color: #2f855a; /* Verde escuro */
+}
+
+.detailsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.detailsList li {
+  margin-bottom: 16px;
+}
+
+.detailsList li span {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  display: block;
+}
+
+.detailsList li p {
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin: 4px 0 0 0;
+}
+
+/* Mensagem de "Nenhum selecionado" */
+.noSelection {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-secondary);
+}
+
+/* Mensagem de Loading (reutilizada do dashboard) */
+.loadingMessage {
+  padding: 40px;
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* Media Query para telas pequenas */
+@media (max-width: 900px) {
+  .mainLayout {
+    flex-direction: column; /* Empilha as colunas */
+  }
+  .detailsSidebar {
+    position: static; /* Remove o 'sticky' */
+    width: 100%;
+  }
+}
