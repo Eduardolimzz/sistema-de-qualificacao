@@ -12,7 +12,10 @@ export default function TopoProfessor() {
         <img src="/LogoICEAA.png" alt="Logo Fundação ICEAA" className={estilos.logo} />
       </div>
       <div className={estilos.userInfo}>
-        <span className={estilos.greeting}>Professor</span>
+        <div className={estilos.userLabel}>
+          <img src="/UserIcon.png" alt="Usuário" className={estilos.userIcon} />
+          <span className={estilos.greeting}>Professor</span>
+        </div>
         <button
           onClick={() => {
             authService.logout();
