@@ -1,5 +1,7 @@
 package com.sistema_de_qualificacao.sistema_de_qualificacao.dto;
 
+import lombok.Data;
+@Data
 public class CreateCursoDto {
 
     private String duracao_curso;

@@ -2,8 +2,12 @@ package com.sistema_de_qualificacao.sistema_de_qualificacao.service;
 
 import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.CreateCursoDto;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.UpdateCursoDto;
+import com.sistema_de_qualificacao.sistema_de_qualificacao.entity.Curso;
+import com.sistema_de_qualificacao.sistema_de_qualificacao.repository.CursoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -17,9 +21,9 @@ public class CursoService {
 
     public UUID createCurso(CreateCursoDto createCursoDto){
         var entity = new Curso();
-        entity.setDuracao_cursocurso(createCursoDto.getCursoduracao_curso());
-        entity.setNomecursocurso(createCursoDto.getNomecursocurso());
-        entity.setNivel_cursocurso(createCursoDto.getNivel_cursocurso());
+        entity.setDuracao_curso(createCursoDto.getDuracao_curso());
+        entity.setNomecurso(createCursoDto.getNomecurso());
+        entity.setNivel_curso(createCursoDto.getNivel_curso());
 
         var cursoSaved = cursoRepository.save(entity);
         return cursoSaved.getCursoId();
@@ -30,7 +34,7 @@ public class CursoService {
     }
 
     public List<Curso> listCursos(){
-        return cursoResitory.findAll();
+        return cursoRepository.findAll();
     }
 
     public void updateCursoById(String cursoId,
@@ -38,35 +42,42 @@ public class CursoService {
 
         var id = UUID.fromString(cursoId);
 
-        var cursoEntity = cursoRepository.findyById(id);
+        var cursoEntity = cursoRepository.findById(id);
 
         if(cursoEntity.isPresent()){
             var curso = cursoEntity.get();
 
-            if(updateCursoDto.nomecurso() != null){
-                curso.setDuracao_cursocurso(updateCursoDto.duracaocurso());
+            if(updateCursoDto.duracaocurso() != null){
+                curso.setDuracao_curso(updateCursoDto.duracaocurso());
+
             }
 
             if(updateCursoDto.nomecurso() != null){
-                curso.setNomecursocurso(updateCursoDto.nomecurso());
+                curso.setNomecurso(updateCursoDto.nomecurso());
+
             }
 
-            if(updateCursoDto.nomecurso() != null){
-                curso.setNivel_cursocurso(updateCursoDto.nivel_curso());
+            if(updateCursoDto.nivel_curso() != null){
+                curso.setNivel_curso(updateCursoDto.nivel_curso());
             }
 
             cursoRepository.save(curso);
-        }
-    }
+        }else {
+            // CORRIGIDO: Lança exceção para o Controller retornar HTTP 404
+            throw new IllegalArgumentException("Curso não encontrado com o ID: " + cursoId);
+    }}
 
     public void deleteById(String cursoId){
 
         var id = UUID.fromString(cursoId);
 
-        var alunoExists = cursoRepository.existsById(id);
+        var cursoExists = cursoRepository.existsById(id);
 
         if(cursoExists){
             cursoRepository.deleteById(id);
+        }else {
+            // CORRIGIDO: Lança exceção para o Controller retornar HTTP 404
+            throw new IllegalArgumentException("Curso não encontrado com o ID: " + cursoId);
         }
     }
 
