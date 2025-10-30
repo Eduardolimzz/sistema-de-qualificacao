@@ -1,4 +1,5 @@
 import { Routes, Route, Outlet } from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop';
 import Layout from './componentes/Layout'; // Layout Público
 import AlunoLayout from './Pages/Aluno/AlunoLayout';
 import PrivateRoute from './components/PrivateRoute';
@@ -20,6 +21,7 @@ import AlunoDashboard from './Pages/Aluno/Dashboard';
 function App() {
   return (
     <>
+    <ScrollToTop />
     <Routes>
       {/* Rota 1: Login (página única, sem layout) */}
       <Route path="/login" element={<Login />} />
