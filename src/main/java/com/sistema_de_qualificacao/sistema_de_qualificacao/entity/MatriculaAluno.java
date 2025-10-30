@@ -17,11 +17,11 @@ import java.util.UUID;
 public class MatriculaAluno {
 
     @Id
-    //@Column(name = "alunoId", nullable = false) // nome da coluna no banco
+    @Column(name = "alunoId", nullable = false) // nome da coluna no banco
     private UUID alunoId; // nome do atributo
 
     @Id
-   // @Column(name = "cursoId", nullable = false) // nome da coluna no banco
+   @Column(name = "cursoId", nullable = false) // nome da coluna no banco
     private UUID cursoId; // nome do atributo
 
     @Column(name = "status", length = 100, nullable = false)
@@ -33,9 +33,9 @@ public class MatriculaAluno {
                 insertable = false, updatable = false)
     private Aluno aluno;
 
-  //  @ManyToOne(fetch = FetchType.LAZY)
-  //  @JoinColumn(name = "cursoId", referencedColumnName = "cursoId",
-   //             insertable = false, updatable = false)
-  //  private Curso curso;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "cursoId", referencedColumnName = "cursoId",
+                insertable = false, updatable = false)
+  private Curso curso;
 
 }
