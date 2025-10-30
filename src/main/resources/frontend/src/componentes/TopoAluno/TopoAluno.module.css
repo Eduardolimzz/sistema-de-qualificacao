@@ -1,11 +1,55 @@
-.topo_container {
-  background-color: #0D1723;
-  display: flex;
-  justify-content: space-around;
-  height: 100px;
-  Padding-top: 16px;
-  Padding-bottom: 16px;
-  Padding-left: 8px;
-  Padding-right: 8px;
+/* src/componentes/TopoAluno/TopoAluno.module.css */
 
+.topoContainer {
+  display: flex;             /* Usa Flexbox para alinhar itens horizontalmente */
+  justify-content: space-between; /* Empurra logo para esquerda e user info para direita */
+  align-items: center;       /* Centraliza itens verticalmente */
+  padding: 0.8rem 1.5rem;    /* Espaçamento interno (vertical, horizontal) */
+  background-color: #0D1723; /* Cor de fundo escura (ajuste conforme necessário) */
+  color: #e2e8f0;
+  position: relative;    /* Essencial para z-index funcionar */
+  z-index: 10;/* Cor do texto clara */
+  box-shadow: 0 4px 6px 2px rgba(0, 0, 0, 0.6) /* Sombra sutil à direita */
+}
+
+.logoContainer {
+  /* Pode adicionar estilos específicos se necessário */
+}
+
+.logo {
+  height: 100px; /* Ajuste a altura do logo conforme necessário */
+  width: auto;  /* Mantém a proporção */
+}
+
+.userIcon {
+  height: 50px; /* Ajuste o tamanho do ícone */
+  width: 50px;  /* Mantenha a largura e altura iguais para um círculo/quadrado */
+  border-radius: 50%; /* Se o ícone for quadrado, isso o fará circular */
+  object-fit: cover; /* Garante que a imagem preencha a área sem distorcer */
+  margin-right: 0.5rem; /* Espaço entre o ícone e o texto */
+  border: 1px solid #4a5568; /* Borda sutil para dar destaque */
+  padding: 2px; /* Espaçamento interno */
+  background-color: #2d3748; /* Cor de fundo para o círculo, se o ícone for transparente */
+}
+
+.userInfo {
+  display: flex;       /* Alinha a saudação e o botão */
+  align-items: center; /* Centraliza verticalmente */
+  gap: 1rem;
+  font-size: 20px;/* Espaço entre a saudação e o botão */
+}
+
+.logoutButton {
+  background-color: #0D1723; /* Cor vermelha para o botão Sair */
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 20px;
+  transition: background-color 0.2s ease;
+}
+
+.logoutButton:hover {
+  background-color: #203957; /* Cor mais escura ao passar o mouse */
 }
