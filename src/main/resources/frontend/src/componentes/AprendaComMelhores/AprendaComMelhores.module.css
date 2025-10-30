@@ -1,0 +1,49 @@
+.aprenda-section {
+  text-align: center;
+  padding: 4rem 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.aprenda-section h1 {
+  font-size: 3.5rem;
+  color: #E6EDF3;
+  margin-bottom: 1rem;
+}
+
+.aprenda-section h1 .highlight {
+  color: #ADBAC7;
+}
+
+.aprenda-section p {
+  font-size: 1.1rem;
+  color: #ADBAC7;
+  max-width: 600px;
+  margin: 0 auto 2rem auto;
+  line-height: 1.6;
+}
+
+.aprenda-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: #E6EDF3;
+  color: #22272E;
+}
+
+.btn-secondary {
+  background-color: #373E47;
+  color: #E6EDF3;
+}

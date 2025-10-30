@@ -1,6 +1,41 @@
-.container {
-display: flex;
-height: 100%;
-width: 1px;
-background-color: #0D1723;
+.menuLateral {
+  width: 200px; /* Largura da sidebar */
+  height: calc(100vh - 100px);
+  background-color: #0D1723;
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  border-right: 1px solid #373E47;
+  top: 100px;
+  left: 0;
+  z-index: 999;
+  overflow-y: auto;
+}
+
+.menuLateral-nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding-top: 1.5rem;
+}
+
+.menuLateral-nav li {
+  padding: 14px 20px;
+  cursor: pointer;
+  border-radius: 8px;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 450;
+}
+
+.menuLateral-nav li:hover {
+  background-color: #373E47;
+}
+
+.icon {
+   width: 20px;
+   height: 20px;
+   stroke: currentColor;
 }

@@ -10,6 +10,7 @@ import AlunoDashboard from './Pages/Aluno/Dashboard';
 
 function App() {
   return (
+    <>
     <Routes>
       {/* Rota pública de login */}
       <Route path="/login" element={<Login />} />
@@ -60,6 +61,8 @@ function App() {
         <Route path="*" element={<h2>Página não encontrada</h2>} />
       </Route>
     </Routes>
+
+    </>
   );
 }
 

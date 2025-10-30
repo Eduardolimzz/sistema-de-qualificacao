@@ -1,9 +1,18 @@
-import estilos from './Topo.module.css';
+import React from 'react';
+import styles from './Topo.module.css';
 
-export default function Topo() {
+function Topo() {
   return (
-    <div className={estilos.topo_container}>
-      <h1>Topo</h1>
-    </div>
+    <header className={styles.topo}>
+      <div className={styles['logo-container']}>
+          <img src="/LogoICEAA.png" alt="Fundação ICEAA" />
+      </div>
+      <div className={styles['topo-nav']}>
+        <button className={styles['btn-login']}>Entrar</button>
+        <button className={styles['btn-signup']}>Cadastrar</button>
+      </div>
+    </header>
   );
 }
+
+export default Topo;

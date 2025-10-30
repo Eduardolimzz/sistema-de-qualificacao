@@ -1,6 +1,25 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   color: rgba(255, 255, 255, 0.87);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+  overflow: hidden;
 }
 
 a {
@@ -13,7 +32,6 @@ a:hover {
 }
 
 body {
-  margin: 0;
   background-color: #263445;
 }
 
@@ -21,4 +39,3 @@ h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
-

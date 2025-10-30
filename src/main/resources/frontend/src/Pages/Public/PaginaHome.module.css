@@ -1,18 +1,18 @@
-.main_container {
-  width: 100%;
-  height: 100vh;
+.PaginaHome-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  min-height: 100vh;
 }
 
-.card_container {
-  padding: 40px;
-  flex: 0 1 300px;
-  background-color: orange;
+.main-content {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 40px;
-  text-align: center;
+  margin-left: 200px;
+  margin-top: 60px;
+  padding: 20px;
+  padding-top: 80px;
+}
+
+.main-content main {
+  padding: 2rem 4rem;
 }

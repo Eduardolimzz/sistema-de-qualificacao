@@ -1,0 +1,78 @@
+.cardCurso-card {
+  background-color: #1F2937;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #373E47;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Faz o conteúdo crescer para o botão ficar sempre embaixo */
+}
+
+.card-content h3 {
+  font-size: 1.25rem;
+  color: #E6EDF3;
+  margin: 0 0 0.5rem 0;
+}
+
+.card-description {
+  font-size: 0.9rem;
+  color: #ADBAC7;
+  margin-bottom: 1rem;
+}
+
+.card-metadata {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: #8D96A0;
+  margin-bottom: 0.5rem;
+}
+
+.card-rating {
+  font-size: 0.9rem;
+  color: #F0B429; /* Amarelo da estrela */
+  margin-bottom: 1rem;
+}
+
+.card-tags {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tag {
+  background-color: #30363D;
+  color: #8D96A0;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.btn-details {
+  background-color: #373E47;
+  color: #E6EDF3;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
+  margin-top: auto; /* Truque mágico para empurrar o botão para baixo */
+}
+
+.btn-details:hover {
+  background-color: #444C56;
+}

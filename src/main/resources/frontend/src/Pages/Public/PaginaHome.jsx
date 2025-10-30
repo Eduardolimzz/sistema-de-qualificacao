@@ -1,10 +1,21 @@
+import React from 'react';
+import MenuLateral from '../../componentes/MenuLateral/MenuLateral';
+import Topo from '../../componentes/Topo/Topo';
+import AprendaComMelhores from '../../componentes/AprendaComMelhores/AprendaComMelhores';
+import JuntaCursos from '../../componentes/JuntaCursos/JuntaCursos';
+import styles from './PaginaHome.module.css';
 
-export default function PaginaHome() {
+function PaginaHome() {
   return (
-    <div>
-      <h2>Página Inicial</h2>
-      <p>Este é o conteúdo da sua página principal.</p>
-      <p>Note como o Topo e o Rodapé não mudam quando você navega.</p>
+    <div className={styles['PaginaHome-container']}>
+      <MenuLateral />
+      <Topo />
+      <div className={styles['main-content']}>
+
+        {/*Aqui ponho a main com os cards e tudo mais */}
+      </div>
     </div>
   );
 }
+
+export default PaginaHome;

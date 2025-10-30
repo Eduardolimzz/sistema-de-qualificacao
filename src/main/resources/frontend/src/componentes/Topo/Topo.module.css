@@ -1,12 +1,57 @@
-.topo_container {
-  background-color: #0D1723;
+.topo {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  padding: 0 20px;
+  background-color: #0D1723;
+  border-bottom: 1px solid #373E47;
+  position: fixed;
+  top: 0;
+  left: 0px;
+  right: 0;
   height: 100px;
-  Padding-top: 16px;
-  Padding-bottom: 16px;
-  Padding-left: 8px;
-  Padding-right: 8px;
-
+  z-index: 1010;
+  align-items: center;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-container img {
+  height: 150px;
+  width: auto;
+}
+
+.topo-nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-login, .btn-signup {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #373E47;
+}
+
+.btn-login {
+  background-color: transparent;
+  color: #FFFFFF;
+}
+
+.btn-signup {
+  background-color: transparent;
+  color: #FFFFFF;
+}
+
+.btn-login:hover {
+  background-color: #373E47;
+}
+
+.btn-signup:hover {
+  background-color: #373E47;
+}
