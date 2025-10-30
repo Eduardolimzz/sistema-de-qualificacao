@@ -10,7 +10,18 @@ interface PrivateRouteProps {
  */
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
   const isAuthenticated = () => {
-    return !!localStorage.getItem('authToken');
+    const hasToken = !!localStorage.getItem('authToken');
+
+    // Bypass de desenvolvimento: permite acesso se estiver em dev e
+    // 1) URL contiver ?dev=1, ou 2) localStorage tiver authBypass=1
+    if (import.meta.env.DEV) {
+      const params = new URLSearchParams(window.location.search);
+      const devFlag = params.get('dev') === '1';
+      const localBypass = localStorage.getItem('authBypass') === '1';
+      if (devFlag || localBypass) return true;
+    }
+
+    return hasToken;
   };
 
   return isAuthenticated() ? <>{children}</> : <Navigate to="/login" replace />;
