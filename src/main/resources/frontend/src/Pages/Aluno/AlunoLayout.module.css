@@ -1,0 +1,21 @@
+.alunoLayoutContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #1a202c;
+}
+
+.bodyContainer {
+  display: flex;
+  flex-grow: 1;
+}
+
+.mainContent {
+  flex-grow: 1;
+}
+
+
+.pageContent {
+  padding: 24px;
+}
