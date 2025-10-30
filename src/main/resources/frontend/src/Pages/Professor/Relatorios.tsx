@@ -65,11 +65,11 @@ export default function Relatorios() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginTop: 16 }}>
         {/* Esquerda - Desempenho por Curso */}
-        <div style={sectionCard}>
-          <div style={{ fontWeight: 700, marginBottom: 10 }}>Desempenho por Curso</div>
-          <div style={{ display: 'grid', gap: 12 }}>
+        <div style={{ ...sectionCard, padding: 12, alignSelf: 'start' }}>
+          <div style={{ fontWeight: 700, marginBottom: 8 }}>Desempenho por Curso</div>
+          <div style={{ display: 'grid', gap: 8 }}>
             {cursos.map((c) => (
-              <div key={c.nome} style={{ background: '#111827', borderRadius: 8, padding: 12, display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr 1fr 60px', gap: 10, alignItems: 'center' }}>
+              <div key={c.nome} style={{ background: '#111827', borderRadius: 8, padding: 8, display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr 1fr 60px', gap: 8, alignItems: 'center' }}>
                 <div style={{ color: '#cbd5e1' }}>{c.nome}</div>
                 <div>
                   <div style={{ color: '#9ca3af', fontSize: 12 }}>Alunos</div>
