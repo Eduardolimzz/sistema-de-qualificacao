@@ -1,108 +1,57 @@
-.topo_container {
-  background-color: #0D1723;
+.topo {
   display: flex;
   justify-content: space-between;
+  padding: 0 20px;
+  background-color: #0D1723;
+  border-bottom: 1px solid #373E47;
+  position: fixed;
+  top: 0;
+  left: 0px;
+  right: 0;
+  height: 100px;
+  z-index: 1010;
   align-items: center;
-  padding: 16px 24px;
-  height: 80px;
-  min-height: 80px;
-  position: relative;
-  z-index: 20;
 }
 
-.left_section {
+.logo-container {
   display: flex;
   align-items: center;
-  gap: 12px;
 }
 
-.logo {
-  height: 120px;
+.logo-container img {
+  height: 150px;
   width: auto;
-  max-height: 120px;
-  object-fit: contain;
-  display: block;
 }
 
-.catalog_icon {
+.topo-nav {
   display: flex;
-  align-items: center;
-  margin-left: 20px;
+  gap: 1rem;
 }
 
-.catalog_text {
-  color: white;
-  font-size: 18px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.catalog_text:hover {
-  color: #93c5fd;
-}
-
-.right_section {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-.user_info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: white;
-}
-
-.user_icon {
-  font-size: 20px;
-}
-
-.user_name {
-  font-size: 16px;
-  font-weight: 500;
-}
-
-.logout {
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.logout:hover {
-  color: #93c5fd;
-}
-
-.login_button {
-  background-color: transparent;
-  color: white;
+.btn-login, .btn-signup {
+  padding: 0.6rem 1.2rem;
   border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 24px;
-  font-weight: 500;
-  transition: all 0.2s;
+  font-weight: bold;
+  font-size: 15px;
+  background-color: #373E47;
 }
 
-.login_button:hover {
-  color: #93c5fd;
-}
-
-.register_button {
+.btn-login {
   background-color: transparent;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 24px;
-  font-weight: 500;
-  transition: all 0.2s;
+  color: #FFFFFF;
 }
 
-.register_button:hover {
-  color: #93c5fd;
+.btn-signup {
+  background-color: transparent;
+  color: #FFFFFF;
 }
 
+.btn-login:hover {
+  background-color: #373E47;
+}
+
+.btn-signup:hover {
+  background-color: #373E47;
+}

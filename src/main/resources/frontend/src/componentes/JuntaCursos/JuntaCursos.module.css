@@ -1,0 +1,25 @@
+.juntaCursos {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.juntaCursos h2 {
+  font-size: 2.5rem;
+  color: #E6EDF3;
+  margin-bottom: 0.5rem;
+}
+
+.juntaCursos p {
+  font-size: 1.1rem;
+  color: #ADBAC7;
+  margin-bottom: 3rem;
+}
+
+.cursos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Grid responsivo */
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: left; /* Alinha o texto dos cards à esquerda */
+}

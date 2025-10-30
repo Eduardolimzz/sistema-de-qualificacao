@@ -14,6 +14,7 @@ import AlunoDashboard from './Pages/Aluno/Dashboard';
 
 function App() {
   return (
+    <>
     <Routes>
       {/* Rota 1: Login (página única, sem layout) */}
       <Route path="/login" element={<Login />} />
@@ -68,6 +69,8 @@ function App() {
       {/* Rota catch-all (página não encontrada) */}
       <Route path="*" element={<h2>Página não encontrada</h2>} />
     </Routes>
+
+    </>
   );
 }
 
