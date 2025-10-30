@@ -10,6 +10,11 @@ import CRUDAdmin from './Pages/Admin/CRUDAdmin';
 import ProfessorDetalhes from './Pages/Admin/ProfessorDetalhes';
 import CursoDetalhes from './Pages/Admin/CursoDetalhes';
 import ProfessorDashboard from './Pages/Professor/Dashboard';
+import ProfessorAlunos from './Pages/Professor/Alunos';
+import ProfessorAvaliacoes from './Pages/Professor/Avaliacoes';
+import ProfessorEventos from './Pages/Professor/Eventos';
+import ProfessorRelatorios from './Pages/Professor/Relatorios';
+import ProfessorLayout from './Pages/Professor/ProfessorLayout';
 import AlunoDashboard from './Pages/Aluno/Dashboard';
 
 function App() {
@@ -44,11 +49,15 @@ function App() {
         path="/professor"
         element={
           <PrivateRoute>
-            <div><Outlet /></div>
+            <ProfessorLayout />
           </PrivateRoute>
         }
       >
         <Route path="dashboard" element={<ProfessorDashboard />} />
+        <Route path="alunos" element={<ProfessorAlunos />} />
+        <Route path="avaliacoes" element={<ProfessorAvaliacoes />} />
+        <Route path="eventos" element={<ProfessorEventos />} />
+        <Route path="relatorios" element={<ProfessorRelatorios />} />
       </Route>
 
       {/* Rota 5: Layout Privado - Admin  */}

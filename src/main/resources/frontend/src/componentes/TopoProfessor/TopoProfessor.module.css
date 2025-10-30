@@ -1,0 +1,50 @@
+.topo {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  background-color: #0D1723;
+  border-bottom: 1px solid #373E47;
+  position: fixed;
+  top: 0;
+  left: 0px;
+  right: 0;
+  height: 100px;
+  z-index: 1010;
+  align-items: center;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 150px;
+  width: auto;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #FFFFFF;
+}
+
+.greeting {
+  font-weight: 600;
+}
+
+.logoutButton {
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  border: 1px solid #373E47;
+  background: transparent;
+  color: #FFFFFF;
+  cursor: pointer;
+}
+
+.logoutButton:hover {
+  background-color: #373E47;
+}
+
+
