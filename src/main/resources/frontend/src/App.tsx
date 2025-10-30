@@ -17,6 +17,9 @@ import ProfessorEventos from './Pages/Professor/Eventos';
 import ProfessorRelatorios from './Pages/Professor/Relatorios';
 import ProfessorLayout from './Pages/Professor/ProfessorLayout';
 import AlunoDashboard from './Pages/Aluno/Dashboard';
+import AlunoCertificados from './Pages/Aluno/Certificados'
+import AlunoEventos from './Pages/Aluno/Eventos'
+import AlunoMeusCursos from './Pages/Aluno/MeusCursos'
 
 function App() {
   return (
@@ -42,7 +45,12 @@ function App() {
           </PrivateRoute>
         }
       >
+      <Route index element={<AlunoDashboard />} />
         <Route path="dashboard" element={<AlunoDashboard />} />
+        <Route path="certificados" element={<AlunoCertificados />} />
+        <Route path="eventos" element={<AlunoEventos />} />
+        <Route path="meus_cursos" element={<AlunoMeusCursos />} />
+
 
       </Route>
 

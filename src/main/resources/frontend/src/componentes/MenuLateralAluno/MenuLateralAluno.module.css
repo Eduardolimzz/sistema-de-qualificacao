@@ -4,7 +4,6 @@
   background-color: #0D1723;
   padding: 1rem 0;
   color: #a0aec0;
-  height: calc(100vh - 55px);
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.6);
   z-index: 10;
   position: relative;

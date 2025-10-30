@@ -1,0 +1,152 @@
+/* Cores baseadas no seu design */
+:root {
+  --card-background: #2d3748;
+  --text-primary: #e2e8f0;
+  --text-secondary: #a0aec0;
+  --accent-blue: #3182ce;
+  --accent-cyan: #38b2ac; /* Cor ciano para os stats */
+  --accent-green: #38a169;
+}
+
+.pageContainer {
+  color: var(--text-primary);
+}
+
+.pageTitle {
+  font-size: 2.25rem; /* 36px */
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.pageSubtitle {
+  font-size: 1.125rem; /* 18px */
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+.cursosList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Card Principal */
+.courseCard {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.cardTitle {
+  font-size: 1.5rem; /* 24px */
+  font-weight: 600;
+}
+
+.cardStatus {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.statusConcluido {
+  color: var(--accent-green); /* Verde para "Concluído" */
+  font-weight: 600;
+}
+
+/* Meta-dados */
+.metaData {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  font-size: 0.875rem; /* 14px */
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.metaData span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Seção da Barra de Progresso */
+.progressSection {
+  margin-bottom: 24px;
+}
+
+.progressLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.progressBarContainer {
+  width: 100%;
+  height: 8px;
+  background-color: #4a5568; /* Fundo da barra */
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background-color: var(--accent-blue);
+  border-radius: 9999px;
+  transition: width 0.3s ease-out;
+}
+
+.progressText {
+  font-size: 0.75rem; /* 12px */
+  color: var(--text-secondary);
+  margin-top: 8px;
+}
+
+/* Grid de Stats (Frequência, etc) */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid #4a5568; /* Linha divisória */
+  text-align: left; /* Alinhado à esquerda como na imagem */
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.statValue {
+  font-size: 1.75rem; /* 28px */
+  font-weight: 700;
+  color: var(--accent-cyan); /* Usando a cor ciano/azul claro dos stats */
+  margin-bottom: 4px;
+}
+
+.statLabel {
+  font-size: 0.875rem; /* 14px */
+  color: var(--text-secondary);
+}
+
+/* Mensagens de Loading e Erro */
+.loadingMessage,
+.errorMessage {
+  padding: 40px;
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.errorMessage {
+  color: #e53e3e;
+}
