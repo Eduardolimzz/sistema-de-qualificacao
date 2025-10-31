@@ -14,7 +14,7 @@
 }
 
 .card-content {
-  padding: 1.5rem;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   flex-grow: 1; /* Faz o conteúdo crescer para o botão ficar sempre embaixo */
@@ -38,12 +38,7 @@
   font-size: 0.85rem;
   color: #8D96A0;
   margin-bottom: 0.5rem;
-}
-
-.card-rating {
-  font-size: 0.9rem;
-  color: #F0B429; /* Amarelo da estrela */
-  margin-bottom: 1rem;
+  gap: 4px;
 }
 
 .card-tags {
@@ -70,9 +65,18 @@
   cursor: pointer;
   font-weight: bold;
   text-align: center;
-  margin-top: auto; /* Truque mágico para empurrar o botão para baixo */
+  margin-top: auto; /* empurrar o botão para baixo */
 }
 
 .btn-details:hover {
   background-color: #444C56;
 }
+
+.icon {
+   width: 20px;
+   height: 20px;
+   stroke: currentColor;
+   margin-left: 10px;
+
+}
+

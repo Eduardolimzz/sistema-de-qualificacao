@@ -8,9 +8,9 @@
   display: flex;
   flex-direction: column;
   margin-left: 200px;
-  margin-top: 60px;
+  margin-top: 40px;
   padding: 20px;
-  padding-top: 80px;
+  padding-top: 20px;
 }
 
 .main-content main {

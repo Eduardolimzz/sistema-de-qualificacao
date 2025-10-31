@@ -17,6 +17,10 @@ import ProfessorEventos from './Pages/Professor/Eventos';
 import ProfessorRelatorios from './Pages/Professor/Relatorios';
 import ProfessorLayout from './Pages/Professor/ProfessorLayout';
 import AlunoDashboard from './Pages/Aluno/Dashboard';
+import MenuLateral from './componentes/MenuLateral/MenuLateral';
+import Topo from './componentes/Topo/Topo';
+import styles from './App.module.css';
+import AprendaComMelhores from "./componentes/AprendaComMelhores/AprendaComMelhores";
 import AlunoCertificados from './Pages/Aluno/Certificados'
 import AlunoEventos from './Pages/Aluno/Eventos'
 import AlunoMeusCursos from './Pages/Aluno/MeusCursos'
@@ -33,7 +37,8 @@ function App() {
       {/* Somente as páginas públicas ficam aninhadas aqui */}
       <Route path="/" element={<Layout />}>
         <Route index element={<PaginaHome />} />
-        <Route path="cursos" element={<Catalogo />} />
+        <Route path="catalogo" element={<Catalogo />} />
+        <Route path="inicio" element={<PaginaHome />} />
       </Route>
 
       {/* Rota 3: Layout Privado - Aluno */}
