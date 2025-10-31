@@ -5,6 +5,7 @@ import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.MatriculaProfesso
 import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.UpdateMatriculaProfessorDto;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.entity.MatriculaProfessor;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.entity.MatriculaProfessorId;
+import com.sistema_de_qualificacao.sistema_de_qualificacao.repository.CursoRepository;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.repository.MatriculaProfessorRepository;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.repository.ProfessorRepository;
 import org.springframework.stereotype.Service;
@@ -20,15 +21,15 @@ public class MatriculaProfessorService {
 
     private final MatriculaProfessorRepository matriculaProfessorRepository;
     private final ProfessorRepository professorRepository;
-    //private final CursoRepository cursoRepository;
+    private final CursoRepository cursoRepository;
 
     public MatriculaProfessorService(MatriculaProfessorRepository matriculaProfessorRepository,
                                      ProfessorRepository professorRepository
-                                    //, CursoRepository //cursoRepository
+                                    , CursoRepository cursoRepository
     ){
         this.matriculaProfessorRepository = matriculaProfessorRepository;
         this.professorRepository = professorRepository;
-        //this.cursoRepository = cursoRepository;
+        this.cursoRepository = cursoRepository;
     }
 
     @Transactional
@@ -41,10 +42,10 @@ public class MatriculaProfessorService {
         }
 
         // Quando criar Curso, descomentar:
-        // var cursoExists = cursoRepository.existsById(createMatriculaProfessorDto.getCursoId());
-        // if (!cursoExists) {
-        //     throw new IllegalArgumentException("Curso não encontrado com ID: " + createMatriculaProfessorDto.getCursoId());
-        // }
+         var cursoExists = cursoRepository.existsById(createMatriculaProfessorDto.getCursoId());
+         if (!cursoExists) {
+             throw new IllegalArgumentException("Curso não encontrado com ID: " + createMatriculaProfessorDto.getCursoId());
+         }
 
         var matriculaExists = matriculaProfessorRepository.existsProfessorByIdAndCursoById(
             createMatriculaProfessorDto.getProfessorId(),
@@ -153,9 +154,9 @@ public class MatriculaProfessorService {
         }
 
         // Quando criar Curso, descomentar:
-        // if (matricula.getCurso() != null) {
-        //     response.setNomecurso(matricula.getCurso().getNomecurso());
-        // }
+         if (matricula.getCurso() != null) {
+             response.setNomecurso(matricula.getCurso().getNomecurso());
+         }
 
         return response;
     }
