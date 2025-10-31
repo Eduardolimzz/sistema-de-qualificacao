@@ -2,7 +2,6 @@ package com.sistema_de_qualificacao.sistema_de_qualificacao.controller;
 
 import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.CreateCursoDto;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.UpdateCursoDto;
-import com.sistema_de_qualificacao.sistema_de_qualificacao.entity.Aluno;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.entity.Curso;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.service.CursoService;
 import jakarta.validation.Valid;
@@ -19,17 +18,13 @@ public class CursoController {
     public CursoController(CursoService cursoService) {
         this.cursoService = cursoService;
     }
-    //cria
+
     @PostMapping
-    public ResponseEntity<Void> createCurso(@Valid @RequestBody CreateCursoDto createCursoDto) {
-        try {
-            var cursoId = cursoService.createCurso(createCursoDto);
-            return ResponseEntity.created(  //cursoId to string????
-                    URI.create("/v1/curso/" + cursoId.getCursoId())).body(cursoId);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<Curso> createCurso(@RequestBody CreateCursoDto createCursoDto){
+        var cursoId = cursoService.createCurso(createCursoDto);
+        return ResponseEntity.created(URI.create("/v1/curso/" + cursoId.toString())).build();
     }
+
     //lista
     @GetMapping
     public ResponseEntity<List<Curso>> listCurso(){
