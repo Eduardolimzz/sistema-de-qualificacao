@@ -12,7 +12,10 @@ function PaginaHome() {
       <Topo />
       <div className={styles['main-content']}>
 
-        {/*Aqui ponho a main com os cards e tudo mais */}
+        <main>
+          <AprendaComMelhores />
+          <JuntaCursos />
+        </main>
       </div>
     </div>
   );

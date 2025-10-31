@@ -19,18 +19,23 @@
   padding-top: 1.5rem;
 }
 
-.menuLateral-nav li {
-  padding: 14px 20px;
-  cursor: pointer;
-  border-radius: 8px;
-  color: #FFFFFF;
+.menuItem {
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 14px 20px;
+  cursor: pointer;
+  border-radius: 8px;
   font-weight: 450;
+  color: #FFFFFF;
+  text-decoration: none;
 }
 
-.menuLateral-nav li:hover {
+.menuItem:hover {
+  background-color: #373E47;
+}
+
+.active {
   background-color: #373E47;
 }
 
@@ -38,4 +43,9 @@
    width: 20px;
    height: 20px;
    stroke: currentColor;
+}
+
+.menuItem:hover {
+  background-color: #373E47;
+  color: #FFFFFF;
 }

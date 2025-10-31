@@ -1,0 +1,88 @@
+/* Em ModalDetalhes.module.css */
+
+.modalOverlay {
+  position: fixed; /* <-- IMPORTANTE: Fica fixo na tela */
+  top: 0;
+  left: 0;
+  width: 100vw;   /* <-- 100% da largura da viewport */
+  height: 100vh;  /* <-- 100% da altura da viewport */
+  background-color: rgba(0, 0, 0, 0.7); /* Fundo preto semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 2000; /* <-- IMPORTANTE: MUITO alto, para ficar ACIMA de tudo */
+}
+
+.modalContent {
+  background-color: #0D1723;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #373E47;
+  max-width: 600px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  z-index: 2001;
+  max-height: 90vh; /* Limita a altura máxima */
+  overflow-y: auto; /* Adiciona scroll se o conteúdo for grande */
+}
+
+.closeButton {
+  position: absolute; /* Posição absoluta em relação ao .modalContent */
+  top: 1rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: #FFFFFF;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.modalImage {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #373E47;
+  margin: 1.5rem 0;
+}
+
+.infoSection {
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.infoSection strong {
+  display: block;
+  color: #adb5bd;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.moduleList {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.moduleList li {
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 8px;
+}
+
+.moduleList li::before {
+  content: '✓';
+  color: #28a745;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-weight: bold;
+}
