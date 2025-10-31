@@ -1,5 +1,6 @@
 package com.sistema_de_qualificacao.sistema_de_qualificacao.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,10 +42,15 @@ public class Curso {
     //relações
 
     @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<MatriculaAluno> matriculaAluno;
 
     @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<MatriculaProfessor> matriculaProfessor;
 
+    @OneToOne(mappedBy = "curso", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Certificado certificado;
 
 }
