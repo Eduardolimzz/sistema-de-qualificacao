@@ -47,8 +47,8 @@ public class CursoService {
         if(cursoEntity.isPresent()){
             var curso = cursoEntity.get();
 
-            if(updateCursoDto.duracaocurso() != null){
-                curso.setDuracao_curso(updateCursoDto.duracaocurso());
+            if(updateCursoDto.duracao_curso() != null){
+                curso.setDuracao_curso(updateCursoDto.duracao_curso());
 
             }
 
