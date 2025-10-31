@@ -7,23 +7,8 @@ import { Home, Book, Grid, Award, Calendar, BookOpen } from 'react-feather';
 export default function MenuLateralAluno() {
   return (
     <aside className={estilos.menuLateralContainer}>
-      {/* Opções de Navegação */}
       <nav className={estilos.navMenu}>
         <ul>
-          {/* Link para Início */}
-          <li>
-            <NavLink
-              to="/aluno/dashboard" // Exemplo de rota para o dashboard do aluno
-              className={({ isActive }) =>
-                isActive ? `${estilos.menuItem} ${estilos.active}` : estilos.menuItem
-              }
-            >
-              <Home size={18} className={estilos.icon} />
-              <span>Início</span>
-            </NavLink>
-          </li>
-
-          {/* Link para Catálogo */}
           <li>
             <NavLink
               to="/aluno/catalogo"
@@ -36,7 +21,6 @@ export default function MenuLateralAluno() {
             </NavLink>
           </li>
 
-          {/* Link para Dashboard */}
           <li>
             <NavLink
               to="/aluno/dashboard" // Rota do dashboard
@@ -52,7 +36,7 @@ export default function MenuLateralAluno() {
           {/* Link para Meus Cursos */}
           <li>
             <NavLink
-              to="/aluno/meus-cursos"
+              to="/aluno/meus_cursos"
               className={({ isActive }) =>
                 isActive ? `${estilos.menuItem} ${estilos.active}` : estilos.menuItem
               }

@@ -16,11 +16,11 @@ import java.util.UUID;
 @IdClass(MatriculaProfessorId.class)
 public class MatriculaProfessor {
     @Id
-    //Column(name = "professorId", nullable = false) // nome da coluna no banco
+    @Column(name = "professorId", nullable = false) // nome da coluna no banco
     private UUID professorId; // nome do atributo
 
     @Id
-    //Column(name = "cursoId", nullable = false) // nome da coluna no banco
+    @Column(name = "cursoId", nullable = false) // nome da coluna no banco
     private UUID cursoId; // nome do atributo
 
     @Column(name = "status_professor", length = 100, nullable = false)
@@ -31,9 +31,9 @@ public class MatriculaProfessor {
                 insertable = false, updatable = false)
     private Professor professor;
 
-    //  @ManyToOne(fetch = FetchType.LAZY)
-    //  @JoinColumn(name = "cursoId", referencedColumnName = "cursoId",
-    //             insertable = false, updatable = false)
-    //  private Curso curso;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cursoId", referencedColumnName = "cursoId",
+                insertable = false, updatable = false)
+    private Curso curso;
 
 }
