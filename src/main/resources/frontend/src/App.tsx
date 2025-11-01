@@ -79,9 +79,9 @@ function App() {
       <Route
         path="/admin"
         element={
-
+          <PrivateRoute>
             <div><Outlet /></div>
-
+          </PrivateRoute>
         }
       >
         <Route path="dashboard" element={<AdminDashboard />} />
