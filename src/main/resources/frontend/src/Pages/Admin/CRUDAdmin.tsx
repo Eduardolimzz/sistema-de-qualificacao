@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProfessorService from '../../Services/professorService';
+import AlunoService from '../../Services/AlunoService'; // Corrigido de 'lunoService'
 
-type Tab = 'professores' | 'cursos';
+type Tab = 'aluno' | 'professores' | 'cursos';
 
 interface Professor {
   professorId: string;
@@ -19,30 +20,37 @@ interface Curso {
   professorId?: string;
 }
 
+interface Aluno {
+  alunoId: string;
+  nomealuno: string;
+  emailaluno: string;
+}
+
 const CRUDAdmin = () => {
   const navigate = useNavigate();
-  const [tabAtiva, setTabAtiva] = useState<Tab>('professores');
-  
-  // Estados de dados
+  const [tabAtiva, setTabAtiva] = useState<Tab>('aluno');
+
   const [professores, setProfessores] = useState<Professor[]>([]);
   const [cursos, setCursos] = useState<Curso[]>([]);
+  const [alunos, setAlunos] = useState<Aluno[]>([]);
+
   const [busca, setBusca] = useState('');
   const [filtroNivel, setFiltroNivel] = useState<string>('todos');
-  
-  // Estados de formulários
+
   const [novoProfessor, setNovoProfessor] = useState({ nomeprofessor: '', emailprofessor: '', senhaprofessor: '' });
   const [novoCurso, setNovoCurso] = useState<{ nomeCurso: string; duracao: number; nivel: 'Básico' | 'Intermediário' | 'Avançado'; professorId: string }>({ nomeCurso: '', duracao: 0, nivel: 'Básico', professorId: '' });
-  
-  // Estados de edição
+  const [novoAluno, setNovoAluno] = useState({ nomealuno: '', emailaluno: '', senhaaluno: '' });
+
   const [editandoProfessor, setEditandoProfessor] = useState<Professor | null>(null);
   const [editandoCurso, setEditandoCurso] = useState<Curso | null>(null);
+  const [editandoAluno, setEditandoAluno] = useState<Aluno | null>(null);
 
   useEffect(() => {
     carregarProfessores();
     carregarCursos();
+    carregarAlunos();
   }, []);
 
-  // Funções de carregamento
   const carregarProfessores = async () => {
     try {
       const dados = await ProfessorService.listarProfessores();
@@ -65,7 +73,15 @@ const CRUDAdmin = () => {
     }
   };
 
-  // Funções de Professores
+  const carregarAlunos = async () => {
+    try {
+      const dados = await AlunoService.carregarAlunos();
+      setAlunos(dados);
+    } catch (e) {
+      console.error('Erro ao carregar alunos:', e);
+    }
+  };
+
   const criarProfessor = async () => {
     try {
       console.log('Criando professor:', novoProfessor);
@@ -113,7 +129,6 @@ const CRUDAdmin = () => {
     navigate(`/admin/professor/${professorId}`);
   };
 
-  // Funções de Cursos
   const criarCurso = async () => {
     try {
       const novoCursoCompleto: Curso = {
@@ -159,7 +174,55 @@ const CRUDAdmin = () => {
     navigate(`/admin/curso/${cursoId}`);
   };
 
-  // Filtros
+  const criarAluno = async () => {
+    try {
+      const dto = {
+        nome: novoAluno.nomealuno,
+        email: novoAluno.emailaluno,
+        senha: novoAluno.senhaaluno
+      };
+      await AlunoService.criarAluno(dto);
+      setNovoAluno({ nomealuno: '', emailaluno: '', senhaaluno: '' });
+      carregarAlunos();
+      alert('Aluno criado com sucesso!');
+    } catch (e: any) {
+      console.error('Erro ao criar aluno:', e);
+      alert(`Erro: ${e.message || 'Erro ao criar aluno'}`);
+    }
+  };
+
+  const editarAluno = (aluno: Aluno) => {
+    setEditandoAluno(aluno);
+    setNovoAluno({ nomealuno: aluno.nomealuno, emailaluno: aluno.emailaluno, senhaaluno: '' });
+  };
+
+  const salvarEdicaoAluno = async () => {
+    if (!editandoAluno) return;
+    try {
+      const dto = {
+        nome: novoAluno.nomealuno,
+        senha: novoAluno.senhaaluno
+      };
+      await AlunoService.atualizarAluno(editandoAluno.alunoId, dto);
+      setEditandoAluno(null);
+      setNovoAluno({ nomealuno: '', emailaluno: '', senhaaluno: '' });
+      carregarAlunos();
+    } catch (e) {
+      console.error('Erro ao atualizar aluno:', e);
+    }
+  };
+
+  const deletarAluno = async (id: string) => {
+    if (confirm('Tem certeza que deseja excluir este aluno?')) {
+      try {
+        await AlunoService.deletarAluno(id);
+        carregarAlunos();
+      } catch (e) {
+        console.error('Erro ao deletar aluno:', e);
+      }
+    }
+  };
+
   const professoresFiltrados = professores.filter(
     (p) =>
       p.nomeprofessor.toLowerCase().includes(busca.toLowerCase()) ||
@@ -174,6 +237,12 @@ const CRUDAdmin = () => {
     }
   );
 
+  const alunosFiltrados = alunos.filter(
+    (a) =>
+      a.nomealuno.toLowerCase().includes(busca.toLowerCase()) ||
+      a.emailaluno.toLowerCase().includes(busca.toLowerCase())
+  );
+
   const getProfessorNome = (professorId?: string) => {
     if (!professorId) return 'Não atribuído';
     const professor = professores.find(p => p.professorId === professorId);
@@ -184,8 +253,17 @@ const CRUDAdmin = () => {
     <div className="min-h-screen bg-gray-900 text-white p-6">
       <h1 className="text-3xl font-bold mb-6 text-white">⚙️ Gerenciamento Completo</h1>
 
-      {/* Tabs */}
       <div className="flex gap-4 mb-6 border-b border-gray-700">
+        <button
+          onClick={() => setTabAtiva('aluno')}
+          className={`px-6 py-3 font-semibold ${
+            tabAtiva === 'aluno'
+              ? 'border-b-2 border-blue-500 text-blue-400'
+              : 'text-gray-400 hover:text-blue-400'
+          }`}
+        >
+          🧑‍🎓 Alunos ({alunos.length})
+        </button>
         <button
           onClick={() => setTabAtiva('professores')}
           className={`px-6 py-3 font-semibold ${
@@ -208,7 +286,6 @@ const CRUDAdmin = () => {
         </button>
       </div>
 
-      {/* Busca */}
       <div className="mb-6 flex gap-4">
         <input
           type="text"
@@ -231,10 +308,85 @@ const CRUDAdmin = () => {
         )}
       </div>
 
-      {/* Tab de Professores */}
+      {tabAtiva === 'aluno' && (
+        <div className="space-y-6">
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-semibold mb-4 text-white">
+              {editandoAluno ? '✏️ Editar Aluno' : '➕ Adicionar Aluno'}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <input
+                type="text"
+                placeholder="Nome"
+                value={novoAluno.nomealuno}
+                onChange={(e) => setNovoAluno({ ...novoAluno, nomealuno: e.target.value })}
+                className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                value={novoAluno.emailaluno}
+                onChange={(e) => setNovoAluno({ ...novoAluno, emailaluno: e.target.value })}
+                className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+                disabled={!!editandoAluno}
+              />
+              <input
+                type="password"
+                placeholder={editandoAluno ? 'Nova Senha (opcional)' : 'Senha'}
+                value={novoAluno.senhaaluno}
+                onChange={(e) => setNovoAluno({ ...novoAluno, senhaaluno: e.target.value })}
+                className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+              />
+            </div>
+            <div className="mt-4 flex gap-2">
+              <button
+                onClick={editandoAluno ? salvarEdicaoAluno : criarAluno}
+                className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              >
+                {editandoAluno ? '💾 Salvar' : '➕ Adicionar'}
+              </button>
+              {editandoAluno && (
+                <button
+                  onClick={() => {
+                    setEditandoAluno(null);
+                    setNovoAluno({ nomealuno: '', emailaluno: '', senhaaluno: '' });
+                  }}
+                  className="px-6 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+                >
+                  ❌ Cancelar
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="bg-gray-800 rounded-lg shadow-lg">
+            <div className="p-6">
+              <h2 className="text-xl font-semibold mb-4 text-white">📋 Lista de Alunos</h2>
+              <div className="space-y-2">
+                {alunosFiltrados.length === 0 ? (
+                  <p className="text-gray-400 text-center py-8">Nenhum aluno encontrado</p>
+                ) : (
+                  alunosFiltrados.map((a) => (
+                    <div key={a.alunoId} className="flex justify-between items-center p-4 bg-gray-900 border border-gray-700 rounded-lg hover:bg-gray-750">
+                      <div>
+                        <p className="font-semibold text-lg text-white">{a.nomealuno}</p>
+                        <p className="text-sm text-gray-400">{a.emailaluno}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        <button onClick={() => editarAluno(a)} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">✏️ Editar</button>
+                        <button onClick={() => deletarAluno(a.alunoId)} className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">🗑️ Excluir</button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {tabAtiva === 'professores' && (
         <div className="space-y-6">
-          {/* Formulário */}
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold mb-4 text-white">
               {editandoProfessor ? '✏️ Editar Professor' : '➕ Adicionar Professor'}
@@ -253,12 +405,13 @@ const CRUDAdmin = () => {
                 value={novoProfessor.emailprofessor}
                 onChange={(e) => setNovoProfessor({ ...novoProfessor, emailprofessor: e.target.value })}
                 className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+                disabled={!!editandoProfessor}
               />
               <input
                 type="password"
-                placeholder="Senha"
+                placeholder={editandoProfessor ? 'Nova Senha (opcional)' : 'Senha'}
                 value={novoProfessor.senhaprofessor}
-                onChange={(e) => setNovoProfessor({ ...novoProfessor, senhaprofessor: e.target.value })}
+                onChange={(e) => setNovoProfessor({ ...novoProfessor, senhaprofessor: e.targe.value })}
                 className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
               />
             </div>
@@ -283,7 +436,6 @@ const CRUDAdmin = () => {
             </div>
           </div>
 
-          {/* Lista */}
           <div className="bg-gray-800 rounded-lg shadow-lg">
             <div className="p-6">
               <h2 className="text-xl font-semibold mb-4 text-white">📋 Lista de Professores</h2>
@@ -311,10 +463,8 @@ const CRUDAdmin = () => {
         </div>
       )}
 
-      {/* Tab de Cursos */}
       {tabAtiva === 'cursos' && (
         <div className="space-y-6">
-          {/* Formulário */}
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
             <h2 className="text-xl font-semibold mb-4 text-white">
               {editandoCurso ? '✏️ Editar Curso' : '➕ Adicionar Curso'}
@@ -377,7 +527,6 @@ const CRUDAdmin = () => {
             </div>
           </div>
 
-          {/* Lista de Cursos em Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {cursosFiltrados.length === 0 ? (
               <div className="col-span-full text-center py-8 bg-gray-800 rounded-lg shadow-lg">
@@ -396,7 +545,7 @@ const CRUDAdmin = () => {
                       {c.nivel}
                     </span>
                   </div>
-                  
+
                   <div className="space-y-2 mb-4">
                     <p className="text-sm text-gray-300">
                       <span className="font-medium">Duração:</span> {c.duracao} horas
@@ -422,4 +571,3 @@ const CRUDAdmin = () => {
 };
 
 export default CRUDAdmin;
-
