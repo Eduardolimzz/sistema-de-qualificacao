@@ -17,6 +17,7 @@
   padding: 0;
   margin: 0;
   padding-top: 1.5rem;
+  font-size: 14px;
 }
 
 .menuItem {
@@ -26,7 +27,6 @@
   padding: 14px 20px;
   cursor: pointer;
   border-radius: 8px;
-  font-weight: 450;
   color: #FFFFFF;
   text-decoration: none;
 }

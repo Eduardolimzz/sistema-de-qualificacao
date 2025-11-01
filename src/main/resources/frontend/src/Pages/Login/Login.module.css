@@ -1,17 +1,25 @@
-.loginContainer {
+.loginPage {
   min-height: 100vh;
+  background-color: #263445;
+}
+
+.entrar {
+  padding-top: 80px;
+  padding-left: 220px;
+  padding-right: 2rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background-color: #f9fafb;
 }
 
-.loginCard {
-  max-width: 28rem;
-  width: 100%;
-  padding: 2rem;
-  background-color: white;
-  border-radius: 0.5rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+.entrar h2 {
+  font-size: 30px;
+  color: #E6EDF3;
+  margin-bottom: 2px;
 }
 
+.entrar p {
+  font-size: 18px;
+  color: #ADBAC7;
+  margin-bottom: 5px;
+}
