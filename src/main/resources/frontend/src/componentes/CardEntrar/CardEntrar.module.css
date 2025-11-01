@@ -1,0 +1,129 @@
+.cardEntrar {
+  font-family: Arial, sans-serif;
+  background-color: #1F2937;
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+  text-align: left;
+}
+
+.cardEntrar h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.errorMessage {
+  background-color: #fbebee;
+  border: 1px solid #f44336;
+  color: #c62828;
+  padding: 0.75rem 1rem;
+  border-radius: 5px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+  color: #909FAB;
+}
+
+.inputGroup label {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.inputGroup input {
+  background-color: #0D1723;
+  border: 1px solid #0D1723;
+  border-radius: 5px;
+  padding: 13px;
+  color: #FFFFFF;
+  font-size: 1rem;
+}
+
+.inputGroup input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.rememberMe {
+  display: flex;
+  align-items: center;
+  color: #b0b0b0;
+}
+
+.rememberMe input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+.options a {
+  color: #909FAB;
+  text-decoration: none;
+}
+
+.options a:hover {
+  text-decoration: underline;
+}
+
+.loginButton {
+  background-color: #0D1723;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+  align-self: center;
+}
+
+.loginButton:hover {
+  background-color: #5a5e6a;
+}
+
+.loginButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #4a4e5a;
+}
+
+.cadastroLink {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 0.9rem;
+}
+
+.cadastroLink span {
+  color: #b0b0b0;
+}
+
+.cadastroLink a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.cadastroLink a:hover {
+  text-decoration: underline;
+}

@@ -7,7 +7,7 @@
 }
 
 .aprenda-section h1 {
-  font-size: 60px;
+  font-size: 45px;
   color: #E6EDF3;
   margin-bottom: 20px;
 }
@@ -17,11 +17,11 @@
 }
 
 .aprenda-section p {
-  font-size: 1.1rem;
   color: #FFFFFF;
   max-width: 600px;
   margin: 0 auto 2rem auto;
   line-height: 1.6;
+  font-size: 15px;
 }
 
 .aprenda-buttons {
@@ -36,7 +36,7 @@
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 14px;
   background-color: #0D1723;
   color: #FFFFFF;
 }
