@@ -24,6 +24,8 @@ import AprendaComMelhores from "./componentes/AprendaComMelhores/AprendaComMelho
 import AlunoCertificados from './Pages/Aluno/Certificados'
 import AlunoEventos from './Pages/Aluno/Eventos'
 import AlunoMeusCursos from './Pages/Aluno/MeusCursos'
+import AlunoCatalogo from './Pages/Aluno/Catalogo'
+import DetalhesCurso from './Pages/Aluno/DetalhesCurso'
 
 function App() {
   return (
@@ -55,6 +57,8 @@ function App() {
         <Route path="certificados" element={<AlunoCertificados />} />
         <Route path="eventos" element={<AlunoEventos />} />
         <Route path="meus_cursos" element={<AlunoMeusCursos />} />
+        <Route path="catalogo" element={<AlunoCatalogo />} />
+        <Route path="catalogo/:cursoId" element={<DetalhesCurso />} />
 
 
       </Route>
