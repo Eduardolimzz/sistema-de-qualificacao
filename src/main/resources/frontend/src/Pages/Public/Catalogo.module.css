@@ -1,0 +1,18 @@
+.Catalogo-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 200px;
+  margin-top: 40px;
+  padding: 20px;
+  padding-top: 20px;
+}
+
+.main-content main {
+  padding: 2rem 4rem;
+}
