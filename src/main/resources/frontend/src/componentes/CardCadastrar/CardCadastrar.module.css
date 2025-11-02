@@ -1,0 +1,121 @@
+.cardCadastro {
+  font-family: Arial, sans-serif;
+  background-color: #1F2937;
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 750px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  color: #f0f0f0;
+  text-align: left;
+}
+
+.cardCadastro h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-top: 0;
+  margin-bottom: 2rem;
+}
+
+.errorMessage {
+  background-color: #fbebee;
+  border: 1px solid #f44336;
+  color: #c62828;
+  padding: 0.75rem 1rem;
+  border-radius: 5px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+  color: #909FAB;
+}
+
+.inputGroup label {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.inputGroup input,
+.inputGroup select {
+  background-color: #0D1723;
+  border: 1px solid #0D1723;
+  border-radius: 5px;
+  padding: 0.8rem;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-family: Arial, sans-serif;
+}
+
+.inputGroup select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23909FAB%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-13%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2013l128%20128c3.6%203.6%207.8%205.4%2013%205.4s9.4-1.8%2013-5.4l128-128c3.6-3.6%205.4-7.8%205.4-13%200-4.9-1.8-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E');
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 0.65em auto;
+  padding-right: 2.5rem;
+}
+
+.inputGroup select:invalid,
+.inputGroup option[value=""] {
+  color: #909FAB;
+}
+
+.inputGroup input:disabled,
+.inputGroup select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.termsCheckbox {
+  display: flex;
+  align-items: flex-start;
+  font-size: 0.8rem;
+  margin-bottom: 2rem;
+  color: #b0b0b0;
+}
+
+.termsCheckbox input[type="checkbox"] {
+  margin-right: 0.75rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.termsCheckbox label span {
+  color: #3498db;
+  cursor: pointer;
+}
+
+.submitButton {
+  background-color: #0D1723;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+  align-self: center;
+}
+
+.submitButton:hover {
+  background-color: #5a5e6a;
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #4a4e5a;
+}
