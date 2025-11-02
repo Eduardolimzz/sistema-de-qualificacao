@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProfessorService from '../../Services/professorService';
-import AlunoService from '../../Services/AlunoService';
-import styles from './CRUDAdmin.module.css';
+import AlunoService from '../../Services/AlunoService'; // <--- IMPORTADO
+import styles from './CRUDAdmin.module.css'; // <--- IMPORTADO
 
 // Definindo os tipos (Tabs e Interfaces)
-type Tab = 'aluno' | 'professores' | 'cursos';
+type Tab = 'aluno' | 'professores' | 'cursos'; // <--- ABA 'aluno' ADICIONADA
 
 interface Professor {
   professorId: string;
@@ -31,7 +31,7 @@ interface Aluno { // <--- INTERFACE 'Aluno' ADICIONADA
 // Função helper para juntar classes dinâmicas
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
-}
+} // <--- ERRO DA CHAVE '}' FALTANDO FOI CORRIGIDO AQUI
 
 const CRUDAdmin = () => {
   const navigate = useNavigate();
@@ -53,15 +53,15 @@ const CRUDAdmin = () => {
   // States de Edição (Aluno adicionado)
   const [editandoProfessor, setEditandoProfessor] = useState<Professor | null>(null);
   const [editandoCurso, setEditandoCurso] = useState<Curso | null>(null);
-  const [editandoAluno, setEditandoAluno] = useState<Aluno | null>(null);
+  const [editandoAluno, setEditandoAluno] = useState<Aluno | null>(null); // <--- ADICIONADO
 
   useEffect(() => {
     carregarProfessores();
     carregarCursos();
-    carregarAlunos();
+    carregarAlunos(); // <--- ADICIONADO
   }, []);
 
-  // --- Funções de Carregamento  ---
+  // --- Funções de Carregamento (Aluno adicionado) ---
   const carregarProfessores = async () => {
     try {
       const dados = await ProfessorService.listarProfessores();
@@ -72,6 +72,7 @@ const CRUDAdmin = () => {
   };
 
   const carregarCursos = async () => {
+    // (Mantendo os dados mock de Cursos por enquanto, como estava)
     try {
       const cursosMock: Curso[] = [
         { cursoId: '1', nomeCurso: 'React Básico', duracao: 40, nivel: 'Básico', professorId: '1' },
@@ -84,8 +85,9 @@ const CRUDAdmin = () => {
     }
   };
 
-  const carregarAlunos = async () => {
+  const carregarAlunos = async () => { // <--- FUNÇÃO ADICIONADA
     try {
+      // (Supondo que seu AlunoService tem 'carregarAlunos')
       const dados = await AlunoService.carregarAlunos();
       setAlunos(dados);
     } catch (e) {
@@ -94,7 +96,7 @@ const CRUDAdmin = () => {
   };
 
 
-  // --- Funções de Professores  ---
+  // --- Funções de Professores (Sem mudança) ---
   const criarProfessor = async () => {
     try {
       console.log('Criando professor:', novoProfessor);
@@ -139,7 +141,7 @@ const CRUDAdmin = () => {
   };
 
 
-  // --- Funções de Cursos  ---
+  // --- Funções de Cursos (Sem mudança) ---
   const criarCurso = async () => {
     try {
       const novoCursoCompleto: Curso = {
