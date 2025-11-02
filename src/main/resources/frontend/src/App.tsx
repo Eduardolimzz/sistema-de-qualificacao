@@ -47,9 +47,9 @@ function App() {
       <Route
         path="/aluno"
         element={
-
+            <PrivateRoute>
             <AlunoLayout />
-
+        </PrivateRoute>
         }
       >
       <Route index element={<AlunoDashboard />} />
@@ -81,9 +81,9 @@ function App() {
       <Route
         path="/admin"
         element={
-
+        <PrivateRoute>
             <div><Outlet /></div>
-
+        </PrivateRoute>
         }
       >
         <Route path="dashboard" element={<AdminDashboard />} />
