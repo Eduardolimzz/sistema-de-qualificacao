@@ -24,6 +24,8 @@ interface Curso {
 // Função helper para juntar classes dinâmicas
 function classNames(...classes: (string | boolean)[]) {
   return classes.filter(Boolean).join(' ');
+
+  }
 interface Aluno {
   alunoId: string;
   nomealuno: string;
