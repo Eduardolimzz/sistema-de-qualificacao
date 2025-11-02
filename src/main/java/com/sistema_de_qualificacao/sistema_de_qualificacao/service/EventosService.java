@@ -1,30 +1,35 @@
 package com.sistema_de_qualificacao.sistema_de_qualificacao.service;
 
 import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.CreateEventosDto;
-import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.EventosResponseDto; // NOVO
+import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.EventosResponseDto;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.UpdateEventosdto;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.entity.Eventos;
+import com.sistema_de_qualificacao.sistema_de_qualificacao.entity.Patrocinador;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.repository.CursoRepository;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.repository.EventosRepository;
+import com.sistema_de_qualificacao.sistema_de_qualificacao.repository.PatrocinadorRepository; // NOVO
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Service
 public class EventosService {
     private final EventosRepository eventosRepository;
     private final CursoRepository cursoRepository;
+    private final PatrocinadorRepository patrocinadorRepository;
 
     public EventosService(EventosRepository eventosRepository,
-                          CursoRepository cursoRepository
+                          CursoRepository cursoRepository,
+                          PatrocinadorRepository patrocinadorRepository
     ) {
         this.eventosRepository = eventosRepository;
         this.cursoRepository = cursoRepository;
+        this.patrocinadorRepository = patrocinadorRepository;
     }
 
     @Transactional
@@ -32,28 +37,35 @@ public class EventosService {
         var cursoId = UUID.fromString(createEventosDto.getCursoId());
         var cursoRef = cursoRepository.getReferenceById(cursoId);
 
+
+        List<Patrocinador> patrocinadores = Optional.ofNullable(createEventosDto.getPatrocinadorIds())
+                .orElseGet(Collections::emptyList)
+                .stream()
+                .map(UUID::fromString)
+                .map(patrocinadorRepository::getReferenceById)
+                .toList();
+
         var entity = new Eventos();
         entity.setDataEvento(createEventosDto.getDataEvento());
         entity.setNomeEvento(createEventosDto.getNomeEvento());
         entity.setCurso(cursoRef);
+        entity.setPatrocinadores(patrocinadores);
 
         var eventoSaved = eventosRepository.save(entity);
         return eventoSaved.getEventosId();
     }
 
     @Transactional(readOnly = true)
-    // Retorna Optional<DTO>
     public Optional<EventosResponseDto> getEventosById(String eventosId){
         return eventosRepository.findById(UUID.fromString(eventosId))
-                .map(EventosResponseDto::fromEntity); // Mapeia a entidade para o DTO
+                .map(EventosResponseDto::fromEntity);
     }
 
     @Transactional(readOnly = true)
-    // Retorna List<DTO>
     public List<EventosResponseDto> listEventos(){
         return eventosRepository.findAll().stream()
                 .map(EventosResponseDto::fromEntity)
-                .toList(); // Usa toList() do Java 16+
+                .toList();
     }
 
 
