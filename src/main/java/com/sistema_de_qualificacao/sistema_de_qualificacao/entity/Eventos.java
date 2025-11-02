@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -19,23 +20,21 @@ public class Eventos {
     @Column(name = "eventosId", nullable = false)
     private UUID eventosId;
 
-    // Propriedade Java: nomeEvento. Coluna DB: nome_evento
     @Column(name = "nome_evento")
     private String nomeEvento;
 
-    // Propriedade Java: dataEvento. Coluna DB: data_evento
     @Column(name = "data_evento")
     private String dataEvento;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    // Usando 'curso_id' como nome da coluna no DB (boa prática para FK)
     @JoinColumn(name = "curso_id", referencedColumnName = "cursoId", nullable = false)
     private Curso curso;
 
-   // @ManyToMany(fetch = FetchType.LAZY)
-   // @JoinColumn(name = "patrocinadorId", referencedColumnName = "patrocinadorId",
-   //         insertable = false, updatable = false)
-    //private Patrocinador patrocinador;
-
-
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "tb_evento_patrocinador",
+            joinColumns = @JoinColumn(name = "evento_id"),
+            inverseJoinColumns = @JoinColumn(name = "patrocinador_id")
+    )
+    private List<Patrocinador> patrocinadores;
 }
