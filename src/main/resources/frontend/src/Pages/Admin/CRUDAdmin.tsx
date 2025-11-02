@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProfessorService from '../../Services/professorService';
-import styles from './CRUDAdmin.module.css'; 
+import styles from './CRUDAdmin.module.css';
 import AlunoService from '../../Services/AlunoService'; // Corrigido de 'lunoService'
 
 type Tab = 'aluno' | 'professores' | 'cursos';
@@ -265,11 +265,10 @@ const CRUDAdmin = () => {
       <div className={styles.tabContainer}>
         <button
           onClick={() => setTabAtiva('aluno')}
-          className={`px-6 py-3 font-semibold ${
-            tabAtiva === 'aluno'
-              ? 'border-b-2 border-blue-500 text-blue-400'
-              : 'text-gray-400 hover:text-blue-400'
-          }`}
+          className={classNames(
+            styles.tabButton,
+            tabAtiva === 'aluno' && styles.tabActive
+          )}
         >
           🧑‍🎓 Alunos ({alunos.length})
         </button>
@@ -316,26 +315,28 @@ const CRUDAdmin = () => {
         )}
       </div>
 
+      {/* --- ABA ALUNOS (TRADUZIDA) --- */}
       {tabAtiva === 'aluno' && (
-        <div className="space-y-6">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold mb-4 text-white">
+        <div className={styles.contentSection}>
+          {/* Formulário de Aluno */}
+          <div className={styles.formCard}>
+            <h2 className={styles.cardTitle}>
               {editandoAluno ? '✏️ Editar Aluno' : '➕ Adicionar Aluno'}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className={styles.formGrid3}>
               <input
                 type="text"
                 placeholder="Nome"
                 value={novoAluno.nomealuno}
                 onChange={(e) => setNovoAluno({ ...novoAluno, nomealuno: e.target.value })}
-                className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+                className={styles.formInput}
               />
               <input
                 type="email"
                 placeholder="Email"
                 value={novoAluno.emailaluno}
                 onChange={(e) => setNovoAluno({ ...novoAluno, emailaluno: e.target.value })}
-                className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+                className={styles.formInput}
                 disabled={!!editandoAluno}
               />
               <input
@@ -343,13 +344,13 @@ const CRUDAdmin = () => {
                 placeholder={editandoAluno ? 'Nova Senha (opcional)' : 'Senha'}
                 value={novoAluno.senhaaluno}
                 onChange={(e) => setNovoAluno({ ...novoAluno, senhaaluno: e.target.value })}
-                className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+                className={styles.formInput}
               />
             </div>
-            <div className="mt-4 flex gap-2">
+            <div className={styles.buttonGroup}>
               <button
                 onClick={editandoAluno ? salvarEdicaoAluno : criarAluno}
-                className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                className={classNames(styles.button, styles.buttonPrimary)}
               >
                 {editandoAluno ? '💾 Salvar' : '➕ Adicionar'}
               </button>
@@ -359,7 +360,7 @@ const CRUDAdmin = () => {
                     setEditandoAluno(null);
                     setNovoAluno({ nomealuno: '', emailaluno: '', senhaaluno: '' });
                   }}
-                  className="px-6 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+                  className={classNames(styles.button, styles.buttonSecondary)}
                 >
                   ❌ Cancelar
                 </button>
@@ -367,32 +368,34 @@ const CRUDAdmin = () => {
             </div>
           </div>
 
-          <div className="bg-gray-800 rounded-lg shadow-lg">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-4 text-white">📋 Lista de Alunos</h2>
-              <div className="space-y-2">
-                {alunosFiltrados.length === 0 ? (
-                  <p className="text-gray-400 text-center py-8">Nenhum aluno encontrado</p>
-                ) : (
-                  alunosFiltrados.map((a) => (
-                    <div key={a.alunoId} className="flex justify-between items-center p-4 bg-gray-900 border border-gray-700 rounded-lg hover:bg-gray-750">
-                      <div>
-                        <p className="font-semibold text-lg text-white">{a.nomealuno}</p>
-                        <p className="text-sm text-gray-400">{a.emailaluno}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <button onClick={() => editarAluno(a)} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">✏️ Editar</button>
-                        <button onClick={() => deletarAluno(a.alunoId)} className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">🗑️ Excluir</button>
-                      </div>
+          {/* Lista de Alunos */}
+          <div className={styles.listContainer}>
+            <h2 className={styles.cardTitle}>📋 Lista de Alunos</h2>
+            <div className={styles.professorList}> {/* Reutilizando o estilo da lista de prof */ }
+              {alunosFiltrados.length === 0 ? (
+                <p className={styles.emptyMessage}>Nenhum aluno encontrado</p>
+              ) : (
+                alunosFiltrados.map((a) => (
+                  <div key={a.alunoId} className={styles.professorItem}> {/* Reutilizando o estilo */ }
+                    <div className={styles.itemInfo}>
+                      <p className={styles.itemTitle}>{a.nomealuno}</p>
+                      <p className={styles.itemSubtitle}>{a.emailaluno}</p>
                     </div>
-                  ))
-                )}
-              </div>
+                    <div className={styles.itemActions}>
+                      <button onClick={() => editarAluno(a)} className={classNames(styles.button, styles.buttonSmall, styles.buttonPrimary)}>✏️ Editar</button>
+                      <button onClick={() => deletarAluno(a.alunoId)} className={classNames(styles.button, styles.buttonSmall, styles.buttonDanger)}>🗑️ Excluir</button>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
       )}
+      {/* --- FIM DA ABA ALUNOS --- */}
 
+
+      {/* Tab de Professores (Já estava correta) */}
       {tabAtiva === 'professores' && (
         <div className={styles.contentSection}>
           {/* Formulário */}
@@ -417,7 +420,7 @@ const CRUDAdmin = () => {
               />
               <input
                 type="password"
-                placeholder={editandoProfessor ? 'Nova Senha (opcional)' : 'Senha'}
+                placeholder="Senha" // O merge tinha 'placeholder={editandoProfessor ? 'Nova Senha (opcional)' : 'Senha'}'
                 value={novoProfessor.senhaprofessor}
                 onChange={(e) => setNovoProfessor({ ...novoProfessor, senhaprofessor: e.target.value })}
                 className={styles.formInput}
@@ -470,6 +473,7 @@ const CRUDAdmin = () => {
         </div>
       )}
 
+      {/* Tab de Cursos */}
       {tabAtiva === 'cursos' && (
         <div className={styles.contentSection}>
           {/* Formulário */}
