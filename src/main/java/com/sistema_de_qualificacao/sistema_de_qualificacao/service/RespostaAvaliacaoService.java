@@ -7,6 +7,7 @@ import com.sistema_de_qualificacao.sistema_de_qualificacao.entity.RespostaAvalia
 import com.sistema_de_qualificacao.sistema_de_qualificacao.repository.AlunoRepository;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.repository.AvaliacaoRepository;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.repository.RespostaAvaliacaoRepository;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,16 +23,19 @@ public class RespostaAvaliacaoService {
     private final RespostaAvaliacaoRepository respostaAvaliacaoRepository;
     private final AlunoRepository alunoRepository;
     private final AvaliacaoRepository avaliacaoRepository;
+    private final BoletimService boletimService;
 
     public RespostaAvaliacaoService(RespostaAvaliacaoRepository respostaAvaliacaoRepository,
                                     AlunoRepository alunoRepository,
-                                    AvaliacaoRepository avaliacaoRepository) {
+                                    AvaliacaoRepository avaliacaoRepository,
+                                    @Lazy BoletimService boletimService) {
         this.respostaAvaliacaoRepository = respostaAvaliacaoRepository;
         this.alunoRepository = alunoRepository;
         this.avaliacaoRepository = avaliacaoRepository;
+        this.boletimService = boletimService;
     }
 
-    @Transactional //se todas as operações forem bem sucedidas, elas serão confirmadas no banco de dados
+    @Transactional
     public UUID createRespostaAvaliacao(CreateRespostaAvaliacaoDto createDto) {
         // Verifica se o aluno existe
         var alunoExists = alunoRepository.existsById(createDto.getAlunoId());
@@ -124,16 +128,18 @@ public class RespostaAvaliacaoService {
     @Transactional
     public void lancarNota(String respostaId, Double nota) {
         var id = UUID.fromString(respostaId);
-        var respostaEntity = respostaAvaliacaoRepository.findById(id);
+        var resposta = respostaAvaliacaoRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Resposta não encontrada"));
 
-        if (respostaEntity.isPresent()) {
-            var resposta = respostaEntity.get();
-            resposta.setNotaObtida(nota);
-            resposta.setStatusResposta("CONCLUIDA");
-            respostaAvaliacaoRepository.save(resposta);
-        } else {
-            throw new IllegalArgumentException("Resposta não encontrada");
-        }
+        resposta.setNotaObtida(nota);
+        resposta.setStatusResposta("CONCLUIDA");
+        respostaAvaliacaoRepository.save(resposta);
+
+        // ✅ ATUALIZA O BOLETIM AUTOMATICAMENTE
+        var avaliacao = avaliacaoRepository.findById(resposta.getAvaliacaoId())
+                .orElseThrow(() -> new IllegalArgumentException("Avaliação não encontrada"));
+
+        boletimService.atualizarBoletim(resposta.getAlunoId(), avaliacao.getCursoId());
     }
 
     @Transactional
