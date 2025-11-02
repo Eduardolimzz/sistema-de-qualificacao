@@ -49,6 +49,10 @@ public class Curso {
     @JsonIgnore
     private Set<MatriculaProfessor> matriculaProfessor;
 
+    @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Eventos> eventos;
+
     @OneToOne(mappedBy = "curso", fetch = FetchType.LAZY)
     @JsonIgnore
     private Certificado certificado;

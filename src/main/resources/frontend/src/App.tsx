@@ -4,6 +4,7 @@ import Layout from './componentes/Layout'; // Layout Público
 import AlunoLayout from './Pages/Aluno/AlunoLayout';
 import PrivateRoute from './components/PrivateRoute';
 import Login from './Pages/Login/Login';
+import Cadastro from './Pages/Cadastro/Cadastro';
 import PaginaHome from './Pages/Public/PaginaHome.jsx';
 import Catalogo from './Pages/Public/Catalogo';
 import AdminDashboard from './Pages/Admin/Dashboard';
@@ -32,6 +33,7 @@ function App() {
     <Routes>
       {/* Rota 1: Login (página única, sem layout) */}
       <Route path="/login" element={<Login />} />
+      <Route path="/cadastro" element={<Cadastro />} />
 
       {/* Rota 2: Layout Público (para visitantes) */}
       {/* Somente as páginas públicas ficam aninhadas aqui */}
@@ -45,9 +47,9 @@ function App() {
       <Route
         path="/aluno"
         element={
-          <PrivateRoute>
+
             <AlunoLayout />
-          </PrivateRoute>
+
         }
       >
       <Route index element={<AlunoDashboard />} />
@@ -79,9 +81,9 @@ function App() {
       <Route
         path="/admin"
         element={
-          <PrivateRoute>
+
             <div><Outlet /></div>
-          </PrivateRoute>
+
         }
       >
         <Route path="dashboard" element={<AdminDashboard />} />
