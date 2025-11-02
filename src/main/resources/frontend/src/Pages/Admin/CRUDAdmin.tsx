@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProfessorService from '../../Services/professorService';
-import AlunoService from '../../Services/AlunoService'; // <--- IMPORTADO
-import styles from './CRUDAdmin.module.css'; // <--- IMPORTADO
+import styles from './CRUDAdmin.module.css';
+import AlunoService from '../../Services/AlunoService'; // Corrigido de 'lunoService'
 
-// Definindo os tipos (Tabs e Interfaces)
-type Tab = 'aluno' | 'professores' | 'cursos'; // <--- ABA 'aluno' ADICIONADA
+type Tab = 'aluno' | 'professores' | 'cursos';
 
 interface Professor {
   professorId: string;
@@ -22,46 +21,40 @@ interface Curso {
   professorId?: string;
 }
 
-interface Aluno { // <--- INTERFACE 'Aluno' ADICIONADA
+// Função helper para juntar classes dinâmicas
+function classNames(...classes: (string | boolean)[]) {
+  return classes.filter(Boolean).join(' ');
+interface Aluno {
   alunoId: string;
   nomealuno: string;
   emailaluno: string;
 }
 
-// Função helper para juntar classes dinâmicas
-function classNames(...classes: (string | boolean)[]) {
-  return classes.filter(Boolean).join(' ');
-} // <--- ERRO DA CHAVE '}' FALTANDO FOI CORRIGIDO AQUI
-
 const CRUDAdmin = () => {
   const navigate = useNavigate();
-  const [tabAtiva, setTabAtiva] = useState<Tab>('aluno'); // <--- ABA PADRÃO MUDADA
+  const [tabAtiva, setTabAtiva] = useState<Tab>('aluno');
 
-  // States de Dados (Aluno adicionado)
   const [professores, setProfessores] = useState<Professor[]>([]);
   const [cursos, setCursos] = useState<Curso[]>([]);
-  const [alunos, setAlunos] = useState<Aluno[]>([]); // <--- ADICIONADO
+  const [alunos, setAlunos] = useState<Aluno[]>([]);
 
   const [busca, setBusca] = useState('');
   const [filtroNivel, setFiltroNivel] = useState<string>('todos');
 
-  // States de Formulário (Aluno adicionado)
   const [novoProfessor, setNovoProfessor] = useState({ nomeprofessor: '', emailprofessor: '', senhaprofessor: '' });
   const [novoCurso, setNovoCurso] = useState<{ nomeCurso: string; duracao: number; nivel: 'Básico' | 'Intermediário' | 'Avançado'; professorId: string }>({ nomeCurso: '', duracao: 0, nivel: 'Básico', professorId: '' });
-  const [novoAluno, setNovoAluno] = useState({ nomealuno: '', emailaluno: '', senhaaluno: '' }); // <--- ADICIONADO
+  const [novoAluno, setNovoAluno] = useState({ nomealuno: '', emailaluno: '', senhaaluno: '' });
 
-  // States de Edição (Aluno adicionado)
   const [editandoProfessor, setEditandoProfessor] = useState<Professor | null>(null);
   const [editandoCurso, setEditandoCurso] = useState<Curso | null>(null);
-  const [editandoAluno, setEditandoAluno] = useState<Aluno | null>(null); // <--- ADICIONADO
+  const [editandoAluno, setEditandoAluno] = useState<Aluno | null>(null);
 
   useEffect(() => {
     carregarProfessores();
     carregarCursos();
-    carregarAlunos(); // <--- ADICIONADO
+    carregarAlunos();
   }, []);
 
-  // --- Funções de Carregamento (Aluno adicionado) ---
   const carregarProfessores = async () => {
     try {
       const dados = await ProfessorService.listarProfessores();
@@ -72,7 +65,6 @@ const CRUDAdmin = () => {
   };
 
   const carregarCursos = async () => {
-    // (Mantendo os dados mock de Cursos por enquanto, como estava)
     try {
       const cursosMock: Curso[] = [
         { cursoId: '1', nomeCurso: 'React Básico', duracao: 40, nivel: 'Básico', professorId: '1' },
@@ -85,9 +77,8 @@ const CRUDAdmin = () => {
     }
   };
 
-  const carregarAlunos = async () => { // <--- FUNÇÃO ADICIONADA
+  const carregarAlunos = async () => {
     try {
-      // (Supondo que seu AlunoService tem 'carregarAlunos')
       const dados = await AlunoService.carregarAlunos();
       setAlunos(dados);
     } catch (e) {
@@ -95,8 +86,6 @@ const CRUDAdmin = () => {
     }
   };
 
-
-  // --- Funções de Professores (Sem mudança) ---
   const criarProfessor = async () => {
     try {
       console.log('Criando professor:', novoProfessor);
@@ -111,10 +100,12 @@ const CRUDAdmin = () => {
       alert(`Erro: ${mensagem}`);
     }
   };
+
   const editarProfessor = (professor: Professor) => {
     setEditandoProfessor(professor);
     setNovoProfessor({ nomeprofessor: professor.nomeprofessor, emailprofessor: professor.emailprofessor, senhaprofessor: '' });
   };
+
   const salvarEdicaoProfessor = async () => {
     if (!editandoProfessor) return;
     try {
@@ -126,6 +117,7 @@ const CRUDAdmin = () => {
       console.error('Erro ao atualizar professor:', e);
     }
   };
+
   const deletarProfessor = async (id: string) => {
     if (confirm('Tem certeza que deseja excluir este professor?')) {
       try {
@@ -136,12 +128,11 @@ const CRUDAdmin = () => {
       }
     }
   };
+
   const verDetalhesProfessor = (professorId: string) => {
     navigate(`/admin/professor/${professorId}`);
   };
 
-
-  // --- Funções de Cursos (Sem mudança) ---
   const criarCurso = async () => {
     try {
       const novoCursoCompleto: Curso = {
@@ -156,10 +147,12 @@ const CRUDAdmin = () => {
       alert('Erro ao criar curso');
     }
   };
+
   const editarCurso = (curso: Curso) => {
     setEditandoCurso(curso);
     setNovoCurso({ nomeCurso: curso.nomeCurso, duracao: curso.duracao, nivel: curso.nivel, professorId: curso.professorId || '' });
   };
+
   const salvarEdicaoCurso = async () => {
     if (!editandoCurso) return;
     try {
@@ -170,6 +163,7 @@ const CRUDAdmin = () => {
       console.error('Erro ao atualizar curso:', e);
     }
   };
+
   const deletarCurso = async (id: string) => {
     if (confirm('Tem certeza que deseja excluir este curso?')) {
       try {
@@ -179,15 +173,13 @@ const CRUDAdmin = () => {
       }
     }
   };
+
   const verDetalhesCurso = (cursoId: string) => {
     navigate(`/admin/curso/${cursoId}`);
   };
 
-
-  // --- Funções de Alunos (ADICIONADAS) ---
   const criarAluno = async () => {
     try {
-      // (Supondo que seu AlunoService espera 'nome', 'email', 'senha')
       const dto = {
         nome: novoAluno.nomealuno,
         email: novoAluno.emailaluno,
@@ -202,10 +194,12 @@ const CRUDAdmin = () => {
       alert(`Erro: ${e.message || 'Erro ao criar aluno'}`);
     }
   };
+
   const editarAluno = (aluno: Aluno) => {
     setEditandoAluno(aluno);
     setNovoAluno({ nomealuno: aluno.nomealuno, emailaluno: aluno.emailaluno, senhaaluno: '' });
   };
+
   const salvarEdicaoAluno = async () => {
     if (!editandoAluno) return;
     try {
@@ -221,6 +215,7 @@ const CRUDAdmin = () => {
       console.error('Erro ao atualizar aluno:', e);
     }
   };
+
   const deletarAluno = async (id: string) => {
     if (confirm('Tem certeza que deseja excluir este aluno?')) {
       try {
@@ -232,13 +227,12 @@ const CRUDAdmin = () => {
     }
   };
 
-
-  // --- Filtros (Aluno adicionado) ---
   const professoresFiltrados = professores.filter(
     (p) =>
       p.nomeprofessor.toLowerCase().includes(busca.toLowerCase()) ||
       p.emailprofessor.toLowerCase().includes(busca.toLowerCase())
   );
+
   const cursosFiltrados = cursos.filter(
     (c) => {
       const matchBusca = c.nomeCurso.toLowerCase().includes(busca.toLowerCase());
@@ -246,7 +240,8 @@ const CRUDAdmin = () => {
       return matchBusca && matchNivel;
     }
   );
-  const alunosFiltrados = alunos.filter( // <--- ADICIONADO
+
+  const alunosFiltrados = alunos.filter(
     (a) =>
       a.nomealuno.toLowerCase().includes(busca.toLowerCase()) ||
       a.emailaluno.toLowerCase().includes(busca.toLowerCase())
@@ -259,12 +254,12 @@ const CRUDAdmin = () => {
   };
 
 
-  // --- 2. O JSX (TRADUZIDO E MESCLADO) ---
+  // --- 2. O JSX  ---
   return (
     <div className={styles.pageContainer}>
       <h1 className={styles.pageTitle}> Gerenciamento Completo</h1>
 
-      {/* Tabs (Aba Aluno traduzida) */}
+      {/* Tabs */}
       <div className={styles.tabContainer}>
         <button
           onClick={() => setTabAtiva('aluno')}
@@ -476,7 +471,7 @@ const CRUDAdmin = () => {
         </div>
       )}
 
-      {/* Tab de Cursos (Já estava correta) */}
+      {/* Tab de Cursos */}
       {tabAtiva === 'cursos' && (
         <div className={styles.contentSection}>
           {/* Formulário */}
