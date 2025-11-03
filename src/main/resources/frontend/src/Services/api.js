@@ -5,7 +5,6 @@ const API_URL = "http://localhost:8080/v1";
 const api = axios.create({
     baseURL: API_URL,
     timeout: 10000,
-    baseURL: 'http://localhost:8080',
 });
 
 api.interceptors.request.use(

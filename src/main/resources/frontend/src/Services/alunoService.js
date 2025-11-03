@@ -35,7 +35,7 @@ const AlunoService = {
       },
 
     carregarAlunos: async () => {
-        const response = await api.get(ALUNOS_BASE_PATH);
+        const response = await api.get(BASE_PATH);
         return response.data;
     },
 

@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProfessorService from '../../Services/professorService';
-import styles from './CRUDAdmin.module.css';
-import AlunoService from '../../Services/AlunoService'; // Corrigido de 'lunoService'
+import AlunoService from '../../Services/alunoService';
 
 type Tab = 'aluno' | 'professores' | 'cursos';
 
@@ -21,11 +20,6 @@ interface Curso {
   professorId?: string;
 }
 
-// Função helper para juntar classes dinâmicas
-function classNames(...classes: (string | boolean)[]) {
-  return classes.filter(Boolean).join(' ');
-
-  }
 interface Aluno {
   alunoId: string;
   nomealuno: string;
@@ -89,6 +83,11 @@ const CRUDAdmin = () => {
   };
 
   const criarProfessor = async () => {
+    if (!novoProfessor.nomeprofessor || !novoProfessor.emailprofessor || !novoProfessor.senhaprofessor) {
+      alert('Por favor, preencha todos os campos obrigatórios!');
+      return;
+    }
+
     try {
       console.log('Criando professor:', novoProfessor);
       const resultado = await ProfessorService.criarProfessor(novoProfessor);
@@ -98,7 +97,7 @@ const CRUDAdmin = () => {
       alert('Professor criado com sucesso!');
     } catch (e: any) {
       console.error('Erro ao criar professor:', e);
-      const mensagem = e.response?.data?.mensagem || e.message || 'Erro ao criar professor';
+      const mensagem = e.response?.data?.mensagem || e.response?.data?.message || e.message || 'Erro ao criar professor';
       alert(`Erro: ${mensagem}`);
     }
   };
@@ -181,6 +180,11 @@ const CRUDAdmin = () => {
   };
 
   const criarAluno = async () => {
+    if (!novoAluno.nomealuno || !novoAluno.emailaluno || !novoAluno.senhaaluno) {
+      alert('Por favor, preencha todos os campos obrigatórios!');
+      return;
+    }
+
     try {
       const dto = {
         nome: novoAluno.nomealuno,
@@ -193,7 +197,8 @@ const CRUDAdmin = () => {
       alert('Aluno criado com sucesso!');
     } catch (e: any) {
       console.error('Erro ao criar aluno:', e);
-      alert(`Erro: ${e.message || 'Erro ao criar aluno'}`);
+      const mensagemErro = e.response?.data?.mensagem || e.response?.data?.message || e.message || 'Erro ao criar aluno';
+      alert(`Erro: ${mensagemErro}`);
     }
   };
 
@@ -255,57 +260,105 @@ const CRUDAdmin = () => {
     return professor?.nomeprofessor || 'Não atribuído';
   };
 
+  const cardStyle: React.CSSProperties = {
+    backgroundColor: '#1f2937',
+    borderRadius: 8,
+    padding: 16,
+    color: '#e5e7eb',
+    boxShadow: '0 1px 2px rgba(0,0,0,0.4)'
+  };
 
-  // --- 2. O JSX  ---
+  const inputStyle: React.CSSProperties = {
+    padding: '8px 12px',
+    backgroundColor: '#111827',
+    border: '1px solid #1f2937',
+    borderRadius: 6,
+    color: '#e5e7eb',
+    fontSize: 14
+  };
+
+  const buttonStyle: React.CSSProperties = {
+    padding: '10px 12px',
+    borderRadius: 8,
+    background: '#111827',
+    color: '#e5e7eb',
+    border: '1px solid #1f2937',
+    fontSize: 15,
+    cursor: 'pointer'
+  };
+
   return (
-    <div className={styles.pageContainer}>
-      <h1 className={styles.pageTitle}> Gerenciamento Completo</h1>
+    <div style={{ padding: 20, color: '#e5e7eb' }}>
+      <h2 style={{ textAlign: 'center', fontSize: 26, fontWeight: 800, margin: '8px 0 18px 0' }}>Gerenciamento Completo</h2>
 
       {/* Tabs */}
-      <div className={styles.tabContainer}>
+      <div style={{ display: 'flex', gap: 16, marginBottom: 24, borderBottom: '1px solid #373E47', paddingBottom: 8 }}>
         <button
           onClick={() => setTabAtiva('aluno')}
-          className={classNames(
-            styles.tabButton,
-            tabAtiva === 'aluno' && styles.tabActive
-          )}
+          style={{
+            padding: '8px 16px',
+            fontWeight: 600,
+            color: tabAtiva === 'aluno' ? '#60A5FA' : '#9CA3AF',
+            borderBottom: tabAtiva === 'aluno' ? '2px solid #3B82F6' : '2px solid transparent',
+            background: 'transparent',
+            border: 'none',
+            borderBottomStyle: 'solid',
+            cursor: 'pointer'
+          }}
         >
           🧑‍🎓 Alunos ({alunos.length})
         </button>
         <button
           onClick={() => setTabAtiva('professores')}
-          className={classNames(
-            styles.tabButton,
-            tabAtiva === 'professores' && styles.tabActive
-          )}
+          style={{
+            padding: '8px 16px',
+            fontWeight: 600,
+            color: tabAtiva === 'professores' ? '#60A5FA' : '#9CA3AF',
+            borderBottom: tabAtiva === 'professores' ? '2px solid #3B82F6' : '2px solid transparent',
+            background: 'transparent',
+            border: 'none',
+            borderBottomStyle: 'solid',
+            cursor: 'pointer'
+          }}
         >
           👨‍🏫 Professores ({professores.length})
         </button>
         <button
           onClick={() => setTabAtiva('cursos')}
-          className={classNames(
-            styles.tabButton,
-            tabAtiva === 'cursos' && styles.tabActive
-          )}
+          style={{
+            padding: '8px 16px',
+            fontWeight: 600,
+            color: tabAtiva === 'cursos' ? '#60A5FA' : '#9CA3AF',
+            borderBottom: tabAtiva === 'cursos' ? '2px solid #3B82F6' : '2px solid transparent',
+            background: 'transparent',
+            border: 'none',
+            borderBottomStyle: 'solid',
+            cursor: 'pointer'
+          }}
         >
           🎓 Cursos ({cursos.length})
         </button>
       </div>
 
       {/* Busca */}
-      <div className={styles.searchContainer}>
+      <div style={{ marginBottom: 24, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
         <input
           type="text"
           placeholder="🔍 Buscar..."
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
-          className={styles.searchInput}
+          style={{
+            flex: 1,
+            minWidth: 200,
+            maxWidth: 400,
+            ...inputStyle
+          }}
         />
         {tabAtiva === 'cursos' && (
           <select
             value={filtroNivel}
             onChange={(e) => setFiltroNivel(e.target.value)}
-            className={styles.selectBox}
+            style={inputStyle}
           >
             <option value="todos">Todos os níveis</option>
             <option value="Básico">Básico</option>
@@ -315,28 +368,28 @@ const CRUDAdmin = () => {
         )}
       </div>
 
-      {/* --- ABA ALUNOS (TRADUZIDA) --- */}
+      {/* --- ABA ALUNOS --- */}
       {tabAtiva === 'aluno' && (
-        <div className={styles.contentSection}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
           {/* Formulário de Aluno */}
-          <div className={styles.formCard}>
-            <h2 className={styles.cardTitle}>
+          <div style={cardStyle}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 16 }}>
               {editandoAluno ? '✏️ Editar Aluno' : '➕ Adicionar Aluno'}
-            </h2>
-            <div className={styles.formGrid3}>
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
               <input
                 type="text"
                 placeholder="Nome"
                 value={novoAluno.nomealuno}
                 onChange={(e) => setNovoAluno({ ...novoAluno, nomealuno: e.target.value })}
-                className={styles.formInput}
+                style={inputStyle}
               />
               <input
                 type="email"
                 placeholder="Email"
                 value={novoAluno.emailaluno}
                 onChange={(e) => setNovoAluno({ ...novoAluno, emailaluno: e.target.value })}
-                className={styles.formInput}
+                style={{ ...inputStyle, opacity: editandoAluno ? 0.5 : 1 }}
                 disabled={!!editandoAluno}
               />
               <input
@@ -344,13 +397,13 @@ const CRUDAdmin = () => {
                 placeholder={editandoAluno ? 'Nova Senha (opcional)' : 'Senha'}
                 value={novoAluno.senhaaluno}
                 onChange={(e) => setNovoAluno({ ...novoAluno, senhaaluno: e.target.value })}
-                className={styles.formInput}
+                style={inputStyle}
               />
             </div>
-            <div className={styles.buttonGroup}>
+            <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
               <button
                 onClick={editandoAluno ? salvarEdicaoAluno : criarAluno}
-                className={classNames(styles.button, styles.buttonPrimary)}
+                style={buttonStyle}
               >
                 {editandoAluno ? '💾 Salvar' : '➕ Adicionar'}
               </button>
@@ -360,7 +413,7 @@ const CRUDAdmin = () => {
                     setEditandoAluno(null);
                     setNovoAluno({ nomealuno: '', emailaluno: '', senhaaluno: '' });
                   }}
-                  className={classNames(styles.button, styles.buttonSecondary)}
+                  style={buttonStyle}
                 >
                   ❌ Cancelar
                 </button>
@@ -369,21 +422,21 @@ const CRUDAdmin = () => {
           </div>
 
           {/* Lista de Alunos */}
-          <div className={styles.listContainer}>
-            <h2 className={styles.cardTitle}>📋 Lista de Alunos</h2>
-            <div className={styles.professorList}> {/* Reutilizando o estilo da lista de prof */ }
+          <div style={cardStyle}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 16 }}>📋 Lista de Alunos</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {alunosFiltrados.length === 0 ? (
-                <p className={styles.emptyMessage}>Nenhum aluno encontrado</p>
+                <p style={{ textAlign: 'center', color: '#9ca3af', padding: '32px 0' }}>Nenhum aluno encontrado</p>
               ) : (
                 alunosFiltrados.map((a) => (
-                  <div key={a.alunoId} className={styles.professorItem}> {/* Reutilizando o estilo */ }
-                    <div className={styles.itemInfo}>
-                      <p className={styles.itemTitle}>{a.nomealuno}</p>
-                      <p className={styles.itemSubtitle}>{a.emailaluno}</p>
+                  <div key={a.alunoId} style={{ ...cardStyle, padding: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
+                    <div>
+                      <p style={{ fontWeight: 600, fontSize: 16 }}>{a.nomealuno}</p>
+                      <p style={{ fontSize: 14, color: '#9ca3af' }}>{a.emailaluno}</p>
                     </div>
-                    <div className={styles.itemActions}>
-                      <button onClick={() => editarAluno(a)} className={classNames(styles.button, styles.buttonSmall, styles.buttonPrimary)}>✏️ Editar</button>
-                      <button onClick={() => deletarAluno(a.alunoId)} className={classNames(styles.button, styles.buttonSmall, styles.buttonDanger)}>🗑️ Excluir</button>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <button onClick={() => editarAluno(a)} style={buttonStyle}>✏️ Editar</button>
+                      <button onClick={() => deletarAluno(a.alunoId)} style={{ ...buttonStyle, background: '#dc2626' }}>🗑️ Excluir</button>
                     </div>
                   </div>
                 ))
@@ -392,44 +445,42 @@ const CRUDAdmin = () => {
           </div>
         </div>
       )}
-      {/* --- FIM DA ABA ALUNOS --- */}
 
-
-      {/* Tab de Professores (Já estava correta) */}
+      {/* Tab de Professores */}
       {tabAtiva === 'professores' && (
-        <div className={styles.contentSection}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
           {/* Formulário */}
-          <div className={styles.formCard}>
-            <h2 className={styles.cardTitle}>
+          <div style={cardStyle}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 16 }}>
               {editandoProfessor ? '✏️ Editar Professor' : '➕ Adicionar Professor'}
-            </h2>
-            <div className={styles.formGrid3}>
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
               <input
                 type="text"
                 placeholder="Nome"
                 value={novoProfessor.nomeprofessor}
                 onChange={(e) => setNovoProfessor({ ...novoProfessor, nomeprofessor: e.target.value })}
-                className={styles.formInput}
+                style={inputStyle}
               />
               <input
                 type="email"
                 placeholder="Email"
                 value={novoProfessor.emailprofessor}
                 onChange={(e) => setNovoProfessor({ ...novoProfessor, emailprofessor: e.target.value })}
-                className={styles.formInput}
+                style={inputStyle}
               />
               <input
                 type="password"
-                placeholder="Senha" // O merge tinha 'placeholder={editandoProfessor ? 'Nova Senha (opcional)' : 'Senha'}'
+                placeholder="Senha"
                 value={novoProfessor.senhaprofessor}
                 onChange={(e) => setNovoProfessor({ ...novoProfessor, senhaprofessor: e.target.value })}
-                className={styles.formInput}
+                style={inputStyle}
               />
             </div>
-            <div className={styles.buttonGroup}>
+            <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
               <button
                 onClick={editandoProfessor ? salvarEdicaoProfessor : criarProfessor}
-                className={classNames(styles.button, styles.buttonPrimary)}
+                style={buttonStyle}
               >
                 {editandoProfessor ? '💾 Salvar' : '➕ Adicionar'}
               </button>
@@ -439,7 +490,7 @@ const CRUDAdmin = () => {
                     setEditandoProfessor(null);
                     setNovoProfessor({ nomeprofessor: '', emailprofessor: '', senhaprofessor: '' });
                   }}
-                  className={classNames(styles.button, styles.buttonSecondary)}
+                  style={buttonStyle}
                 >
                   ❌ Cancelar
                 </button>
@@ -448,22 +499,22 @@ const CRUDAdmin = () => {
           </div>
 
           {/* Lista */}
-          <div className={styles.listContainer}>
-            <h2 className={styles.cardTitle}>📋 Lista de Professores</h2>
-            <div className={styles.professorList}>
+          <div style={cardStyle}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 16 }}>📋 Lista de Professores</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
               {professoresFiltrados.length === 0 ? (
-                <p className={styles.emptyMessage}>Nenhum professor encontrado</p>
+                <p style={{ textAlign: 'center', color: '#9ca3af', padding: '32px 0' }}>Nenhum professor encontrado</p>
               ) : (
                 professoresFiltrados.map((p) => (
-                  <div key={p.professorId} className={styles.professorItem}>
-                    <div className={styles.itemInfo}>
-                      <p className={styles.itemTitle}>{p.nomeprofessor}</p>
-                      <p className={styles.itemSubtitle}>{p.emailprofessor}</p>
+                  <div key={p.professorId} style={{ ...cardStyle, padding: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
+                    <div>
+                      <p style={{ fontWeight: 600, fontSize: 16 }}>{p.nomeprofessor}</p>
+                      <p style={{ fontSize: 14, color: '#9ca3af' }}>{p.emailprofessor}</p>
                     </div>
-                    <div className={styles.itemActions}>
-                      <button onClick={() => verDetalhesProfessor(p.professorId)} className={classNames(styles.button, styles.buttonSmall, styles.buttonSuccess)}>📄 Detalhes</button>
-                      <button onClick={() => editarProfessor(p)} className={classNames(styles.button, styles.buttonSmall, styles.buttonPrimary)}>✏️ Editar</button>
-                      <button onClick={() => deletarProfessor(p.professorId)} className={classNames(styles.button, styles.buttonSmall, styles.buttonDanger)}>🗑️ Excluir</button>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <button onClick={() => verDetalhesProfessor(p.professorId)} style={buttonStyle}>📄 Detalhes</button>
+                      <button onClick={() => editarProfessor(p)} style={buttonStyle}>✏️ Editar</button>
+                      <button onClick={() => deletarProfessor(p.professorId)} style={{ ...buttonStyle, background: '#dc2626' }}>🗑️ Excluir</button>
                     </div>
                   </div>
                 ))
@@ -475,31 +526,31 @@ const CRUDAdmin = () => {
 
       {/* Tab de Cursos */}
       {tabAtiva === 'cursos' && (
-        <div className={styles.contentSection}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
           {/* Formulário */}
-          <div className={styles.formCard}>
-            <h2 className={styles.cardTitle}>
+          <div style={cardStyle}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 16 }}>
               {editandoCurso ? '✏️ Editar Curso' : '➕ Adicionar Curso'}
-            </h2>
-            <div className={styles.formGrid4}>
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 12 }}>
               <input
                 type="text"
                 placeholder="Nome do Curso"
                 value={novoCurso.nomeCurso}
                 onChange={(e) => setNovoCurso({ ...novoCurso, nomeCurso: e.target.value })}
-                className={styles.formInput}
+                style={inputStyle}
               />
               <input
                 type="number"
                 placeholder="Duração (horas)"
                 value={novoCurso.duracao}
                 onChange={(e) => setNovoCurso({ ...novoCurso, duracao: parseInt(e.target.value) || 0 })}
-                className={styles.formInput}
+                style={inputStyle}
               />
               <select
                 value={novoCurso.nivel}
                 onChange={(e) => setNovoCurso({ ...novoCurso, nivel: e.target.value as 'Básico' | 'Intermediário' | 'Avançado' })}
-                className={styles.formSelect}
+                style={inputStyle}
               >
                 <option value="Básico">Básico</option>
                 <option value="Intermediário">Intermediário</option>
@@ -508,7 +559,7 @@ const CRUDAdmin = () => {
               <select
                 value={novoCurso.professorId}
                 onChange={(e) => setNovoCurso({ ...novoCurso, professorId: e.target.value })}
-                className={styles.formSelect}
+                style={inputStyle}
               >
                 <option value="">Selecionar Professor</option>
                 {professores.map((p) => (
@@ -518,10 +569,10 @@ const CRUDAdmin = () => {
                 ))}
               </select>
             </div>
-            <div className={styles.buttonGroup}>
+            <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
               <button
                 onClick={editandoCurso ? salvarEdicaoCurso : criarCurso}
-                className={classNames(styles.button, styles.buttonPrimary)}
+                style={buttonStyle}
               >
                 {editandoCurso ? '💾 Salvar' : '➕ Adicionar'}
               </button>
@@ -531,7 +582,7 @@ const CRUDAdmin = () => {
                     setEditandoCurso(null);
                     setNovoCurso({ nomeCurso: '', duracao: 0, nivel: 'Básico', professorId: '' });
                   }}
-                  className={classNames(styles.button, styles.buttonSecondary)}
+                  style={buttonStyle}
                 >
                   ❌ Cancelar
                 </button>
@@ -540,39 +591,27 @@ const CRUDAdmin = () => {
           </div>
 
           {/* Lista de Cursos em Cards */}
-          <div className={styles.courseGrid}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 24 }}>
             {cursosFiltrados.length === 0 ? (
-              <div className={styles.emptyMessageCard}>
-                <p>Nenhum curso encontrado</p>
+              <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '32px 0', ...cardStyle }}>
+                <p style={{ color: '#9ca3af' }}>Nenhum curso encontrado</p>
               </div>
             ) : (
               cursosFiltrados.map((c) => (
-                <div key={c.cursoId} className={styles.courseCard}>
-                  <div className={styles.cardHeader}>
-                    <h3 className={styles.itemTitle}>{c.nomeCurso}</h3>
-                    <span className={classNames(
-                      styles.badge,
-                      c.nivel === 'Básico' && styles.badgeGreen,
-                      c.nivel === 'Intermediário' && styles.badgeYellow,
-                      c.nivel === 'Avançado' && styles.badgeRed
-                    )}>
-                      {c.nivel}
-                    </span>
+                <div key={c.cursoId} style={{ ...cardStyle, padding: 22 }}>
+                  <div style={{ fontWeight: 800, marginBottom: 8, fontSize: 18 }}>{c.nomeCurso}</div>
+                  <div style={{ fontSize: 14, color: '#9ca3af' }}>{c.nivel}</div>
+                  <div style={{ fontSize: 14, color: '#9ca3af', marginBottom: 10 }}>{c.duracao} horas</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8, marginTop: 8 }}>
+                    <div style={{ background: '#111827', borderRadius: 6, padding: 8 }}>
+                      <div style={{ fontSize: 14, color: '#9ca3af', textAlign: 'center' }}>Professor</div>
+                      <div style={{ fontSize: 22, fontWeight: 700, textAlign: 'center' }}>{getProfessorNome(c.professorId).substring(0, 10)}</div>
+                    </div>
                   </div>
-
-                  <div className={styles.cardBody}>
-                    <p className={styles.cardText}>
-                      <span className={styles.fontMedium}>Duração:</span> {c.duracao} horas
-                    </p>
-                    <p className={styles.cardText}>
-                      <span className={styles.fontMedium}>Professor:</span> {getProfessorNome(c.professorId)}
-                    </p>
-                  </div>
-
-                  <div className={styles.itemActions}>
-                    <button onClick={() => verDetalhesCurso(c.cursoId)} className={classNames(styles.button, styles.buttonSmall, styles.buttonSuccess, styles.buttonFlex1)}>📄 Detalhes</button>
-                    <button onClick={() => editarCurso(c)} className={classNames(styles.button, styles.buttonSmall, styles.buttonPrimary)}>✏️</button>
-                    <button onClick={() => deletarCurso(c.cursoId)} className={classNames(styles.button, styles.buttonSmall, styles.buttonDanger)}>🗑️</button>
+                  <div style={{ display: 'flex', gap: 12, marginTop: 12 }}>
+                    <button onClick={() => verDetalhesCurso(c.cursoId)} style={{ ...buttonStyle, flex: 1 }}>📄 Detalhes</button>
+                    <button onClick={() => editarCurso(c)} style={buttonStyle}>✏️</button>
+                    <button onClick={() => deletarCurso(c.cursoId)} style={{ ...buttonStyle, background: '#dc2626' }}>🗑️</button>
                   </div>
                 </div>
               ))

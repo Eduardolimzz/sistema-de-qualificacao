@@ -7,7 +7,6 @@ import Login from './Pages/Login/Login';
 import Cadastro from './Pages/Cadastro/Cadastro';
 import PaginaHome from './Pages/Public/PaginaHome.jsx';
 import Catalogo from './Pages/Public/Catalogo';
-import AdminDashboard from './Pages/Admin/Dashboard';
 import CRUDAdmin from './Pages/Admin/CRUDAdmin';
 import ProfessorDetalhes from './Pages/Admin/ProfessorDetalhes';
 import CursoDetalhes from './Pages/Admin/CursoDetalhes';
@@ -17,6 +16,7 @@ import ProfessorAvaliacoes from './Pages/Professor/Avaliacoes';
 import ProfessorEventos from './Pages/Professor/Eventos';
 import ProfessorRelatorios from './Pages/Professor/Relatorios';
 import ProfessorLayout from './Pages/Professor/ProfessorLayout';
+import AdminLayout from './Pages/Admin/AdminLayout';
 import AlunoDashboard from './Pages/Aluno/Dashboard';
 import MenuLateral from './componentes/MenuLateral/MenuLateral';
 import Topo from './componentes/Topo/Topo';
@@ -81,12 +81,12 @@ function App() {
       <Route
         path="/admin"
         element={
-        <PrivateRoute>
-            <div><Outlet /></div>
-        </PrivateRoute>
+          <PrivateRoute>
+            <AdminLayout />
+          </PrivateRoute>
         }
       >
-        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route index element={<CRUDAdmin />} />
         <Route path="crud" element={<CRUDAdmin />} />
         <Route path="professor/:professorId" element={<ProfessorDetalhes />} />
         <Route path="curso/:cursoId" element={<CursoDetalhes />} />
