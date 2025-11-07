@@ -1,6 +1,8 @@
 package com.sistema_de_qualificacao.sistema_de_qualificacao.controller;
 
 import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.CreateAlunoDto;
+import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.LoginRequestDto;
+import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.LoginResponseDto;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.UpdateAlunoDto;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.entity.Aluno;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.service.AlunoService;
@@ -26,6 +28,21 @@ public class AlunoController {
     public ResponseEntity<Aluno> createAluno(@RequestBody CreateAlunoDto createAlunoDto){
         var alunoId = alunoService.createAluno(createAlunoDto);
         return ResponseEntity.created(URI.create("/v1/alunos/" + alunoId.toString())).build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto loginDto) {
+        try {
+            // 1. Chama o método que você acabou de criar no Service
+            LoginResponseDto response = alunoService.autenticarAluno(loginDto);
+
+            // 2. Se deu certo, retorna 200 OK com o token e a role
+            return ResponseEntity.ok(response);
+
+        } catch (RuntimeException e) {
+            // 3. Se o service deu erro (senha/email errado), retorna 401
+            return ResponseEntity.status(401).body(null);
+        }
     }
 
     @GetMapping("/{alunoId}")
