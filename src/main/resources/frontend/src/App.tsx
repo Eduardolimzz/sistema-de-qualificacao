@@ -4,9 +4,9 @@ import Layout from './componentes/Layout'; // Layout Público
 import AlunoLayout from './Pages/Aluno/AlunoLayout';
 import PrivateRoute from './components/PrivateRoute';
 import Login from './Pages/Login/Login';
+import Cadastro from './Pages/Cadastro/Cadastro';
 import PaginaHome from './Pages/Public/PaginaHome.jsx';
 import Catalogo from './Pages/Public/Catalogo';
-import AdminDashboard from './Pages/Admin/Dashboard';
 import CRUDAdmin from './Pages/Admin/CRUDAdmin';
 import ProfessorDetalhes from './Pages/Admin/ProfessorDetalhes';
 import CursoDetalhes from './Pages/Admin/CursoDetalhes';
@@ -16,6 +16,7 @@ import ProfessorAvaliacoes from './Pages/Professor/Avaliacoes';
 import ProfessorEventos from './Pages/Professor/Eventos';
 import ProfessorRelatorios from './Pages/Professor/Relatorios';
 import ProfessorLayout from './Pages/Professor/ProfessorLayout';
+import AdminLayout from './Pages/Admin/AdminLayout';
 import AlunoDashboard from './Pages/Aluno/Dashboard';
 import MenuLateral from './componentes/MenuLateral/MenuLateral';
 import Topo from './componentes/Topo/Topo';
@@ -32,6 +33,7 @@ function App() {
     <Routes>
       {/* Rota 1: Login (página única, sem layout) */}
       <Route path="/login" element={<Login />} />
+      <Route path="/cadastro" element={<Cadastro />} />
 
       {/* Rota 2: Layout Público (para visitantes) */}
       {/* Somente as páginas públicas ficam aninhadas aqui */}
@@ -45,9 +47,9 @@ function App() {
       <Route
         path="/aluno"
         element={
-          <PrivateRoute>
+            <PrivateRoute>
             <AlunoLayout />
-          </PrivateRoute>
+        </PrivateRoute>
         }
       >
       <Route index element={<AlunoDashboard />} />
@@ -79,12 +81,12 @@ function App() {
       <Route
         path="/admin"
         element={
-
-            <div><Outlet /></div>
-
+          <PrivateRoute>
+            <AdminLayout />
+          </PrivateRoute>
         }
       >
-        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route index element={<CRUDAdmin />} />
         <Route path="crud" element={<CRUDAdmin />} />
         <Route path="professor/:professorId" element={<ProfessorDetalhes />} />
         <Route path="curso/:cursoId" element={<CursoDetalhes />} />

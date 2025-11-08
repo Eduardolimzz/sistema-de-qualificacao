@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProfessorService from '../../Services/professorService';
 import AlunoService from '../../Services/AlunoService';
@@ -79,6 +79,11 @@ const CRUDAdmin = () => {
   };
 
   const criarProfessor = async () => {
+    if (!novoProfessor.nomeprofessor || !novoProfessor.emailprofessor || !novoProfessor.senhaprofessor) {
+      alert('Por favor, preencha todos os campos obrigatórios!');
+      return;
+    }
+
     try {
       console.log('Criando professor:', novoProfessor);
       const resultado = await ProfessorService.criarProfessor(novoProfessor);
@@ -88,7 +93,7 @@ const CRUDAdmin = () => {
       alert('Professor criado com sucesso!');
     } catch (e: any) {
       console.error('Erro ao criar professor:', e);
-      const mensagem = e.response?.data?.mensagem || e.message || 'Erro ao criar professor';
+      const mensagem = e.response?.data?.mensagem || e.response?.data?.message || e.message || 'Erro ao criar professor';
       alert(`Erro: ${mensagem}`);
     }
   };
@@ -185,6 +190,11 @@ const CRUDAdmin = () => {
   };
 
   const criarAluno = async () => {
+    if (!novoAluno.nomealuno || !novoAluno.emailaluno || !novoAluno.senhaaluno) {
+      alert('Por favor, preencha todos os campos obrigatórios!');
+      return;
+    }
+
     try {
       const dto = {
         nome: novoAluno.nomealuno,
@@ -197,7 +207,8 @@ const CRUDAdmin = () => {
       alert('Aluno criado com sucesso!');
     } catch (e: any) {
       console.error('Erro ao criar aluno:', e);
-      alert(`Erro: ${e.message || 'Erro ao criar aluno'}`);
+      const mensagemErro = e.response?.data?.mensagem || e.response?.data?.message || e.message || 'Erro ao criar aluno';
+      alert(`Erro: ${mensagemErro}`);
     }
   };
 
@@ -259,56 +270,105 @@ const CRUDAdmin = () => {
     return professor?.nomeprofessor || 'Não atribuído';
   };
 
-  return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
-      <h1 className="text-3xl font-bold mb-6 text-white">⚙️ Gerenciamento Completo</h1>
+  const cardStyle: React.CSSProperties = {
+    backgroundColor: '#1f2937',
+    borderRadius: 8,
+    padding: 16,
+    color: '#e5e7eb',
+    boxShadow: '0 1px 2px rgba(0,0,0,0.4)'
+  };
 
-      <div className="flex gap-4 mb-6 border-b border-gray-700">
+  const inputStyle: React.CSSProperties = {
+    padding: '8px 12px',
+    backgroundColor: '#111827',
+    border: '1px solid #1f2937',
+    borderRadius: 6,
+    color: '#e5e7eb',
+    fontSize: 14
+  };
+
+  const buttonStyle: React.CSSProperties = {
+    padding: '10px 12px',
+    borderRadius: 8,
+    background: '#111827',
+    color: '#e5e7eb',
+    border: '1px solid #1f2937',
+    fontSize: 15,
+    cursor: 'pointer'
+  };
+
+  return (
+    <div style={{ padding: 20, color: '#e5e7eb' }}>
+      <h2 style={{ textAlign: 'center', fontSize: 26, fontWeight: 800, margin: '8px 0 18px 0' }}>Gerenciamento Completo</h2>
+
+      {/* Tabs */}
+      <div style={{ display: 'flex', gap: 16, marginBottom: 24, borderBottom: '1px solid #373E47', paddingBottom: 8 }}>
         <button
           onClick={() => setTabAtiva('aluno')}
-          className={`px-6 py-3 font-semibold ${
-            tabAtiva === 'aluno'
-              ? 'border-b-2 border-blue-500 text-blue-400'
-              : 'text-gray-400 hover:text-blue-400'
-          }`}
+          style={{
+            padding: '8px 16px',
+            fontWeight: 600,
+            color: tabAtiva === 'aluno' ? '#60A5FA' : '#9CA3AF',
+            borderBottom: tabAtiva === 'aluno' ? '2px solid #3B82F6' : '2px solid transparent',
+            background: 'transparent',
+            border: 'none',
+            borderBottomStyle: 'solid',
+            cursor: 'pointer'
+          }}
         >
           🧑‍🎓 Alunos ({alunos.length})
         </button>
         <button
           onClick={() => setTabAtiva('professores')}
-          className={`px-6 py-3 font-semibold ${
-            tabAtiva === 'professores'
-              ? 'border-b-2 border-blue-500 text-blue-400'
-              : 'text-gray-400 hover:text-blue-400'
-          }`}
+          style={{
+            padding: '8px 16px',
+            fontWeight: 600,
+            color: tabAtiva === 'professores' ? '#60A5FA' : '#9CA3AF',
+            borderBottom: tabAtiva === 'professores' ? '2px solid #3B82F6' : '2px solid transparent',
+            background: 'transparent',
+            border: 'none',
+            borderBottomStyle: 'solid',
+            cursor: 'pointer'
+          }}
         >
           👨‍🏫 Professores ({professores.length})
         </button>
         <button
           onClick={() => setTabAtiva('cursos')}
-          className={`px-6 py-3 font-semibold ${
-            tabAtiva === 'cursos'
-              ? 'border-b-2 border-blue-500 text-blue-400'
-              : 'text-gray-400 hover:text-blue-400'
-          }`}
+          style={{
+            padding: '8px 16px',
+            fontWeight: 600,
+            color: tabAtiva === 'cursos' ? '#60A5FA' : '#9CA3AF',
+            borderBottom: tabAtiva === 'cursos' ? '2px solid #3B82F6' : '2px solid transparent',
+            background: 'transparent',
+            border: 'none',
+            borderBottomStyle: 'solid',
+            cursor: 'pointer'
+          }}
         >
           🎓 Cursos ({cursos.length})
         </button>
       </div>
 
-      <div className="mb-6 flex gap-4">
+      {/* Busca */}
+      <div style={{ marginBottom: 24, display: 'flex', gap: 16, flexWrap: 'wrap' }}>
         <input
           type="text"
           placeholder="🔍 Buscar..."
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
-          className="flex-1 max-w-md px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:border-blue-500"
+          style={{
+            flex: 1,
+            minWidth: 200,
+            maxWidth: 400,
+            ...inputStyle
+          }}
         />
         {tabAtiva === 'cursos' && (
           <select
             value={filtroNivel}
             onChange={(e) => setFiltroNivel(e.target.value)}
-            className="px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white focus:border-blue-500"
+            style={inputStyle}
           >
             <option value="todos">Todos os níveis</option>
             <option value="Básico">Básico</option>
@@ -318,26 +378,28 @@ const CRUDAdmin = () => {
         )}
       </div>
 
+      {/* --- ABA ALUNOS --- */}
       {tabAtiva === 'aluno' && (
-        <div className="space-y-6">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold mb-4 text-white">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+          {/* Formulário de Aluno */}
+          <div style={cardStyle}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 16 }}>
               {editandoAluno ? '✏️ Editar Aluno' : '➕ Adicionar Aluno'}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
               <input
                 type="text"
                 placeholder="Nome"
                 value={novoAluno.nomealuno}
                 onChange={(e) => setNovoAluno({ ...novoAluno, nomealuno: e.target.value })}
-                className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+                style={inputStyle}
               />
               <input
                 type="email"
                 placeholder="Email"
                 value={novoAluno.emailaluno}
                 onChange={(e) => setNovoAluno({ ...novoAluno, emailaluno: e.target.value })}
-                className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+                style={{ ...inputStyle, opacity: editandoAluno ? 0.5 : 1 }}
                 disabled={!!editandoAluno}
               />
               <input
@@ -345,13 +407,13 @@ const CRUDAdmin = () => {
                 placeholder={editandoAluno ? 'Nova Senha (opcional)' : 'Senha'}
                 value={novoAluno.senhaaluno}
                 onChange={(e) => setNovoAluno({ ...novoAluno, senhaaluno: e.target.value })}
-                className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+                style={inputStyle}
               />
             </div>
-            <div className="mt-4 flex gap-2">
+            <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
               <button
                 onClick={editandoAluno ? salvarEdicaoAluno : criarAluno}
-                className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                style={buttonStyle}
               >
                 {editandoAluno ? '💾 Salvar' : '➕ Adicionar'}
               </button>
@@ -361,7 +423,7 @@ const CRUDAdmin = () => {
                     setEditandoAluno(null);
                     setNovoAluno({ nomealuno: '', emailaluno: '', senhaaluno: '' });
                   }}
-                  className="px-6 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+                  style={buttonStyle}
                 >
                   ❌ Cancelar
                 </button>
@@ -369,66 +431,66 @@ const CRUDAdmin = () => {
             </div>
           </div>
 
-          <div className="bg-gray-800 rounded-lg shadow-lg">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-4 text-white">📋 Lista de Alunos</h2>
-              <div className="space-y-2">
-                {alunosFiltrados.length === 0 ? (
-                  <p className="text-gray-400 text-center py-8">Nenhum aluno encontrado</p>
-                ) : (
-                  alunosFiltrados.map((a) => (
-                    <div key={a.alunoId} className="flex justify-between items-center p-4 bg-gray-900 border border-gray-700 rounded-lg hover:bg-gray-750">
-                      <div>
-                        <p className="font-semibold text-lg text-white">{a.nomealuno}</p>
-                        <p className="text-sm text-gray-400">{a.emailaluno}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <button onClick={() => editarAluno(a)} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">✏️ Editar</button>
-                        <button onClick={() => deletarAluno(a.alunoId)} className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">🗑️ Excluir</button>
-                      </div>
+          {/* Lista de Alunos */}
+          <div style={cardStyle}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 16 }}>📋 Lista de Alunos</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {alunosFiltrados.length === 0 ? (
+                <p style={{ textAlign: 'center', color: '#9ca3af', padding: '32px 0' }}>Nenhum aluno encontrado</p>
+              ) : (
+                alunosFiltrados.map((a) => (
+                  <div key={a.alunoId} style={{ ...cardStyle, padding: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
+                    <div>
+                      <p style={{ fontWeight: 600, fontSize: 16 }}>{a.nomealuno}</p>
+                      <p style={{ fontSize: 14, color: '#9ca3af' }}>{a.emailaluno}</p>
                     </div>
-                  ))
-                )}
-              </div>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <button onClick={() => editarAluno(a)} style={buttonStyle}>✏️ Editar</button>
+                      <button onClick={() => deletarAluno(a.alunoId)} style={{ ...buttonStyle, background: '#dc2626' }}>🗑️ Excluir</button>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
       )}
 
+      {/* Tab de Professores */}
       {tabAtiva === 'professores' && (
-        <div className="space-y-6">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold mb-4 text-white">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+          {/* Formulário */}
+          <div style={cardStyle}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 16 }}>
               {editandoProfessor ? '✏️ Editar Professor' : '➕ Adicionar Professor'}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            </h3>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 12 }}>
               <input
                 type="text"
                 placeholder="Nome"
                 value={novoProfessor.nomeprofessor}
                 onChange={(e) => setNovoProfessor({ ...novoProfessor, nomeprofessor: e.target.value })}
-                className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
+                style={inputStyle}
               />
               <input
                 type="email"
                 placeholder="Email"
                 value={novoProfessor.emailprofessor}
                 onChange={(e) => setNovoProfessor({ ...novoProfessor, emailprofessor: e.target.value })}
-                className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
-                disabled={!!editandoProfessor}
+                style={inputStyle}
               />
               <input
                 type="password"
-                placeholder={editandoProfessor ? 'Nova Senha (opcional)' : 'Senha'}
+                placeholder="Senha"
                 value={novoProfessor.senhaprofessor}
                 onChange={(e) => setNovoProfessor({ ...novoProfessor, senhaprofessor: e.target.value })}
                 className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
               />
             </div>
-            <div className="mt-4 flex gap-2">
+            <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
               <button
                 onClick={editandoProfessor ? salvarEdicaoProfessor : criarProfessor}
-                className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                style={buttonStyle}
               >
                 {editandoProfessor ? '💾 Salvar' : '➕ Adicionar'}
               </button>
@@ -438,7 +500,7 @@ const CRUDAdmin = () => {
                     setEditandoProfessor(null);
                     setNovoProfessor({ nomeprofessor: '', emailprofessor: '', senhaprofessor: '' });
                   }}
-                  className="px-6 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+                  style={buttonStyle}
                 >
                   ❌ Cancelar
                 </button>
@@ -446,37 +508,38 @@ const CRUDAdmin = () => {
             </div>
           </div>
 
-          <div className="bg-gray-800 rounded-lg shadow-lg">
-            <div className="p-6">
-              <h2 className="text-xl font-semibold mb-4 text-white">📋 Lista de Professores</h2>
-              <div className="space-y-2">
-                {professoresFiltrados.length === 0 ? (
-                  <p className="text-gray-400 text-center py-8">Nenhum professor encontrado</p>
-                ) : (
-                  professoresFiltrados.map((p) => (
-                    <div key={p.professorId} className="flex justify-between items-center p-4 bg-gray-900 border border-gray-700 rounded-lg hover:bg-gray-750">
-                      <div>
-                        <p className="font-semibold text-lg text-white">{p.nomeprofessor}</p>
-                        <p className="text-sm text-gray-400">{p.emailprofessor}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <button onClick={() => verDetalhesProfessor(p.professorId)} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm">📄 Detalhes</button>
-                        <button onClick={() => editarProfessor(p)} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">✏️ Editar</button>
-                        <button onClick={() => deletarProfessor(p.professorId)} className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">🗑️ Excluir</button>
-                      </div>
+          {/* Lista */}
+          <div style={cardStyle}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 16 }}>📋 Lista de Professores</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {professoresFiltrados.length === 0 ? (
+                <p style={{ textAlign: 'center', color: '#9ca3af', padding: '32px 0' }}>Nenhum professor encontrado</p>
+              ) : (
+                professoresFiltrados.map((p) => (
+                  <div key={p.professorId} style={{ ...cardStyle, padding: 12, display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
+                    <div>
+                      <p style={{ fontWeight: 600, fontSize: 16 }}>{p.nomeprofessor}</p>
+                      <p style={{ fontSize: 14, color: '#9ca3af' }}>{p.emailprofessor}</p>
                     </div>
-                  ))
-                )}
-              </div>
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <button onClick={() => verDetalhesProfessor(p.professorId)} style={buttonStyle}>📄 Detalhes</button>
+                      <button onClick={() => editarProfessor(p)} style={buttonStyle}>✏️ Editar</button>
+                      <button onClick={() => deletarProfessor(p.professorId)} style={{ ...buttonStyle, background: '#dc2626' }}>🗑️ Excluir</button>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         </div>
       )}
 
+      {/* Tab de Cursos */}
       {tabAtiva === 'cursos' && (
-        <div className="space-y-6">
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg">
-            <h2 className="text-xl font-semibold mb-4 text-white">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+          {/* Formulário */}
+          <div style={cardStyle}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 16 }}>
               {editandoCurso ? '✏️ Editar Curso' : '➕ Adicionar Curso'}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -506,7 +569,7 @@ const CRUDAdmin = () => {
               <select
                 value={novoCurso.professorId}
                 onChange={(e) => setNovoCurso({ ...novoCurso, professorId: e.target.value })}
-                className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white"
+                style={inputStyle}
               >
                 <option value="">Selecionar Professor</option>
                 {professores.map((p) => (
@@ -516,10 +579,10 @@ const CRUDAdmin = () => {
                 ))}
               </select>
             </div>
-            <div className="mt-4 flex gap-2">
+            <div style={{ display: 'flex', gap: 12, marginTop: 16 }}>
               <button
                 onClick={editandoCurso ? salvarEdicaoCurso : criarCurso}
-                className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                style={buttonStyle}
               >
                 {editandoCurso ? '💾 Salvar' : '➕ Adicionar'}
               </button>
@@ -529,7 +592,7 @@ const CRUDAdmin = () => {
                     setEditandoCurso(null);
                     setNovoCurso({ nomecurso: '', duracao_curso: '', nivel_curso: 'Básico' });
                   }}
-                  className="px-6 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
+                  style={buttonStyle}
                 >
                   ❌ Cancelar
                 </button>
@@ -537,10 +600,11 @@ const CRUDAdmin = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Lista de Cursos em Cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 24 }}>
             {cursosFiltrados.length === 0 ? (
-              <div className="col-span-full text-center py-8 bg-gray-800 rounded-lg shadow-lg">
-                <p className="text-gray-400">Nenhum curso encontrado</p>
+              <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '32px 0', ...cardStyle }}>
+                <p style={{ color: '#9ca3af' }}>Nenhum curso encontrado</p>
               </div>
             ) : (
               cursosFiltrados.map((c) => (
@@ -561,11 +625,10 @@ const CRUDAdmin = () => {
                       <span className="font-medium">Duração:</span> {c.duracao_curso}
                     </p>
                   </div>
-
-                  <div className="flex gap-2">
-                    <button onClick={() => verDetalhesCurso(c.cursoId)} className="flex-1 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm">📄 Detalhes</button>
-                    <button onClick={() => editarCurso(c)} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">✏️</button>
-                    <button onClick={() => deletarCurso(c.cursoId)} className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">🗑️</button>
+                  <div style={{ display: 'flex', gap: 12, marginTop: 12 }}>
+                    <button onClick={() => verDetalhesCurso(c.cursoId)} style={{ ...buttonStyle, flex: 1 }}>📄 Detalhes</button>
+                    <button onClick={() => editarCurso(c)} style={buttonStyle}>✏️</button>
+                    <button onClick={() => deletarCurso(c.cursoId)} style={{ ...buttonStyle, background: '#dc2626' }}>🗑️</button>
                   </div>
                 </div>
               ))

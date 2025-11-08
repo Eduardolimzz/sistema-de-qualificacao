@@ -23,19 +23,21 @@ const AlunoService = {
     }
   },
 
-  /**
-   * Busca todos os alunos
-   */
-  carregarAlunos: async () => {
-    try {
-      // Resultado: GET http://localhost:8080/v1/alunos
-      const response = await api.get(BASE_PATH);
-      return response.data;
-    } catch (error) {
-      console.error("Erro ao buscar alunos:", error);
-      throw error;
-    }
-  },
+    //  Registra um novo usuário
+      cadastrar: async (dadosDoUsuario) => {
+          try {
+            const response = await api.post(`/v1/alunos`, dadosDoUsuario);
+          return response.data;
+        } catch (error) {
+          console.error("Erro ao cadastrar:", error);
+          throw error;
+        }
+      },
+
+    carregarAlunos: async () => {
+        const response = await api.get(BASE_PATH);
+        return response.data;
+    },
 
   /**
    * Deleta um aluno

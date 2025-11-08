@@ -1,0 +1,316 @@
+:root {
+  --cor-fundo-pagina: #111827;
+  --cor-fundo-card: #1F2937;
+  --cor-fundo-input: #374151;
+  --cor-texto-principal: #FFFFFF;
+  --cor-texto-secundario: #9CA3AF;
+  --cor-borda: #374151;
+  --cor-azul: #3B82F6;
+  --cor-azul-hover: #1D4ED8;
+  --cor-verde: #16A34A;
+  --cor-vermelho: #DC2626;
+  --cor-amarelo: #D97706;
+}
+
+.pageContainer {
+  min-height: 100vh;
+  background-color: #111827;
+  color: #FFFFFF;
+  padding: 1.5rem;
+}
+
+.pageTitle {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #FFFFFF;
+}
+
+.tabContainer {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #374151;
+}
+
+.tabButton {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  color: #9CA3AF;
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.tabButton:hover {
+  color: #60A5FA;
+}
+
+.tabActive {
+  border-bottom-color: #3B82F6;
+  color: #60A5FA;
+}
+
+.searchContainer {
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.searchInput {
+  flex: 1 1 0%;
+  min-width: 200px;
+  max-width: 28rem;
+  padding: 0.5rem 1rem;
+  background-color: #1F2937;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  color: #FFFFFF;
+}
+
+.selectBox {
+  padding: 0.5rem 1rem;
+  background-color: #1F2937;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  color: #FFFFFF;
+}
+
+.contentSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formCard,
+.listContainer {
+  background-color: #1F2937;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #FFFFFF;
+}
+
+.formGrid3,
+.formGrid4 {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 768px) {
+  .formGrid3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .formGrid4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.formInput,
+.formSelect {
+  padding: 0.5rem 1rem;
+  background-color: #374151;
+  border: 1px solid #4B5563;
+  border-radius: 0.25rem;
+  color: #FFFFFF;
+}
+
+.buttonGroup {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.button {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s;
+}
+
+.buttonPrimary {
+  background-color: #2563EB;
+  color: #FFFFFF;
+}
+.buttonPrimary:hover {
+  background-color: #1D4ED8;
+}
+
+.buttonSecondary {
+  background-color: #374151;
+  color: #FFFFFF;
+}
+.buttonSecondary:hover {
+  background-color: #4B5563;
+}
+
+.buttonSuccess {
+  background-color: #16A34A;
+  color: #FFFFFF;
+}
+.buttonSuccess:hover {
+  background-color: #15803D;
+}
+
+.buttonDanger {
+  background-color: #DC2626;
+  color: #FFFFFF;
+}
+.buttonDanger:hover {
+  background-color: #B91C1C;
+}
+
+.buttonSmall {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.buttonFlex1 {
+  flex: 1 1 0%;
+}
+
+.professorList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.emptyMessage {
+  color: #9CA3AF;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.professorItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+  background-color: #111827;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+}
+
+.itemInfo {
+  flex-grow: 1;
+}
+
+.itemTitle {
+  font-weight: 600;
+  font-size: 1.125rem;
+  color: #FFFFFF;
+}
+
+.itemSubtitle {
+  font-size: 0.875rem;
+  color: #9CA3AF;
+}
+
+.itemActions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .professorItem {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.courseGrid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+@media (min-width: 768px) {
+  .courseGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .courseGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.emptyMessageCard {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  background-color: #1F2937;
+  border-radius: 0.5rem;
+  color: #9CA3AF;
+}
+
+.courseCard {
+  background-color: #1F2937;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  border: 1px solid #374151;
+  transition: box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.courseCard:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+
+.badgeGreen {
+  background-color: #16A34A;
+}
+.badgeYellow {
+  background-color: #D97706;
+}
+.badgeRed {
+  background-color: #DC2626;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+}
+
+.cardText {
+  font-size: 0.875rem;
+  color: #D1D5DB;
+}
+
+.fontMedium {
+  font-weight: 500;
+}
