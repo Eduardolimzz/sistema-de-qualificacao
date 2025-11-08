@@ -4,20 +4,17 @@ const authService = {
 
   login: async (credenciais) => {
     try {
-      // 1. A chamada (que a gente já corrigiu) "http://localhost:8080/v1/a"
-      const response = await api.post("/alunos/login", credenciais);
+      // 🔥 MUDANÇA: agora chama /auth/login ao invés de /alunos/login
+      const response = await api.post("/auth/login", credenciais);
 
-      // 2. Pega os dados que o backend mandou
-      // (Esperando: { token: "...", role: "...", nome: "..." })
       const token = response.data.token || response.data.jwt;
       const nome = response.data.nome;
-      const role = response.data.role;
+      const role = response.data.role; // 'aluno' ou 'professor'
 
       if (token) {
-        // 3. Salva TUDO no localStorage
         localStorage.setItem("authToken", token);
-        localStorage.setItem("userName", nome); // <-- SALVANDO O NOME
-        localStorage.setItem("userRole", role); // <-- SALVANDO A ROLE
+        localStorage.setItem("userName", nome);
+        localStorage.setItem("userRole", role);
       } else {
         console.warn("⚠️ Nenhum token retornado pelo servidor!");
       }
@@ -32,34 +29,20 @@ const authService = {
     }
   },
 
-  /**
-   * Faz logout limpando o token armazenado
-   */
   logout: () => {
-    // 4. Limpa TUDO no logout
     localStorage.removeItem("authToken");
     localStorage.removeItem("userName");
     localStorage.removeItem("userRole");
   },
 
-  /**
-   * Verifica se o usuário está autenticado
-   * @returns {boolean}
-   */
   isAuthenticated: () => {
     return !!localStorage.getItem("authToken");
   },
 
-  /**
-   * Retorna o token atual (caso precise usar diretamente)
-   */
   getToken: () => {
     return localStorage.getItem("authToken");
   },
 
-  /**
-   * (BÔNUS) Funções para pegar o nome e a role que salvamos
-   */
   getUserName: () => {
     return localStorage.getItem("userName");
   },

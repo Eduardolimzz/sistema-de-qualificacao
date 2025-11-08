@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProfessorService from '../../Services/professorService';
-import AlunoService from '../../Services/AlunoService'; // Corrigido de 'lunoService'
+import AlunoService from '../../Services/AlunoService';
+import CursoService from '../../Services/CursoService';
 
 type Tab = 'aluno' | 'professores' | 'cursos';
 
@@ -14,10 +15,9 @@ interface Professor {
 
 interface Curso {
   cursoId: string;
-  nomeCurso: string;
-  duracao: number;
-  nivel: 'Básico' | 'Intermediário' | 'Avançado';
-  professorId?: string;
+  nomecurso: string;
+  duracao_curso: string;
+  nivel_curso: string;
 }
 
 interface Aluno {
@@ -38,7 +38,7 @@ const CRUDAdmin = () => {
   const [filtroNivel, setFiltroNivel] = useState<string>('todos');
 
   const [novoProfessor, setNovoProfessor] = useState({ nomeprofessor: '', emailprofessor: '', senhaprofessor: '' });
-  const [novoCurso, setNovoCurso] = useState<{ nomeCurso: string; duracao: number; nivel: 'Básico' | 'Intermediário' | 'Avançado'; professorId: string }>({ nomeCurso: '', duracao: 0, nivel: 'Básico', professorId: '' });
+  const [novoCurso, setNovoCurso] = useState({ nomecurso: '', duracao_curso: '', nivel_curso: 'Básico' , professorId: ''});
   const [novoAluno, setNovoAluno] = useState({ nomealuno: '', emailaluno: '', senhaaluno: '' });
 
   const [editandoProfessor, setEditandoProfessor] = useState<Professor | null>(null);
@@ -62,12 +62,8 @@ const CRUDAdmin = () => {
 
   const carregarCursos = async () => {
     try {
-      const cursosMock: Curso[] = [
-        { cursoId: '1', nomeCurso: 'React Básico', duracao: 40, nivel: 'Básico', professorId: '1' },
-        { cursoId: '2', nomeCurso: 'Node.js Avançado', duracao: 60, nivel: 'Avançado', professorId: '2' },
-        { cursoId: '3', nomeCurso: 'TypeScript Intermediário', duracao: 30, nivel: 'Intermediário', professorId: '1' },
-      ];
-      setCursos(cursosMock);
+      const dados = await CursoService.carregarCursos();
+      setCursos(dados);
     } catch (e) {
       console.error('Erro ao carregar cursos:', e);
     }
@@ -130,14 +126,16 @@ const CRUDAdmin = () => {
   };
 
   const criarCurso = async () => {
+
+     if (!novoCurso.professorId) {
+         alert('⚠️ Você precisa selecionar um professor para criar o curso!');
+         return;
+        }
     try {
-      const novoCursoCompleto: Curso = {
-        cursoId: Date.now().toString(),
-        ...novoCurso,
-        professorId: novoCurso.professorId || undefined
-      };
-      setCursos([...cursos, novoCursoCompleto]);
-      setNovoCurso({ nomeCurso: '', duracao: 0, nivel: 'Básico', professorId: '' });
+      await CursoService.criarCurso(novoCurso);
+      setNovoCurso({ nomecurso: '', duracao_curso: '', nivel_curso: 'Básico', professorId: ''  });
+      carregarCursos();
+      alert('Curso criado com sucesso!');
     } catch (e) {
       console.error('Erro ao criar curso:', e);
       alert('Erro ao criar curso');
@@ -146,26 +144,38 @@ const CRUDAdmin = () => {
 
   const editarCurso = (curso: Curso) => {
     setEditandoCurso(curso);
-    setNovoCurso({ nomeCurso: curso.nomeCurso, duracao: curso.duracao, nivel: curso.nivel, professorId: curso.professorId || '' });
+    setNovoCurso({ nomecurso: curso.nomecurso, duracao_curso: curso.duracao_curso, nivel_curso: curso.nivel_curso, professorId: curso.professorId || '' });
   };
 
   const salvarEdicaoCurso = async () => {
     if (!editandoCurso) return;
+
+      if (!novoCurso.professorId) {
+        alert('⚠️ Você precisa selecionar um professor!');
+        return;
+      }
+
     try {
-      setCursos(cursos.map(c => c.cursoId === editandoCurso.cursoId ? { ...editandoCurso, ...novoCurso } : c));
+      await CursoService.atualizarCurso(editandoCurso.cursoId, novoCurso);
       setEditandoCurso(null);
-      setNovoCurso({ nomeCurso: '', duracao: 0, nivel: 'Básico', professorId: '' });
+      setNovoCurso({ nomecurso: '', duracao_curso: '', nivel_curso: 'Básico', professorId: '' });
+      carregarCursos();
+      alert('Curso atualizado com sucesso!');
     } catch (e) {
       console.error('Erro ao atualizar curso:', e);
+      alert('Erro ao atualizar curso');
     }
   };
 
   const deletarCurso = async (id: string) => {
     if (confirm('Tem certeza que deseja excluir este curso?')) {
       try {
-        setCursos(cursos.filter(c => c.cursoId !== id));
+        await CursoService.deletarCurso(id);
+        carregarCursos();
+        alert('Curso excluído com sucesso!');
       } catch (e) {
         console.error('Erro ao deletar curso:', e);
+        alert('Erro ao deletar curso');
       }
     }
   };
@@ -231,8 +241,8 @@ const CRUDAdmin = () => {
 
   const cursosFiltrados = cursos.filter(
     (c) => {
-      const matchBusca = c.nomeCurso.toLowerCase().includes(busca.toLowerCase());
-      const matchNivel = filtroNivel === 'todos' || c.nivel === filtroNivel;
+      const matchBusca = c.nomecurso.toLowerCase().includes(busca.toLowerCase());
+      const matchNivel = filtroNivel === 'todos' || c.nivel_curso === filtroNivel;
       return matchBusca && matchNivel;
     }
   );
@@ -411,7 +421,7 @@ const CRUDAdmin = () => {
                 type="password"
                 placeholder={editandoProfessor ? 'Nova Senha (opcional)' : 'Senha'}
                 value={novoProfessor.senhaprofessor}
-                onChange={(e) => setNovoProfessor({ ...novoProfessor, senhaprofessor: e.targe.value })}
+                onChange={(e) => setNovoProfessor({ ...novoProfessor, senhaprofessor: e.target.value })}
                 className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
               />
             </div>
@@ -469,24 +479,24 @@ const CRUDAdmin = () => {
             <h2 className="text-xl font-semibold mb-4 text-white">
               {editandoCurso ? '✏️ Editar Curso' : '➕ Adicionar Curso'}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <input
                 type="text"
                 placeholder="Nome do Curso"
-                value={novoCurso.nomeCurso}
-                onChange={(e) => setNovoCurso({ ...novoCurso, nomeCurso: e.target.value })}
+                value={novoCurso.nomecurso}
+                onChange={(e) => setNovoCurso({ ...novoCurso, nomecurso: e.target.value })}
                 className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
               />
               <input
-                type="number"
-                placeholder="Duração (horas)"
-                value={novoCurso.duracao}
-                onChange={(e) => setNovoCurso({ ...novoCurso, duracao: parseInt(e.target.value) || 0 })}
+                type="text"
+                placeholder="Duração (ex: 40h)"
+                value={novoCurso.duracao_curso}
+                onChange={(e) => setNovoCurso({ ...novoCurso, duracao_curso: e.target.value })}
                 className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white placeholder-gray-400"
               />
               <select
-                value={novoCurso.nivel}
-                onChange={(e) => setNovoCurso({ ...novoCurso, nivel: e.target.value as 'Básico' | 'Intermediário' | 'Avançado' })}
+                value={novoCurso.nivel_curso}
+                onChange={(e) => setNovoCurso({ ...novoCurso, nivel_curso: e.target.value })}
                 className="px-4 py-2 bg-gray-700 border border-gray-600 rounded text-white"
               >
                 <option value="Básico">Básico</option>
@@ -517,7 +527,7 @@ const CRUDAdmin = () => {
                 <button
                   onClick={() => {
                     setEditandoCurso(null);
-                    setNovoCurso({ nomeCurso: '', duracao: 0, nivel: 'Básico', professorId: '' });
+                    setNovoCurso({ nomecurso: '', duracao_curso: '', nivel_curso: 'Básico' });
                   }}
                   className="px-6 py-2 bg-gray-700 text-white rounded hover:bg-gray-600"
                 >
@@ -536,22 +546,19 @@ const CRUDAdmin = () => {
               cursosFiltrados.map((c) => (
                 <div key={c.cursoId} className="bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow border border-gray-700">
                   <div className="flex justify-between items-start mb-4">
-                    <h3 className="text-lg font-semibold text-white">{c.nomeCurso}</h3>
+                    <h3 className="text-lg font-semibold text-white">{c.nomecurso}</h3>
                     <span className={`px-2 py-1 rounded text-xs font-medium ${
-                      c.nivel === 'Básico' ? 'bg-green-600 text-white' :
-                      c.nivel === 'Intermediário' ? 'bg-yellow-500 text-white' :
+                      c.nivel_curso === 'Básico' ? 'bg-green-600 text-white' :
+                      c.nivel_curso === 'Intermediário' ? 'bg-yellow-500 text-white' :
                       'bg-red-600 text-white'
                     }`}>
-                      {c.nivel}
+                      {c.nivel_curso}
                     </span>
                   </div>
 
                   <div className="space-y-2 mb-4">
                     <p className="text-sm text-gray-300">
-                      <span className="font-medium">Duração:</span> {c.duracao} horas
-                    </p>
-                    <p className="text-sm text-gray-300">
-                      <span className="font-medium">Professor:</span> {getProfessorNome(c.professorId)}
+                      <span className="font-medium">Duração:</span> {c.duracao_curso}
                     </p>
                   </div>
 
