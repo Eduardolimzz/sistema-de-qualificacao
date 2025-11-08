@@ -2,6 +2,8 @@ package com.sistema_de_qualificacao.sistema_de_qualificacao.service;
 
 import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.CreateAlunoDto;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.UpdateAlunoDto;
+import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.LoginRequestDto;
+import com.sistema_de_qualificacao.sistema_de_qualificacao.dto.LoginResponseDto;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.entity.Aluno;
 import com.sistema_de_qualificacao.sistema_de_qualificacao.repository.AlunoRepository;
 import org.springframework.stereotype.Service;
@@ -71,5 +73,35 @@ public class AlunoService {
         }
     }
 
+    public LoginResponseDto autenticarAluno(LoginRequestDto loginDto) {
+
+        // 1. Buscar o aluno pelo email
+        // (Isso usa o "findByEmailaluno" que o backend tem que adicionar no AlunoRepository)
+        var alunoOptional = alunoRepository.findByEmailaluno(loginDto.getEmail());
+
+        if (alunoOptional.isEmpty()) {
+            // Se não achou o email, falha
+            throw new RuntimeException("Credenciais inválidas: Email não encontrado.");
+        }
+
+        var aluno = alunoOptional.get();
+
+        // 2. Verificar a senha (do jeito INSEGURO que combinamos, só pra faculdade)
+        // (O CORRETO seria usar um PasswordEncoder.matches(...))
+        if (!aluno.getSenhaaluno().equals(loginDto.getSenha())) {
+            // Se a senha não bate, falha
+            throw new RuntimeException("Credenciais inválidas: Senha incorreta.");
+        }
+
+        // 3. Se deu tudo certo, gerar a resposta que o seu Front precisa
+
+        // (Aqui o backend geraria um Token JWT de verdade)
+        String tokenFalso = "token-gerado-pelo-backend-para-" + aluno.getNomealuno();
+        String role = "aluno";
+        String nomeAluno = aluno.getNomealuno();
+
+        // Retorna o DTO de Resposta
+        return new LoginResponseDto(tokenFalso, role, nomeAluno);
+    }
 
 }
