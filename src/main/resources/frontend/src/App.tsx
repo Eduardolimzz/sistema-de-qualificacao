@@ -81,9 +81,9 @@ function App() {
       <Route
         path="/admin"
         element={
-          <PrivateRoute>
+
             <AdminLayout />
-          </PrivateRoute>
+
         }
       >
         <Route index element={<CRUDAdmin />} />
