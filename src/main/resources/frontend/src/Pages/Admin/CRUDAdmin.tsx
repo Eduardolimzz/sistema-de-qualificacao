@@ -541,7 +541,7 @@ const CRUDAdmin = () => {
           <div style={cardStyle}>
             <h3 style={{ fontSize: 18, fontWeight: 800, marginBottom: 16 }}>
               {editandoCurso ? '✏️ Editar Curso' : '➕ Adicionar Curso'}
-            </h2>
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <input
                 type="text"
