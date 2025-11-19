@@ -1,66 +1,7 @@
 import { useState, useEffect } from 'react';
+import MatriculaService from '../../Services/matriculaService';
 import estilos from './MeusCursos.module.css';
-
-// Importando ícones
 import { BarChart2, Clock, Calendar } from 'react-feather';
-
-// --- (INÍCIO) Simulação de API ---
-// No futuro, você vai apagar isso e fazer um fetch
-const mockMeusCursosData = [
-  {
-    id: 1,
-    title: 'Introdução ao React',
-    status: 'Em Andamento',
-    level: 'Iniciante',
-    duration: 40,
-    enrollDate: '14/01/2024',
-    progressPercent: 72,
-    currentClasses: 15,
-    totalClasses: 20,
-    frequency: 95,
-    performance: 8.5,
-    averageGrade: 8.2,
-  },
-  {
-    id: 2,
-    title: 'Desenvolvimento Web Avançado',
-    status: 'Em Andamento',
-    level: 'Intermediário',
-    duration: 60,
-    enrollDate: '31/01/2024',
-    progressPercent: 45,
-    currentClasses: 13,
-    totalClasses: 30,
-    frequency: 88,
-    performance: 7.8,
-    averageGrade: 7.9,
-  },
-  {
-    id: 3,
-    title: 'Data Science e Machine Learning',
-    status: 'Concluído',
-    level: 'Avançado',
-    duration: 80,
-    enrollDate: '09/01/2024',
-    progressPercent: 100,
-    currentClasses: 35,
-    totalClasses: 35,
-    frequency: 98,
-    performance: 9.2,
-    averageGrade: 9.1,
-  },
-];
-
-// Simulação de chamada de API
-const fetchMeusCursos = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(mockMeusCursosData);
-    }, 1000); // 1 segundo de loading
-  });
-};
-// --- (FIM) Simulação de API ---
-
 
 const MeusCursos = () => {
   const [cursos, setCursos] = useState([]);
@@ -71,8 +12,34 @@ const MeusCursos = () => {
     const loadData = async () => {
       try {
         setIsLoading(true);
-        const data = await fetchMeusCursos();
-        setCursos(data);
+
+        // Pegar o ID do aluno logado
+        const alunoId = localStorage.getItem('alunoId');
+
+        if (!alunoId) {
+          setError('Usuário não autenticado');
+          return;
+        }
+
+        const data = await MatriculaService.listarMeusCursos(alunoId);
+
+        // Formatar os dados
+        const cursosFormatados = data.map(matricula => ({
+          id: matricula.cursoId,
+          title: matricula.nomecurso,
+          status: matricula.status,
+          level: matricula.curso?.nivel_curso || 'Não definido',
+          duration: parseInt(matricula.curso?.duracao_curso) || 0,
+          enrollDate: new Date().toLocaleDateString('pt-BR'), // você pode adicionar esse campo na entidade
+          progressPercent: 0, // adicionar na entidade depois
+          currentClasses: 0,
+          totalClasses: matricula.curso?.lessons || 0,
+          frequency: 100,
+          performance: 0.0,
+          averageGrade: 0.0
+        }));
+
+        setCursos(cursosFormatados);
       } catch (err) {
         setError('Falha ao carregar seus cursos.');
         console.error(err);
