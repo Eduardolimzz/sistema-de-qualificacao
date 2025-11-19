@@ -1,0 +1,94 @@
+/* O fundo escuro semi-transparente */
+.modalOverlay {
+  position: fixed; /* Fica fixo na tela */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7); /* Preto com 70% de transparência */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Garante que fique na frente de tudo */
+}
+
+/* O "card" (conteúdo) do modal */
+.modalContent {
+  background-color: #2d3748; /* Fundo do card (escuro) */
+  color: #e2e8f0; /* Texto claro */
+  padding: 24px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px; /* Largura máxima */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+
+  /* Animaçãozinha para aparecer */
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #4a5568; /* Linha divisória */
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}
+
+.modalTitle {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  color: #a0aec0; /* Cinza claro */
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modalBody {
+  margin-bottom: 24px;
+  line-height: 1.6; /* Espaçamento entre linhas */
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end; /* Alinha botões à direita */
+  gap: 16px;
+}
+
+.cancelButton, .confirmButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cancelButton {
+  background-color: transparent;
+  color: #a0aec0;
+  border: 1px solid #4a5568;
+}
+.cancelButton:hover {
+  background-color: #4a5568;
+  color: #e2e8f0;
+}
+
+.confirmButton {
+  background-color: #3182ce; /* Cor de Ação (Azul) */
+  color: white;
+}
+.confirmButton:hover {
+  background-color: #2b6cb0;
+}

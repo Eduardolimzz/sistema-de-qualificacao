@@ -1,0 +1,161 @@
+/* Cores baseadas no seu design */
+:root {
+  --card-background: #2d3748;
+  --text-primary: #e2e8f0;
+  --text-secondary: #a0aec0;
+  --button-background: #4a5568;
+  --star-color: #f6e05e; /* Amarelo da estrela */
+}
+
+.pageContainer {
+  color: var(--text-primary);
+}
+
+.pageTitle {
+  font-size: 2.25rem; /* 36px */
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.pageSubtitle {
+  font-size: 1.125rem; /* 18px */
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+/* Grid de 3 Colunas */
+.catalogoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* Card Individual */
+.courseCard {
+  background-color: var(--card-background);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden; /* Para a imagem se ajustar */
+  display: flex;
+  flex-direction: column; /* Para o botão ficar no fundo */
+}
+
+.cardImage {
+  width: 100%;
+  height: 180px; /* Altura fixa para a imagem */
+  object-fit: cover; /* Faz a imagem cobrir o espaço */
+}
+
+.cardContent {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; /* Faz o conteúdo crescer */
+}
+
+.cardTitle {
+  font-size: 1.25rem; /* 20px */
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.cardDescription {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+  flex-grow: 1; /* Empurra o resto para baixo */
+}
+
+.cardMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 0.75rem; /* 12px */
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+.cardMeta span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.cardRating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+.starIcon {
+  color: var(--star-color);
+  fill: var(--star-color);
+}
+
+.cardTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tag {
+  background-color: #4a5568;
+  color: var(--text-primary);
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 0.7rem; /* 11.2px */
+  text-transform: uppercase;
+}
+
+.cardFooter {
+  margin-top: auto; /* Empurra o botão para o fim do card */
+}
+
+.detailsButton {
+  background-color: var(--button-background);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%; /* Botão ocupa 100% */
+  text-align: center;
+  text-decoration: none;
+  display: block; /* Para o Link se comportar como um botão */
+}
+.detailsButton:hover {
+  background-color: #5a6578;
+}
+
+/* Mensagens de Loading e Erro */
+.loadingMessage,
+.errorMessage {
+  padding: 40px;
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+.errorMessage {
+  color: #e53e3e;
+}
+
+/* Media Query para telas menores */
+@media (max-width: 900px) {
+  .catalogoGrid {
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+  }
+}
+@media (max-width: 600px) {
+  .catalogoGrid {
+    grid-template-columns: 1fr; /* 1 coluna */
+  }
+}

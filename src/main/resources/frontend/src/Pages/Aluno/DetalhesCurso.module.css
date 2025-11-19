@@ -1,0 +1,65 @@
+.pageContainer {
+  color: #e2e8f0;
+}
+
+.cursoTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.cursoInstructor {
+  font-size: 1.2rem;
+  color: #a0aec0;
+  margin-bottom: 24px;
+}
+
+.cursoContent {
+  line-height: 1.7;
+  max-width: 800px;
+  margin-bottom: 32px;
+  font-size: 1.1rem;
+}
+
+.matriculaSection {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #4a5568;
+}
+
+.matricularButton {
+  background-color: #38a169; /* Verde */
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.matricularButton:hover {
+  background-color: #2f855a;
+}
+.matricularButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.matriculadoBadge {
+  color: #38a169; /* Verde */
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 12px 0;
+  display: inline-block;
+}
+
+.loading, .error {
+  padding: 40px;
+  font-size: 1.25rem;
+  color: #a0aec0;
+  text-align: center;
+}
+.error {
+  color: #e53e3e;
+}
