@@ -27,7 +27,13 @@ public class AuthService {
 
             if (aluno.getSenhaaluno().equals(loginDto.getSenha())) {
                 String token = "token-aluno-" + aluno.getNomealuno();
-                return new LoginResponseDto(token, "aluno", aluno.getNomealuno());
+                // ✅ RETORNAR O ID DO ALUNO
+                return new LoginResponseDto(
+                        token,
+                        "aluno",
+                        aluno.getNomealuno(),
+                        aluno.getAlunoId()
+                );
             }
         }
 
@@ -39,7 +45,13 @@ public class AuthService {
 
             if (professor.getSenhaprofessor().equals(loginDto.getSenha())) {
                 String token = "token-professor-" + professor.getNomeprofessor();
-                return new LoginResponseDto(token, "professor", professor.getNomeprofessor());
+                // ✅ RETORNAR O ID DO PROFESSOR
+                return new LoginResponseDto(
+                        token,
+                        "professor",
+                        professor.getNomeprofessor(),
+                        professor.getProfessorId()
+                );
             }
         }
 

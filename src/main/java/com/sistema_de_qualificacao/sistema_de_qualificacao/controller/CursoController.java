@@ -11,9 +11,8 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/curso")
+@RequestMapping("/v1/cursos") // ✅ PLURAL
 @CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://localhost:5176"})
-
 public class CursoController {
     private final CursoService cursoService;
 
@@ -24,28 +23,26 @@ public class CursoController {
     @PostMapping
     public ResponseEntity<Curso> createCurso(@RequestBody CreateCursoDto createCursoDto){
         var cursoId = cursoService.createCurso(createCursoDto);
-        return ResponseEntity.created(URI.create("/v1/curso/" + cursoId.toString())).build();
+        return ResponseEntity.created(URI.create("/v1/cursos/" + cursoId.toString())).build();
     }
 
-    //lista
     @GetMapping
     public ResponseEntity<List<Curso>> listCurso(){
         var curso = cursoService.listCursos();
         return ResponseEntity.ok(curso);
     }
 
-@GetMapping("/{cursoId}")
-public ResponseEntity<Curso> getCursoById(@PathVariable("cursoId") String cursoId){
-    // Implementar lógica aqui
-    var curso = cursoService.getCursoById(cursoId);
+    @GetMapping("/{cursoId}")
+    public ResponseEntity<Curso> getCursoById(@PathVariable("cursoId") String cursoId){
+        var curso = cursoService.getCursoById(cursoId);
 
-    if(curso.isPresent()){
-        return ResponseEntity.ok(curso.get());
-    }else{
-        return ResponseEntity.notFound().build();
+        if(curso.isPresent()){
+            return ResponseEntity.ok(curso.get());
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
-}
-    //atualizando
+
     @PutMapping("/{cursoId}")
     public ResponseEntity<Void> updateCurso(
             @PathVariable("cursoId") String cursoId,
@@ -57,7 +54,7 @@ public ResponseEntity<Curso> getCursoById(@PathVariable("cursoId") String cursoI
             return ResponseEntity.notFound().build();
         }
     }
-    //deletando
+
     @DeleteMapping("/{cursoId}")
     public ResponseEntity<Void> deleteCurso(
             @PathVariable("cursoId") String cursoId) {
@@ -68,5 +65,4 @@ public ResponseEntity<Curso> getCursoById(@PathVariable("cursoId") String cursoI
             return ResponseEntity.notFound().build();
         }
     }
-
 }

@@ -18,20 +18,37 @@ import java.util.UUID;
 @Entity
 @Table(name = "tb_curso")
 public class Curso {
-    @Id //identificar que o atributo da classe vai ser um ID no banco de dados
-    @GeneratedValue(strategy = GenerationType.UUID)  //vai ser gerado de forma automática
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "cursoId")
     private UUID cursoId;
-
-    @Column(name = "duracao_curso")
-    private String duracao_curso;
 
     @Column(name = "nomecurso")
     private String nomecurso;
 
+    @Column(name = "description", length = 500)
+    private String description;
+
+    @Column(name = "duracao_curso")
+    private String duracao_curso;
+
     @Column(name = "nivel_curso")
     private String nivel_curso;
 
+    @Column(name = "lessons")
+    private Integer lessons; // número de aulas
+
+    @Column(name = "enrolled")
+    private Integer enrolled = 0; // quantos alunos matriculados
+
+    @Column(name = "rating")
+    private Double rating = 0.0;
+
+    @Column(name = "tags")
+    private String tags; // guardado como string separada por vírgula
+
+    @Column(name = "image")
+    private String image;
 
     @CreationTimestamp
     private Instant creationTimestamp;
@@ -39,8 +56,7 @@ public class Curso {
     @UpdateTimestamp
     private Instant updateTimestamp;
 
-    //relações
-
+    // relações (mantém como está)
     @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<MatriculaAluno> matriculaAluno;
@@ -56,5 +72,4 @@ public class Curso {
     @OneToOne(mappedBy = "curso", fetch = FetchType.LAZY)
     @JsonIgnore
     private Certificado certificado;
-
 }

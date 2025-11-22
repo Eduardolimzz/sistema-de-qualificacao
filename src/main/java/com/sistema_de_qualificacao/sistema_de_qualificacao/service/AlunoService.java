@@ -31,10 +31,7 @@ public class AlunoService {
         return alunoSaved.getAlunoId();
     }
 
-    //metodo publico que vai retornar o próprio aluno
-
     public Optional<Aluno> getAlunoById(String alunoId){
-        //recebemos uma string e convertemos para UUID
         return alunoRepository.findById(UUID.fromString(alunoId));
     }
 
@@ -76,32 +73,27 @@ public class AlunoService {
     public LoginResponseDto autenticarAluno(LoginRequestDto loginDto) {
 
         // 1. Buscar o aluno pelo email
-        // (Isso usa o "findByEmailaluno" que o backend tem que adicionar no AlunoRepository)
         var alunoOptional = alunoRepository.findByEmailaluno(loginDto.getEmail());
 
         if (alunoOptional.isEmpty()) {
-            // Se não achou o email, falha
             throw new RuntimeException("Credenciais inválidas: Email não encontrado.");
         }
 
         var aluno = alunoOptional.get();
 
-        // 2. Verificar a senha (do jeito INSEGURO que combinamos, só pra faculdade)
-        // (O CORRETO seria usar um PasswordEncoder.matches(...))
+        // 2. Verificar a senha
         if (!aluno.getSenhaaluno().equals(loginDto.getSenha())) {
-            // Se a senha não bate, falha
             throw new RuntimeException("Credenciais inválidas: Senha incorreta.");
         }
 
-        // 3. Se deu tudo certo, gerar a resposta que o seu Front precisa
-
-        // (Aqui o backend geraria um Token JWT de verdade)
+        // 3. Gerar resposta com token e userId
         String tokenFalso = "token-gerado-pelo-backend-para-" + aluno.getNomealuno();
-        String role = "aluno";
+        String tipo = "aluno";
         String nomeAluno = aluno.getNomealuno();
+        UUID userId = aluno.getAlunoId(); // ✅ CORRIGIDO
 
         // Retorna o DTO de Resposta
-        return new LoginResponseDto(tokenFalso, role, nomeAluno);
+        return new LoginResponseDto(tokenFalso, tipo, nomeAluno, userId); // ✅ CORRIGIDO
     }
 
 }

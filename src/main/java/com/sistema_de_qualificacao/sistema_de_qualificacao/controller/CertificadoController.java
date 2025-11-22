@@ -13,6 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/certificado")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174", "http://localhost:5175", "http://localhost:5176"}) // ✅ ADICIONAR ISSO
+
 public class CertificadoController {
     private final CertificadoService certificadoService;
 

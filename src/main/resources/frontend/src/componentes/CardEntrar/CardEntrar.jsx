@@ -4,7 +4,6 @@ import authService from '../../Services/authService';
 import styles from './CardEntrar.module.css';
 
 function CardEntrar() {
-  // --- Lógica de State  ---
   const [credenciais, setCredenciais] = useState({
     email: '',
     senha: ''
@@ -13,7 +12,6 @@ function CardEntrar() {
   const [carregando, setCarregando] = useState(false);
   const navigate = useNavigate();
 
-  // --- Lógica de Submit ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErro('');
@@ -22,26 +20,27 @@ function CardEntrar() {
     try {
       const response = await authService.login(credenciais);
 
-      const usuarioRole = response.role || 'aluno';
+      // ✅ USAR 'tipo' em vez de 'role'
+      const usuarioTipo = response.tipo || 'aluno';
 
-      if (usuarioRole === 'admin') {
-        navigate('/admin/dashboard');
-      } else if (usuarioRole === 'professor') {
+      // ✅ REDIRECIONAR BASEADO NO TIPO
+      if (usuarioTipo === 'admin') {
+        navigate('/admin/crud');
+      } else if (usuarioTipo === 'professor') {
         navigate('/professor/dashboard');
       } else {
-        navigate('/aluno/dashboard');
+        navigate('/aluno/catalogo'); // ✅ Mudei para catalogo
       }
     } catch (error) {
-      setErro(error.response?.data?.mensagem || 'Erro ao fazer login. Verifique suas credenciais.');
+      console.error('Erro no login:', error);
+      setErro(error.message || 'Erro ao fazer login. Verifique suas credenciais.');
     } finally {
-      // Garante que o carregando pare, mesmo se der erro
       setCarregando(false);
     }
   };
 
   return (
     <div className={styles.cardEntrar}>
-
       <h2>Entrar</h2>
 
       {erro && (
@@ -51,8 +50,6 @@ function CardEntrar() {
       )}
 
       <form className={styles.form} onSubmit={handleSubmit}>
-
-        {/* --- Grupo E-mail (conectado ao state) --- */}
         <div className={styles.inputGroup}>
           <label htmlFor="email">E-mail</label>
           <input
@@ -66,7 +63,6 @@ function CardEntrar() {
           />
         </div>
 
-        {/* --- Grupo Senha (conectado ao state) --- */}
         <div className={styles.inputGroup}>
           <label htmlFor="password">Senha</label>
           <input
@@ -80,7 +76,6 @@ function CardEntrar() {
           />
         </div>
 
-        {/* --- Opções (Lembrar e Esqueceu) --- */}
         <div className={styles.options}>
           <div className={styles.rememberMe}>
             <input
@@ -94,7 +89,6 @@ function CardEntrar() {
           <a href="#">Esqueceu a senha?</a>
         </div>
 
-        {/* --- Botão Entrar (conectado ao state) --- */}
         <button
           type="submit"
           className={styles.loginButton}
@@ -103,11 +97,10 @@ function CardEntrar() {
           {carregando ? 'Entrando...' : 'Entrar'}
         </button>
 
-         <div className={styles.cadastroLink}>
-             <span>Não tem conta? </span>
-             <a href="/cadastro">Faça seu cadastro!</a>
-             </div>
-
+        <div className={styles.cadastroLink}>
+          <span>Não tem conta? </span>
+          <a href="/cadastro">Faça seu cadastro!</a>
+        </div>
       </form>
     </div>
   );

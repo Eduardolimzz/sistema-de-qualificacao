@@ -1,15 +1,39 @@
 import api from './api';
 
-const BASE_PATH = '/curso';
+const BASE_PATH = '/cursos';
 
 const CursoService = {
+  /**
+   * Listar todos os cursos do catálogo
+   */
+  listarCursos: async () => {
+    try {
+      const response = await api.get(BASE_PATH);
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao buscar cursos:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Buscar curso por ID
+   */
+  buscarCursoPorId: async (id) => {
+    try {
+      const response = await api.get(`${BASE_PATH}/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao buscar curso por ID:", error);
+      throw error;
+    }
+  },
 
   /**
    * Cria um novo curso
    */
   criarCurso: async (cursoData) => {
-
-   if (!cursoData.professorId) {
+    if (!cursoData.professorId) {
       throw new Error("Você precisa selecionar um professor para criar o curso");
     }
 
@@ -25,32 +49,6 @@ const CursoService = {
       return response.data;
     } catch (error) {
       console.error("Erro ao criar curso:", error);
-      throw error;
-    }
-  },
-
-  /**
-   * Busca todos os cursos
-   */
-  carregarCursos: async () => {
-    try {
-      const response = await api.get(BASE_PATH);
-      return response.data;
-    } catch (error) {
-      console.error("Erro ao buscar cursos:", error);
-      throw error;
-    }
-  },
-
-  /**
-   * Busca um curso por ID
-   */
-  carregarCursoPorId: async (id) => {
-    try {
-      const response = await api.get(`${BASE_PATH}/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error("Erro ao buscar curso por ID:", error);
       throw error;
     }
   },
@@ -75,7 +73,6 @@ const CursoService = {
       nomecurso: cursoData.nomecurso,
       duracao_curso: cursoData.duracao_curso,
       nivel_curso: cursoData.nivel_curso,
-      // professorId NÃO é enviado no UpdateCursoDto
     };
 
     try {
