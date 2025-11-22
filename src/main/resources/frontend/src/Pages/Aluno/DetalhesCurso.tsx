@@ -1,81 +1,88 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import CursoService from '../../Services/cursoService';
+import MatriculaService from '../../Services/matriculaService';
+import authService from '../../Services/authService';
 import estilos from './DetalhesCurso.module.css';
-import Modal from '../../componentes/Modal/Modal'; // <-- Importa o Modal de Confirmação
-
-// --- Simulação de API ---
-
-// 1. GET /api/cursos/{cursoId} -> para pegar os detalhes
-// 2. GET /api/alunos/meus-cursos -> para saber se o aluno já está matriculado)
-const mockCursos = {
-  '1': { id: 1, title: 'Introdução ao React', instructor: 'Dr. João Silva', description: 'Domine os fundamentos do React para iniciantes...', isEnrolled: false },
-  '2': { id: 2, title: 'Node.js Avançado', instructor: 'Dra. Maria Santos', description: 'Tópicos avançados de Node.js e backend.', isEnrolled: true }, // Ex: já matriculado
-  '3': { id: 3, title: 'Python para Data Science', instructor: 'Prof. Carlos Lima', description: 'Análise de dados com Python...', isEnrolled: false },
-  '4': { id: 4, title: 'UI/UX Design Completo', instructor: 'Ana Pereira', description: 'Design de interfaces e experiência do usuário.', isEnrolled: false },
-  '5': { id: 5, title: 'Marketing Digital Avançado', instructor: 'Bruno Costa', description: 'Tópicos avançados de marketing digital.', isEnrolled: false },
-  '6': { id: 6, title: 'Gestão de Projetos Ágeis', instructor: 'Carla Dias', description: 'Metodologias ágeis e gestão de projetos.', isEnrolled: true }, // Ex: já matriculado
-};
-
-// Simula um fetch dos detalhes do curso
-const fetchCursoDetails = (cursoId: string) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(mockCursos[cursoId] || null);
-    }, 500);
-  });
-};
-
-// Simula o POST de matrícula
-const matricularNoCurso = (alunoId: string, cursoId: string) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Aqui você chamaria o seu matriculaService.js
-      console.log(`API CALL: POST /api/alunos/${alunoId}/cursos/${cursoId}`);
-      resolve({ success: true, message: 'Matrícula realizada!' });
-    }, 1000);
-  });
-};
-// --- Fim da Simulação ---
-
+import Modal from '../../componentes/Modal/Modal';
 
 const DetalhesCurso = () => {
-  const { cursoId } = useParams(); // Pega o ID da URL (ex: /aluno/catalogo/1)
+  const { cursoId } = useParams();
+  const navigate = useNavigate();
   const [curso, setCurso] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false); // Loading do botão
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isEnrolled, setIsEnrolled] = useState(false);
+  const [error, setError] = useState(null);
 
-  // Busca os dados do curso quando a página carrega
+  // Busca os dados do curso e verifica se já está matriculado
   useEffect(() => {
     if (!cursoId) return;
 
     const loadData = async () => {
       setIsLoading(true);
-      const data = await fetchCursoDetails(cursoId);
-      setCurso(data);
-      setIsLoading(false);
+      try {
+        // 1. Buscar dados do curso
+        const cursoData = await CursoService.buscarCursoPorId(cursoId);
+        setCurso(cursoData);
+
+        // 2. Verificar se o aluno já está matriculado
+        const alunoId = authService.getAlunoId();
+        if (alunoId) {
+          try {
+            const matriculas = await MatriculaService.listarPorAluno(alunoId);
+            const jaMatriculado = matriculas.some(m => m.cursoId === cursoId);
+            setIsEnrolled(jaMatriculado);
+          } catch (err) {
+            console.log('Erro ao verificar matrícula:', err);
+          }
+        }
+      } catch (err) {
+        console.error('Erro ao carregar curso:', err);
+        setError('Não foi possível carregar os detalhes do curso.');
+      } finally {
+        setIsLoading(false);
+      }
     };
+
     loadData();
   }, [cursoId]);
 
-  // Função chamada ao confirmar o modal
+  // Função para matricular o aluno
   const handleMatricula = async () => {
     setIsSubmitting(true);
 
-    // O ID do aluno viria do seu contexto de autenticação
-    const alunoId = '12345'; // Hardcoded por enquanto
-
     try {
-      // Chama a API (POST /api/alunos/{id}/cursos/{cursoId})
-      await matricularNoCurso(alunoId, curso.id.toString());
+      const alunoId = authService.getAlunoId();
 
-      // Atualiza o estado local para "Matriculado"
-      setCurso({ ...curso, isEnrolled: true });
+      if (!alunoId) {
+        alert('Você precisa estar logado para se matricular!');
+        navigate('/login');
+        return;
+      }
+
+      // Fazer a matrícula
+      await MatriculaService.matricular(alunoId, cursoId, 'Em Andamento');
+
+      // Atualizar estado
+      setIsEnrolled(true);
       alert('Matrícula realizada com sucesso!');
 
+      // Opcional: redirecionar para Meus Cursos
+      setTimeout(() => {
+        navigate('/aluno/meus_cursos');
+      }, 1500);
+
     } catch (err) {
-      console.error("Falha ao matricular", err);
-      alert('Erro ao realizar matrícula.');
+      console.error('Erro ao matricular:', err);
+
+      if (err.response?.status === 400) {
+        alert('Você já está matriculado neste curso!');
+        setIsEnrolled(true);
+      } else {
+        alert('Erro ao realizar matrícula. Tente novamente.');
+      }
     } finally {
       setIsSubmitting(false);
       setIsModalOpen(false);
@@ -88,31 +95,69 @@ const DetalhesCurso = () => {
     return <div className={estilos.loading}>Carregando...</div>;
   }
 
-  if (!curso) {
-    return <div className={estilos.error}>Curso não encontrado.</div>;
+  if (error || !curso) {
+    return <div className={estilos.error}>{error || 'Curso não encontrado.'}</div>;
   }
 
   return (
     <div className={estilos.pageContainer}>
-      <h1 className={estilos.cursoTitle}>{curso.title}</h1>
-      <p className={estilos.cursoInstructor}>Instrutor: {curso.instructor}</p>
+      <h1 className={estilos.cursoTitle}>{curso.nomecurso}</h1>
+      <p className={estilos.cursoInstructor}>
+        Nível: {curso.nivel_curso} | Duração: {curso.duracao_curso}h
+      </p>
 
-      {/* Aqui viria a descrição completa, ementa, etc. */}
       <div className={estilos.cursoContent}>
-        <p>{curso.description} Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris.</p>
-        {/* Você pode adicionar mais seções aqui, como "O que você vai aprender", "Ementa", etc. */}
+        <h3>Sobre o curso</h3>
+        <p>{curso.description || 'Descrição não disponível.'}</p>
+
+        <h3>O que você vai aprender</h3>
+        <p>
+          Este curso aborda os principais conceitos e práticas necessários para dominar
+          {curso.nomecurso}. Você terá acesso a {curso.lessons} aulas práticas e teóricas.
+        </p>
+
+        <div className={estilos.cursoDados}>
+          <div className={estilos.dadoItem}>
+            <strong>Aulas:</strong> {curso.lessons}
+          </div>
+          <div className={estilos.dadoItem}>
+            <strong>Duração:</strong> {curso.duracao_curso}h
+          </div>
+          <div className={estilos.dadoItem}>
+            <strong>Alunos:</strong> {curso.enrolled}
+          </div>
+          <div className={estilos.dadoItem}>
+            <strong>Avaliação:</strong> ⭐ {curso.rating?.toFixed(1) || 'N/A'}
+          </div>
+        </div>
+
+        {curso.tags && (
+          <div className={estilos.tags}>
+            {curso.tags.split(',').map((tag, index) => (
+              <span key={index} className={estilos.tag}>{tag.trim()}</span>
+            ))}
+          </div>
+        )}
       </div>
 
-      {/* O Botão de Matrícula Condicional */}
+      {/* Botão de Matrícula */}
       <div className={estilos.matriculaSection}>
-        {curso.isEnrolled ? (
-          <span className={estilos.matriculadoBadge}>
-            Você já está matriculado
-          </span>
+        {isEnrolled ? (
+          <div>
+            <span className={estilos.matriculadoBadge}>
+              ✅ Você já está matriculado
+            </span>
+            <button
+              className={estilos.irParaCursoButton}
+              onClick={() => navigate('/aluno/meus_cursos')}
+            >
+              Ir para Meus Cursos
+            </button>
+          </div>
         ) : (
           <button
             className={estilos.matricularButton}
-            onClick={() => setIsModalOpen(true)} // <-- Abre o modal
+            onClick={() => setIsModalOpen(true)}
             disabled={isSubmitting}
           >
             {isSubmitting ? 'Processando...' : 'Matricular-se'}
@@ -120,7 +165,7 @@ const DetalhesCurso = () => {
         )}
       </div>
 
-      {/* O Modal de Confirmação */}
+      {/* Modal de Confirmação */}
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -129,7 +174,7 @@ const DetalhesCurso = () => {
       >
         <p>
           Você tem certeza que deseja se matricular no curso
-          <strong> "{curso.title}"</strong>?
+          <strong> "{curso.nomecurso}"</strong>?
         </p>
       </Modal>
     </div>
