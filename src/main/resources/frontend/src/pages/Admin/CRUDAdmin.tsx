@@ -105,13 +105,32 @@ const CRUDAdmin = () => {
 
   const salvarEdicaoProfessor = async () => {
     if (!editandoProfessor) return;
+
     try {
-      await ProfessorService.atualizarProfessor(editandoProfessor.professorId, novoProfessor);
+      // ✅ CORRETO: Criar DTO com os campos certos
+      const updateDto = {
+        nomeprofessor: novoProfessor.nomeprofessor,
+      };
+
+      // Só adiciona senha se foi preenchida
+      if (novoProfessor.senhaprofessor && novoProfessor.senhaprofessor.trim() !== '') {
+        updateDto.senhaprofessor = novoProfessor.senhaprofessor;
+      }
+
+      console.log('Atualizando professor:', editandoProfessor.professorId, updateDto);
+
+      await ProfessorService.atualizar(editandoProfessor.professorId, updateDto);
+
       setEditandoProfessor(null);
       setNovoProfessor({ nomeprofessor: '', emailprofessor: '', senhaprofessor: '' });
-      carregarProfessores();
+
+      // Recarrega a lista
+      await carregarProfessores();
+
+      alert('✅ Professor atualizado com sucesso!');
     } catch (e) {
       console.error('Erro ao atualizar professor:', e);
+      alert('❌ Erro ao atualizar professor: ' + (e.response?.data?.message || e.message));
     }
   };
 

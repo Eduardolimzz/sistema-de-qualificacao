@@ -11,11 +11,12 @@ const Cadastro = () => {
       <MenuLateral />
 
       <section className={styles.conteudo}>
-        <h2>Crie sua conta</h2>
+        <h2>Crie sua conta de Aluno</h2>
         <p>Comece sua jornada de aprendizado hoje</p>
 
-        <CardCadastrar />
-        </section>
+        {/* Passa tipo="aluno" como prop */}
+        <CardCadastrar tipo="aluno" />
+      </section>
     </div>
   );
 };

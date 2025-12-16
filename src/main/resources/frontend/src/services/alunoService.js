@@ -1,14 +1,14 @@
 import api from './api';
 
-
 const BASE_PATH = '/alunos';
 
 const AlunoService = {
 
   /**
-   * Cria um novo aluno
+   * Cria um novo aluno (MÉTODO PADRONIZADO)
+   * @param {Object} alunoData - { nome, email, senha }
    */
-  criarAluno: async (alunoData) => {
+  criar: async (alunoData) => {
     const createAlunoDto = {
       nomealuno: alunoData.nome,
       emailaluno: alunoData.email,
@@ -23,28 +23,42 @@ const AlunoService = {
     }
   },
 
-    //  Registra um novo usuário
-      cadastrar: async (dadosDoUsuario) => {
-          try {
-            const response = await api.post(`/alunos`, dadosDoUsuario);
-          return response.data;
-        } catch (error) {
-          console.error("Erro ao cadastrar:", error);
-          throw error;
-        }
-      },
+  /**
+   * Alias para criar (mantido para compatibilidade)
+   * @deprecated Use criar() ao invés deste
+   */
+  criarAluno: async (alunoData) => {
+    return AlunoService.criar(alunoData);
+  },
 
-    carregarAlunos: async () => {
-        const response = await api.get(BASE_PATH);
-        return response.data;
-    },
+  /**
+   * Alias para criar (mantido para compatibilidade)
+   * @deprecated Use criar() ao invés deste
+   */
+  cadastrar: async (dadosDoUsuario) => {
+    try {
+      const response = await api.post(`/alunos`, dadosDoUsuario);
+      return response.data;
+    } catch (error) {
+      console.error("Erro ao cadastrar:", error);
+      throw error;
+    }
+  },
+
+  /**
+   * Lista todos os alunos
+   */
+  carregarAlunos: async () => {
+    const response = await api.get(BASE_PATH);
+    return response.data;
+  },
 
   /**
    * Deleta um aluno
+   * @param {string} id
    */
   deletarAluno: async (id) => {
     try {
-      // Resultado: DELETE http://localhost:8080/v1/alunos/ID_DO_ALUNO
       await api.delete(`${BASE_PATH}/${id}`);
     } catch (error) {
       console.error("Erro ao deletar aluno:", error);
@@ -53,15 +67,17 @@ const AlunoService = {
   },
 
   /**
-   PUT /v1/alunos/{id}
+   * Atualiza um aluno
+   * @param {string} id
+   * @param {Object} alunoData
    */
-atualizarAluno: async (id, alunoData) => {
+  atualizarAluno: async (id, alunoData) => {
     const updateAlunoDto = {
       nomealuno: alunoData.nome,
     };
 
     if (alunoData.senha && alunoData.senha.trim() !== '') {
-        updateAlunoDto.senhaaluno = alunoData.senha;
+      updateAlunoDto.senhaaluno = alunoData.senha;
     }
 
     try {
