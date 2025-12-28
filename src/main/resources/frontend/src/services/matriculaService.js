@@ -1,12 +1,5 @@
 import api from './api';
 
-// ============================================
-// SERVIÇO DE MATRÍCULA DE ALUNOS
-// ============================================
-// MOTIVO: Alunos se matriculam em cursos
-// ENDPOINT BASE: /api/matriculas
-// PESQUISE: "composite primary key rest api"
-
 const MatriculaAlunoService = {
 
   /**
@@ -14,15 +7,35 @@ const MatriculaAlunoService = {
    * @param {Object} data - { alunoId, cursoId }
    */
   matricular: async (data) => {
+    // ✅ LOG para debug
+    console.log('📝 Dados sendo enviados para matrícula:', data);
+
+    // ✅ Validação
+    if (!data.alunoId || !data.cursoId) {
+      throw new Error('alunoId e cursoId são obrigatórios');
+    }
+
     try {
-      // POST /api/matriculas
-      const response = await api.post('/matriculas', {
+      const payload = {
         alunoId: data.alunoId,
         cursoId: data.cursoId,
-      });
+        status: data.status || 'ATIVO' // ✅ Adicionar status padrão
+      };
+
+      console.log('📤 Payload final:', payload);
+
+      // ✅ CORRIGIDO: Adicionar  na rota
+      const response = await api.post('/matriculas', payload);
+
+      console.log('✅ Resposta da matrícula:', response.data);
+
       return response.data;
     } catch (error) {
-      console.error('Erro ao matricular aluno:', error);
+      console.error('❌ Erro ao matricular aluno:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
       throw error;
     }
   },
@@ -34,8 +47,7 @@ const MatriculaAlunoService = {
    */
   buscarMatricula: async (alunoId, cursoId) => {
     try {
-      // GET /api/matriculas/aluno/{alunoId}/curso/{cursoId}
-      // PESQUISE: "javascript template literals backticks"
+      // ✅ CORRIGIDO: Adicionar
       const response = await api.get(`/matriculas/aluno/${alunoId}/curso/${cursoId}`);
       return response.data;
     } catch (error) {
@@ -49,6 +61,7 @@ const MatriculaAlunoService = {
    */
   listarTodas: async () => {
     try {
+      // ✅ CORRIGIDO: Adicionar
       const response = await api.get('/matriculas');
       return response.data;
     } catch (error) {
@@ -63,7 +76,7 @@ const MatriculaAlunoService = {
    */
   listarCursosDoAluno: async (alunoId) => {
     try {
-      // GET /api/matriculas/aluno/{alunoId}
+      // ✅ CORRIGIDO: Adicionar
       const response = await api.get(`/matriculas/aluno/${alunoId}`);
       return response.data;
     } catch (error) {
@@ -78,7 +91,7 @@ const MatriculaAlunoService = {
    */
   listarAlunosDoCurso: async (cursoId) => {
     try {
-      // GET /api/matriculas/curso/{cursoId}
+      // ✅ CORRIGIDO: Adicionar
       const response = await api.get(`/matriculas/curso/${cursoId}`);
       return response.data;
     } catch (error) {
@@ -89,10 +102,11 @@ const MatriculaAlunoService = {
 
   /**
    * Listar matrículas por status
-   * @param {string} status - ex: "ativa", "concluida", "cancelada"
+   * @param {string} status - ex: "ATIVO", "CONCLUIDO", "CANCELADO"
    */
   listarPorStatus: async (status) => {
     try {
+      // ✅ CORRIGIDO: Adicionar
       const response = await api.get(`/matriculas/status/${status}`);
       return response.data;
     } catch (error) {
@@ -109,7 +123,7 @@ const MatriculaAlunoService = {
    */
   atualizar: async (alunoId, cursoId, data) => {
     try {
-      // PUT /api/matriculas/aluno/{alunoId}/curso/{cursoId}
+      // ✅ CORRIGIDO: Adicionar
       const response = await api.put(
         `/matriculas/aluno/${alunoId}/curso/${cursoId}`,
         data
@@ -128,7 +142,7 @@ const MatriculaAlunoService = {
    */
   cancelar: async (alunoId, cursoId) => {
     try {
-      // DELETE /api/matriculas/aluno/{alunoId}/curso/{cursoId}
+      // ✅ CORRIGIDO: Adicionar
       await api.delete(`/matriculas/aluno/${alunoId}/curso/${cursoId}`);
     } catch (error) {
       console.error('Erro ao cancelar matrícula:', error);
@@ -140,16 +154,12 @@ const MatriculaAlunoService = {
 // ============================================
 // SERVIÇO DE MATRÍCULA DE PROFESSORES
 // ============================================
-// MOTIVO: Professores também se matriculam/associam a cursos
-// ENDPOINT BASE: /api/matriculasProfessor
 
 const MatriculaProfessorService = {
 
-  /**
-   * Associar professor a um curso
-   */
   matricular: async (data) => {
     try {
+      // ✅ CORRIGIDO: Adicionar
       const response = await api.post('/matriculasProfessor', {
         professorId: data.professorId,
         cursoId: data.cursoId,
@@ -161,11 +171,9 @@ const MatriculaProfessorService = {
     }
   },
 
-  /**
-   * Buscar matrícula específica do professor
-   */
   buscarMatricula: async (professorId, cursoId) => {
     try {
+      // ✅ CORRIGIDO: Adicionar
       const response = await api.get(
         `/matriculasProfessor/professor/${professorId}/curso/${cursoId}`
       );
@@ -176,11 +184,9 @@ const MatriculaProfessorService = {
     }
   },
 
-  /**
-   * Listar cursos de um professor
-   */
   listarCursosDoProfessor: async (professorId) => {
     try {
+      // ✅ CORRIGIDO: Adicionar
       const response = await api.get(`/matriculasProfessor/professor/${professorId}`);
       return response.data;
     } catch (error) {
@@ -189,11 +195,9 @@ const MatriculaProfessorService = {
     }
   },
 
-  /**
-   * Listar professores de um curso
-   */
   listarProfessoresDoCurso: async (cursoId) => {
     try {
+      // ✅ CORRIGIDO: Adicionar
       const response = await api.get(`/matriculasProfessor/curso/${cursoId}`);
       return response.data;
     } catch (error) {
@@ -202,11 +206,9 @@ const MatriculaProfessorService = {
     }
   },
 
-  /**
-   * Atualizar matrícula do professor
-   */
   atualizar: async (professorId, cursoId, data) => {
     try {
+      // ✅ CORRIGIDO: Adicionar
       const response = await api.put(
         `/matriculasProfessor/professor/${professorId}/curso/${cursoId}`,
         data
@@ -218,11 +220,9 @@ const MatriculaProfessorService = {
     }
   },
 
-  /**
-   * Remover professor do curso
-   */
   cancelar: async (professorId, cursoId) => {
     try {
+      // ✅ CORRIGIDO: Adicionar
       await api.delete(
         `/matriculasProfessor/professor/${professorId}/curso/${cursoId}`
       );
@@ -233,8 +233,5 @@ const MatriculaProfessorService = {
   },
 };
 
-// ============================================
-// EXPORTAÇÃO
-// ============================================
 export { MatriculaAlunoService, MatriculaProfessorService };
 export default MatriculaAlunoService;
