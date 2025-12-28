@@ -17,6 +17,13 @@ const CursoService = {
   },
 
   /**
+   * Alias para listarCursos (compatibilidade com CRUDAdmin)
+   */
+  carregarCursos: async () => {
+    return CursoService.listarCursos();
+  },
+
+  /**
    * Buscar curso por ID
    */
   buscarCursoPorId: async (id) => {

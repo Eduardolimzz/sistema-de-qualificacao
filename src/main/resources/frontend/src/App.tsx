@@ -5,6 +5,7 @@ import AlunoLayout from './Pages/Aluno/AlunoLayout';
 import PrivateRoute from './components/PrivateRoute';
 import Login from './Pages/Login/Login';
 import Cadastro from './Pages/Cadastro/Cadastro';
+import CadastroProfessor from './Pages/Cadastro/CadastroProfessor'; // ⭐ NOVO
 import PaginaHome from './Pages/Public/PaginaHome.jsx';
 import Catalogo from './Pages/Public/Catalogo';
 import CRUDAdmin from './Pages/Admin/CRUDAdmin';
@@ -29,18 +30,27 @@ function App() {
     <>
       <ScrollToTop />
       <Routes>
-        {/* Rota 1: Login (página única, sem layout) */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/cadastro" element={<Cadastro />} />
+        {/* ============================================ */}
+        {/* ROTAS PÚBLICAS (SEM AUTENTICAÇÃO) */}
+        {/* ============================================ */}
 
-        {/* Rota 2: Layout Público (para visitantes) */}
+        <Route path="/login" element={<Login />} />
+
+        {/* ⭐ DUAS ROTAS DE CADASTRO DIFERENTES */}
+        <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/cadastro/professor" element={<CadastroProfessor />} />
+
+        {/* Layout Público (para visitantes) */}
         <Route path="/" element={<Layout />}>
           <Route index element={<PaginaHome />} />
           <Route path="catalogo" element={<Catalogo />} />
           <Route path="inicio" element={<PaginaHome />} />
         </Route>
 
-        {/* Rota 3: Layout Privado - Aluno */}
+        {/* ============================================ */}
+        {/* ROTAS PRIVADAS - ALUNO */}
+        {/* ============================================ */}
+
         <Route
           path="/aluno/*"
           element={
@@ -58,7 +68,10 @@ function App() {
           <Route path="catalogo/:cursoId" element={<DetalhesCurso />} />
         </Route>
 
-        {/* Rota 4: Layout Privado - Professor */}
+        {/* ============================================ */}
+        {/* ROTAS PRIVADAS - PROFESSOR */}
+        {/* ============================================ */}
+
         <Route
           path="/professor/*"
           element={
@@ -75,14 +88,13 @@ function App() {
           <Route path="relatorios" element={<ProfessorRelatorios />} />
         </Route>
 
-        {/* Rota 5: Layout Privado - Admin */}
+        {/* ============================================ */}
+        {/* ROTAS PRIVADAS - ADMIN */}
+        {/* ============================================ */}
+
         <Route
           path="/admin/*"
-          element={
-
-              <AdminLayout />
-
-          }
+          element={<AdminLayout />}
         >
           <Route index element={<CRUDAdmin />} />
           <Route path="crud" element={<CRUDAdmin />} />

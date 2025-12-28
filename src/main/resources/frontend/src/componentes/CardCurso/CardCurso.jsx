@@ -27,7 +27,7 @@ function CardCurso({
 
         <div className={styles['card-metadata']}>
           <img src={ClockIcon} className={styles.icon} alt="Duração" />
-          <span>{duration}h</span>
+          <span>{duration}</span>
 
           <img src={PlayIcon} className={styles.icon} alt="Aulas" />
           <span>{lessons} aulas</span>

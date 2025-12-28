@@ -19,13 +19,13 @@ const Catalogo = () => {
         const cursosFormatados = data.map(curso => ({
           id: curso.cursoId,
           title: curso.nomecurso,
-          description: curso.description,
+          description: curso.description || 'Sem descrição disponível',
           duration: parseInt(curso.duracao_curso) || 0,
-          lessons: curso.lessons,
-          enrolled: curso.enrolled,
-          rating: curso.rating,
-          tags: curso.tags ? curso.tags.split(',') : [],
-          image: curso.image
+          lessons: curso.lessons || 0,
+          enrolled: curso.enrolled || 0,
+          rating: curso.rating || 0, // ✅ Valor padrão se for null
+          tags: curso.tags ? curso.tags.split(',').map(tag => tag.trim()) : [],
+          image: curso.image || 'https://via.placeholder.com/400x200?text=Curso'
         }));
 
         setCursos(cursosFormatados);
@@ -69,16 +69,21 @@ const Catalogo = () => {
                 <span><Users size={14} /> {curso.enrolled}</span>
               </div>
 
-              <div className={estilos.cardRating}>
-                <Star size={16} className={estilos.starIcon} />
-                <span>{curso.rating.toFixed(1)}</span>
-              </div>
+              {/* ✅ Renderização condicional do rating */}
+              {curso.rating > 0 && (
+                <div className={estilos.cardRating}>
+                  <Star size={16} className={estilos.starIcon} />
+                  <span>{curso.rating.toFixed(1)}</span>
+                </div>
+              )}
 
-              <div className={estilos.cardTags}>
-                {curso.tags.map((tag) => (
-                  <span key={tag} className={estilos.tag}>{tag}</span>
-                ))}
-              </div>
+              {curso.tags.length > 0 && (
+                <div className={estilos.cardTags}>
+                  {curso.tags.map((tag, index) => (
+                    <span key={index} className={estilos.tag}>{tag}</span>
+                  ))}
+                </div>
+              )}
 
               <div className={estilos.cardFooter}>
                 <Link
