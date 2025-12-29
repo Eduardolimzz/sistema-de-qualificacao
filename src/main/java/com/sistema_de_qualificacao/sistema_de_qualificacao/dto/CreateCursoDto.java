@@ -6,10 +6,12 @@ public class CreateCursoDto {
     private String duracao_curso;
     private String nomecurso;
     private String nivel_curso;
+    private String professorId;
 
-    public CreateCursoDto(String duracao_curso, String nomecurso, String nivel_curso) {
+    public CreateCursoDto(String duracao_curso, String nomecurso, String nivel_curso, String professorId) {
         this.duracao_curso = duracao_curso;
         this.nomecurso = nomecurso;
         this.nivel_curso = nivel_curso;
+        this.professorId = professorId;
     }
 }
