@@ -26,9 +26,9 @@ const smallMuted: React.CSSProperties = {
 export default function Dashboard() {
   const navigate = useNavigate();
 
-  // Estados
   const [cursos, setCursos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [stats, setStats] = useState({
     totalCursos: 0,
     totalAlunos: 0,
@@ -36,7 +36,6 @@ export default function Dashboard() {
     mediaNotas: 0
   });
 
-  // Carrega dados ao montar
   useEffect(() => {
     carregarDados();
   }, []);
@@ -44,27 +43,53 @@ export default function Dashboard() {
   const carregarDados = async () => {
     try {
       setLoading(true);
+      setError(null);
 
       const professorId = authService.getProfessorId();
+      console.log('🔍 Professor ID:', professorId);
 
       if (!professorId) {
-        console.error('Professor ID não encontrado');
+        setError('Professor ID não encontrado. Faça login novamente.');
+        setTimeout(() => {
+          authService.logout();
+          navigate('/login');
+        }, 2000);
         return;
       }
 
-      // Busca cursos do professor
+      // ✅ Busca matrículas do professor
       const matriculas = await MatriculaProfessorService.listarCursosDoProfessor(professorId);
+      console.log('📚 Matrículas encontradas:', matriculas);
 
-      // Processa os dados
-      const cursosComDetalhes = matriculas.map(mat => ({
-        id: mat.curso?.cursoId || mat.cursoId,
-        nome: mat.curso?.nomecurso || 'Curso sem nome',
-        nivel: mat.curso?.nivel_curso || 'Não definido',
-        duracao: mat.curso?.duracao_curso || '0h',
-        totalAlunos: 0, // Por enquanto zero, depois vamos buscar
-        avaliacoes: 0,
-        media: 0
-      }));
+      if (!matriculas || matriculas.length === 0) {
+        console.log('ℹ️ Nenhum curso encontrado para este professor');
+        setCursos([]);
+        setStats({
+          totalCursos: 0,
+          totalAlunos: 0,
+          totalAvaliacoes: 0,
+          mediaNotas: 0
+        });
+        setLoading(false);
+        return;
+      }
+
+      // ✅ Processa os cursos
+      const cursosComDetalhes = matriculas.map(mat => {
+        console.log('🎓 Processando matrícula:', mat);
+
+        return {
+          id: mat.cursoId || mat.curso?.cursoId,
+          nome: mat.nomecurso || mat.curso?.nomecurso || 'Curso sem nome',
+          nivel: mat.nivel_curso || mat.curso?.nivel_curso || 'Não definido',
+          duracao: mat.duracao_curso || mat.curso?.duracao_curso || '0h',
+          totalAlunos: 0,
+          avaliacoes: 0,
+          media: 0
+        };
+      });
+
+      console.log('✅ Cursos processados:', cursosComDetalhes);
 
       setCursos(cursosComDetalhes);
 
@@ -79,7 +104,9 @@ export default function Dashboard() {
       });
 
     } catch (error) {
-      console.error('Erro ao carregar dados:', error);
+      console.error('❌ Erro ao carregar dados:', error);
+      console.error('❌ Detalhes:', error.response || error.message);
+      setError('Erro ao carregar cursos. Tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -101,6 +128,37 @@ export default function Dashboard() {
     );
   }
 
+  if (error) {
+    return (
+      <div style={{
+        padding: 20,
+        color: '#e5e7eb',
+        backgroundColor: '#0f172a',
+        minHeight: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <p style={{ fontSize: 20, color: '#ef4444', marginBottom: 10 }}>{error}</p>
+          <button
+            onClick={carregarDados}
+            style={{
+              padding: '10px 20px',
+              background: '#3b82f6',
+              color: 'white',
+              border: 'none',
+              borderRadius: 8,
+              cursor: 'pointer'
+            }}
+          >
+            Tentar Novamente
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{
       padding: 20,
@@ -110,7 +168,6 @@ export default function Dashboard() {
       borderRadius: 8
     }}>
 
-      {/* Título com nome do professor */}
       <h2 style={{
         textAlign: 'center',
         fontSize: 26,
@@ -159,7 +216,6 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* Título cursos */}
       <h3 style={{
         textAlign: 'center',
         fontSize: 24,
@@ -170,7 +226,6 @@ export default function Dashboard() {
         Cursos Ministrados
       </h3>
 
-      {/* Mensagem se não tiver cursos */}
       {cursos.length === 0 ? (
         <div style={{
           textAlign: 'center',
@@ -186,8 +241,6 @@ export default function Dashboard() {
           </p>
         </div>
       ) : (
-
-        /* Cards de cursos */
         <section style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
