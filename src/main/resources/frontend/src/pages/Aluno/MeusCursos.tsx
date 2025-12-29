@@ -29,7 +29,7 @@ const MeusCursos = () => {
           return;
         }
 
-        const data = await MatriculaService.listarPorAluno(alunoId);
+        const data = await MatriculaService.listarCursosDoAluno(alunoId);
         console.log('📚 Matrículas encontradas:', data); // ✅ LOG
         console.log('📊 Quantidade de matrículas:', data?.length || 0); // ✅ LOG
 
