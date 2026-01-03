@@ -46,6 +46,19 @@ export default function MenuLateralAluno() {
             </NavLink>
           </li>
 
+          {/* Link para Meus Avaliações */}
+          <li>
+            <NavLink
+              to="/aluno/avaliacoes"
+              className={({ isActive }) =>
+                isActive ? `${estilos.menuItem} ${estilos.active}` : estilos.menuItem
+              }
+            >
+              <BookOpen size={18} className={estilos.icon} />
+              <span>Minhas Avaliações</span>
+            </NavLink>
+          </li>
+
           {/* Link para Certificados */}
           <li>
             <NavLink
