@@ -5,7 +5,7 @@ import AlunoLayout from './Pages/Aluno/AlunoLayout';
 import PrivateRoute from './components/PrivateRoute';
 import Login from './Pages/Login/Login';
 import Cadastro from './Pages/Cadastro/Cadastro';
-import CadastroProfessor from './Pages/Cadastro/CadastroProfessor'; // ⭐ NOVO
+import CadastroProfessor from './Pages/Cadastro/CadastroProfessor';
 import PaginaHome from './Pages/Public/PaginaHome.jsx';
 import Catalogo from './Pages/Public/Catalogo';
 import CRUDAdmin from './Pages/Admin/CRUDAdmin';
@@ -24,6 +24,7 @@ import AlunoEventos from './Pages/Aluno/Eventos';
 import AlunoMeusCursos from './Pages/Aluno/MeusCursos';
 import AlunoCatalogo from './Pages/Aluno/Catalogo';
 import DetalhesCurso from './Pages/Aluno/DetalhesCurso';
+import AlunoAvaliacoes from './Pages/Aluno/AvaliacoesAluno';
 
 function App() {
   return (
@@ -35,12 +36,9 @@ function App() {
         {/* ============================================ */}
 
         <Route path="/login" element={<Login />} />
-
-        {/* ⭐ DUAS ROTAS DE CADASTRO DIFERENTES */}
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/cadastro/professor" element={<CadastroProfessor />} />
 
-        {/* Layout Público (para visitantes) */}
         <Route path="/" element={<Layout />}>
           <Route index element={<PaginaHome />} />
           <Route path="catalogo" element={<Catalogo />} />
@@ -66,6 +64,7 @@ function App() {
           <Route path="meus_cursos" element={<AlunoMeusCursos />} />
           <Route path="catalogo" element={<AlunoCatalogo />} />
           <Route path="catalogo/:cursoId" element={<DetalhesCurso />} />
+          <Route path="avaliacoes" element={<AlunoAvaliacoes />} />
         </Route>
 
         {/* ============================================ */}
@@ -102,7 +101,6 @@ function App() {
           <Route path="curso/:cursoId" element={<CursoDetalhes />} />
         </Route>
 
-        {/* Rota catch-all (página não encontrada) */}
         <Route path="*" element={<h2>Página não encontrada</h2>} />
       </Routes>
     </>
